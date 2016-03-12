@@ -37,19 +37,8 @@ public class ChanchanApp implements CommandLineRunner {
 	@Inject
 	private CatalogCrawler catalogCrawler;
 
-	private final int numberOfCrawlers;
-	private final String outputPath;
-	private final int requestDelay;
-	private final String[] seeds;
-
 	@Inject
-	public ChanchanApp(Environment environment) {
-		numberOfCrawlers = Integer
-				.parseInt(environment.getProperty("chanchan.numberofcrawlers", DEFAULT_NUMBER_OF_CRAWLERS + ""));
-		outputPath = environment.getProperty("chanchan.output.path");
-		requestDelay = Integer.parseInt(environment.getProperty("chanchan.requestdelay"));
-		seeds = environment.getProperty("chanchan.catalogseeds", String[].class);
-	}
+	private Environment environment;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ChanchanApp.class);
@@ -59,12 +48,20 @@ public class ChanchanApp implements CommandLineRunner {
 
 		try {
 
+			int numberOfCrawlers = Integer.parseInt(
+					this.environment.getProperty("chanchan.numberofcrawlers", DEFAULT_NUMBER_OF_CRAWLERS + ""));
+			String outputPath = this.environment.getProperty("chanchan.output.path");
+			int requestDelay = Integer.parseInt(this.environment.getProperty("chanchan.requestdelay"));
+			String[] seeds = this.environment.getProperty("chanchan.catalogseeds", String[].class);
+
 			logger.info("Number of Concurrent Crawlers:: {}", numberOfCrawlers);
 			logger.info("Output Directory:: {}", outputPath);
 			logger.info("Seeds:: {}", Arrays.asList(seeds));
 			logger.info("Request Delay Between Requests:: {}", requestDelay);
 
-			Collection<String> catalogCrawlerController = crawlCatalogs();
+			Collection<String> threadUrls = crawlCatalogs(requestDelay, numberOfCrawlers, outputPath, seeds);
+
+			crawlThreads(requestDelay, numberOfCrawlers, outputPath, threadUrls);
 
 		} catch (Exception e) {
 			logger.error("Error", e);
@@ -72,24 +69,48 @@ public class ChanchanApp implements CommandLineRunner {
 
 	}
 
-	private Collection<String> crawlCatalogs() throws Exception {
-		logger.info("Crawling through image catalogs");
+	private void crawlThreads(int requestDelay, int numberOfCrawlers, String ouputPath, Collection<String> threadUrls)
+			throws Exception {
+		logger.info("Crawling through threads");
 
 		CrawlConfig config = new CrawlConfig();
-		config.setPolitenessDelay(this.requestDelay);
+		config.setPolitenessDelay(requestDelay);
+		config.setCrawlStorageFolder(ouputPath);
+		config.setIncludeBinaryContentInCrawling(true);
 
 		PageFetcher pageFetcher = new PageFetcher(config);
 		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
 		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
 		CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
 
-		for (String seed : this.seeds) {
+		for (String threadUrl : threadUrls) {
+			controller.addSeed(threadUrl);
+		}
+
+		controller.startNonBlocking(new ChanchanWebCrawlerFactory(this.threadCrawler), numberOfCrawlers);
+	}
+
+	private Collection<String> crawlCatalogs(int requestDelay, int numberOfCrawlers, String ouputPath, String[] seeds)
+			throws Exception {
+		logger.info("Crawling through  catalogs");
+
+		CrawlConfig config = new CrawlConfig();
+		config.setPolitenessDelay(requestDelay);
+		config.setCrawlStorageFolder(ouputPath);
+		config.setMaxDepthOfCrawling(2);
+		
+		PageFetcher pageFetcher = new PageFetcher(config);
+		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
+		CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
+
+		for (String seed : seeds) {
 			controller.addSeed(seed);
 		}
 
-		controller.startNonBlocking(new ChanchanWebCrawlerFactory(this.catalogCrawler), this.numberOfCrawlers);
+		controller.startNonBlocking(new ChanchanWebCrawlerFactory(this.catalogCrawler), numberOfCrawlers);
 		controller.waitUntilFinish();
-		
+
 		return this.catalogCrawler.getThreadUrls();
 	}
 

@@ -40,6 +40,12 @@ public class ChanchanApp implements CommandLineRunner {
 	@Inject
 	private Environment environment;
 
+	private int numberOfCrawlers;
+
+	private String outputPath;
+
+	private int requestDelay;
+
 	public static void main(String[] args) {
 		SpringApplication.run(ChanchanApp.class);
 	}
@@ -48,34 +54,37 @@ public class ChanchanApp implements CommandLineRunner {
 
 		try {
 
-			int numberOfCrawlers = Integer.parseInt(
+			numberOfCrawlers = Integer.parseInt(
 					this.environment.getProperty("chanchan.numberofcrawlers", DEFAULT_NUMBER_OF_CRAWLERS + ""));
-			String outputPath = this.environment.getProperty("chanchan.output.path");
-			int requestDelay = Integer.parseInt(this.environment.getProperty("chanchan.requestdelay"));
+			outputPath = this.environment.getProperty("chanchan.output.path");
+			requestDelay = Integer.parseInt(this.environment.getProperty("chanchan.requestdelay"));
+			
 			String[] seeds = this.environment.getProperty("chanchan.catalogseeds", String[].class);
 
 			logger.info("Number of Concurrent Crawlers:: {}", numberOfCrawlers);
 			logger.info("Output Directory:: {}", outputPath);
-			logger.info("Seeds:: {}", Arrays.asList(seeds));
+			logger.info("Catalog Seeds:: {}", Arrays.asList(seeds));
 			logger.info("Request Delay Between Requests:: {}", requestDelay);
 
-			Collection<String> threadUrls = crawlCatalogs(requestDelay, numberOfCrawlers, outputPath, seeds);
+			long start = System.currentTimeMillis();
+			logger.info("Chanchan started");
 
-			crawlThreads(requestDelay, numberOfCrawlers, outputPath, threadUrls);
-
+			Collection<String> threadUrls = crawlCatalogs(seeds);
+			crawlThreads(threadUrls);
+			
+			logger.info("Success! Chanchan finished in {} ", (System.currentTimeMillis() - start) / 1000);
 		} catch (Exception e) {
 			logger.error("Error", e);
 		}
 
 	}
 
-	private void crawlThreads(int requestDelay, int numberOfCrawlers, String ouputPath, Collection<String> threadUrls)
-			throws Exception {
+	private void crawlThreads(Collection<String> threadUrls) throws Exception {
 		logger.info("Crawling through threads");
 
 		CrawlConfig config = new CrawlConfig();
 		config.setPolitenessDelay(requestDelay);
-		config.setCrawlStorageFolder(ouputPath);
+		config.setCrawlStorageFolder(outputPath);
 		config.setIncludeBinaryContentInCrawling(true);
 
 		PageFetcher pageFetcher = new PageFetcher(config);
@@ -90,13 +99,12 @@ public class ChanchanApp implements CommandLineRunner {
 		controller.startNonBlocking(new ChanchanWebCrawlerFactory(this.threadCrawler), numberOfCrawlers);
 	}
 
-	private Collection<String> crawlCatalogs(int requestDelay, int numberOfCrawlers, String ouputPath, String[] seeds)
-			throws Exception {
+	private Collection<String> crawlCatalogs(String[] seeds) throws Exception {
 		logger.info("Crawling through  catalogs");
 
 		CrawlConfig config = new CrawlConfig();
 		config.setPolitenessDelay(requestDelay);
-		config.setCrawlStorageFolder(ouputPath);
+		config.setCrawlStorageFolder(outputPath);
 		config.setMaxDepthOfCrawling(2);
 
 		PageFetcher pageFetcher = new PageFetcher(config);
@@ -113,7 +121,7 @@ public class ChanchanApp implements CommandLineRunner {
 
 		Collection<String> threadUrls = this.catalogCrawler.getThreadUrls();
 
-		logger.info(threadUrls.size() + " Eligible thread urls have been found for these catalogs");
+		logger.info(threadUrls.size() + " Eligible threads have been found for these catalogs");
 
 		return threadUrls;
 	}

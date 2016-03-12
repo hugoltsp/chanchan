@@ -41,7 +41,7 @@ public class ThreadCrawler extends WebCrawler {
 		} catch (MalformedURLException e) {
 			logger.debug("Error: ", e);
 		} catch (ImageWriteException e) {
-			logger.debug("An error ocurred while rying to write the image on disk: {}", e);
+			logger.debug("An error ocurred while trying to write the image on disk: {}", e);
 		}
 
 		return false;

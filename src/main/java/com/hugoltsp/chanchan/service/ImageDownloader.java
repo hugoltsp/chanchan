@@ -1,4 +1,4 @@
-package com.hugoltsp.chanchan.utils;
+package com.hugoltsp.chanchan.service;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -6,18 +6,17 @@ import java.net.URL;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.stereotype.Service;
 
 import com.hugoltsp.chanchan.exception.ImageDownloadException;
+import com.hugoltsp.chanchan.utils.Image;
 
+@Service
 public class ImageDownloader {
 
 	private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*(\\.(bmp|gif|jpe?g|png|tiff?))$");
 
-	private ImageDownloader() {
-
-	}
-
-	public static Image downloadImageFromUrl(String url) throws ImageDownloadException, MalformedURLException {
+	public Image downloadImageFromUrl(String url) throws ImageDownloadException, MalformedURLException {
 		return downloadImageFromUrl(new URL(url));
 	}
 	
@@ -27,7 +26,7 @@ public class ImageDownloader {
 	 * @return image representation containing it's name and bytes array
 	 * @throws ImageDownloadException
 	 */
-	public static Image downloadImageFromUrl(URL url) throws ImageDownloadException {
+	public Image downloadImageFromUrl(URL url) throws ImageDownloadException {
 
 		if (IMAGE_EXTENSIONS.matcher(url.getPath()).matches()) {
 			try {

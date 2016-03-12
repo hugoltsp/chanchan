@@ -7,12 +7,20 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
+import javax.inject.Inject;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.hugoltsp.chanchan.service.ImageDownloader;
 import com.hugoltsp.chanchan.utils.Image;
-import com.hugoltsp.chanchan.utils.ImageDownloader;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ImageDownloaderTests {
+
+	@Inject
+	private ImageDownloader downloader;
 
 	@Test
 	public void downloadImageFromUrlTest() throws Exception {
@@ -21,7 +29,7 @@ public class ImageDownloaderTests {
 			long currentTimeMillis = System.currentTimeMillis();
 
 			URL url = new URL("http://i.4cdn.org/wg/1457580828675.jpg");
-			Image downloadedImage = ImageDownloader.downloadImageFromUrl(url);
+			Image downloadedImage = downloader.downloadImageFromUrl(url);
 
 			File file = new File("/home/hugo/chanchan/out" + downloadedImage.getName());
 			file.getParentFile().mkdir();

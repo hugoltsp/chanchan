@@ -13,6 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
 import com.hugoltsp.chanchan.crawlers.ThreadCrawler;
+import com.hugoltsp.chanchan.crawlers.factory.ChanchanWebCrawlerFactory;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
@@ -30,6 +31,9 @@ public class ChanchanApp implements CommandLineRunner {
 
 	@Inject
 	private Environment environment;
+
+	@Inject
+	private ThreadCrawler threadCrawler;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ChanchanApp.class);
@@ -64,7 +68,7 @@ public class ChanchanApp implements CommandLineRunner {
 				controller.addSeed(seed);
 			}
 
-			controller.start(ThreadCrawler.class, numberOfCrawlers);
+			controller.start(new ChanchanWebCrawlerFactory(threadCrawler), numberOfCrawlers);
 
 		} catch (Exception e) {
 			logger.error("Error", e);

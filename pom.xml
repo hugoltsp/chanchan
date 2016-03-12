@@ -7,7 +7,6 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<javax.inject.version>1</javax.inject.version>
 	</properties>
 
 	<parent>
@@ -29,13 +28,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-
-		<!-- JavaX -->
-		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-			<version>${javax.inject.version}</version>
 		</dependency>
 
 		<!-- crawler4j -->

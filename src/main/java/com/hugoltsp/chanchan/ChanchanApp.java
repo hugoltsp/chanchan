@@ -98,7 +98,7 @@ public class ChanchanApp implements CommandLineRunner {
 		config.setPolitenessDelay(requestDelay);
 		config.setCrawlStorageFolder(ouputPath);
 		config.setMaxDepthOfCrawling(2);
-		
+
 		PageFetcher pageFetcher = new PageFetcher(config);
 		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
 		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
@@ -111,7 +111,11 @@ public class ChanchanApp implements CommandLineRunner {
 		controller.startNonBlocking(new ChanchanWebCrawlerFactory(this.catalogCrawler), numberOfCrawlers);
 		controller.waitUntilFinish();
 
-		return this.catalogCrawler.getThreadUrls();
+		Collection<String> threadUrls = this.catalogCrawler.getThreadUrls();
+
+		logger.info(threadUrls.size() + " Eligible thread urls have been found for these catalogs");
+
+		return threadUrls;
 	}
 
 }

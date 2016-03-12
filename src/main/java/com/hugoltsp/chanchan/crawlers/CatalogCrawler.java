@@ -19,9 +19,9 @@ public class CatalogCrawler extends WebCrawler {
 
 	private static final String THREAD_RESOURCE_URL = "/thread/";
 
-	private Collection<String> threadUrls;
-
 	private String boardResourceUrlId;
+
+	private Collection<String> threadUrls;
 
 	public CatalogCrawler() {
 		this.threadUrls = new ArrayList<>();
@@ -50,8 +50,10 @@ public class CatalogCrawler extends WebCrawler {
 	public void visit(Page page) {
 		String path = page.getWebURL().getPath();
 		if (path.contains(this.boardResourceUrlId + THREAD_RESOURCE_URL)) {
-			this.threadUrls.add(page.getWebURL().getURL());
+			String url = page.getWebURL().getURL();
+			logger.info("Adding the following URL:: {}", url);
+			this.threadUrls.add(url);
 		}
 	}
-	
+
 }

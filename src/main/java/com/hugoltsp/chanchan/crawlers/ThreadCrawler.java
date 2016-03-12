@@ -24,7 +24,7 @@ public class ThreadCrawler extends WebCrawler {
 
 	@Inject
 	private ImageDownloader downloader;
-	
+
 	@Inject
 	private ImageWriter writer;
 
@@ -33,9 +33,8 @@ public class ThreadCrawler extends WebCrawler {
 		String href = url.getURL().toLowerCase();
 
 		try {
-			Image image = downloader.downloadImageFromUrl(href);
-			logger.info("Downloading image at::{}", href);
-			writer.writeImage(image);
+			Image image = this.downloader.downloadImageFromUrl(href);
+			this.writer.writeImage(image);
 		} catch (ImageDownloadException e) {
 			logger.debug("Could not download board image at the following URL: {}, Error: {}", href, e);
 		} catch (MalformedURLException e) {

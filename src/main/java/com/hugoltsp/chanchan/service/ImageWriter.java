@@ -1,24 +1,52 @@
 package com.hugoltsp.chanchan.service;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import javax.inject.Inject;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import com.hugoltsp.chanchan.exception.ImageWriteException;
 import com.hugoltsp.chanchan.utils.Image;
 
 @Service
 public class ImageWriter {
 
+	private static final int BUFFER_SIZE = 16384;
+
 	private final String outputPath;
 
 	@Inject
 	public ImageWriter(Environment environment) {
-		outputPath = environment.getProperty("chanchan.output.path");
+		this.outputPath = environment.getProperty("chanchan.output.path");
 	}
-	
-	public void writeImage(Image image){
-		
+
+	public void writeImage(Image image) throws ImageWriteException {
+		OutputStream outputStream = null;
+
+		try {
+
+			File file = new File(this.outputPath + image.getName());
+			file.getParentFile().mkdirs();
+			file.createNewFile();
+
+			outputStream = new BufferedOutputStream(new FileOutputStream(file), BUFFER_SIZE);
+			outputStream.write(image.getFile());
+			outputStream.flush();
+		} catch (IOException e) {
+			throw new ImageWriteException(e);
+		} finally {
+			IOUtils.closeQuietly(outputStream);
+		}
+
 	}
-	
+
 }

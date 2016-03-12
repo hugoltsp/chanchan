@@ -32,8 +32,8 @@ public class ImageDownloader {
 	 * @throws ImageDownloadException
 	 */
 	public Image downloadImageFromUrl(URL url) throws ImageDownloadException {
-
-		if (IMAGE_EXTENSIONS.matcher(url.getPath()).matches()) {
+		if (IMAGE_EXTENSIONS.matcher(url.getPath()).matches() 
+				&& !url.getPath().contains("s.")) {
 			logger.info("Downloading image at:: {}", url.toString());
 			try {
 				byte[] bytes = IOUtils.toByteArray(url);

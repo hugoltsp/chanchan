@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.hugoltsp.chanchan.exception.ImageDownloadException;
+import com.hugoltsp.chanchan.exception.ImageWriteException;
 import com.hugoltsp.chanchan.service.ImageDownloader;
 import com.hugoltsp.chanchan.service.ImageWriter;
 import com.hugoltsp.chanchan.utils.Image;
@@ -39,6 +40,8 @@ public class ThreadCrawler extends WebCrawler {
 			logger.debug("Could not download board image at the following URL: {}, Error: {}", href, e);
 		} catch (MalformedURLException e) {
 			logger.debug("Error: ", e);
+		} catch (ImageWriteException e) {
+			logger.debug("An error ocurred while rying to write the image on disk: {}", e);
 		}
 
 		return false;

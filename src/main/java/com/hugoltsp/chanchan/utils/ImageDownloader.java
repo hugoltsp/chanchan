@@ -37,7 +37,7 @@ public class ImageDownloader {
 				throw new ImageDownloadException(e);
 			}
 		} else {
-			throw new ImageDownloadException("Invalid URL Image Source");
+			throw new ImageDownloadException("Invalid URL Image Source: "+ url.getPath());
 		}
 
 	}

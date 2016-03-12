@@ -19,22 +19,26 @@ public class ImageDownloader {
 		// TODO
 		InputStream inputStream = null;
 		ByteArrayOutputStream outputStream = null;
+		Image image = null;
 
 		try {
 
 			inputStream = new BufferedInputStream(url.openStream());
-			outputStream = new ByteArrayOutputStream();
+			outputStream = new ByteArrayOutputStream(BUFFER_SIZE);
 			byte[] buf = new byte[BUFFER_SIZE];
 
 			int read;
 			while ((read = inputStream.read(buf)) != -1) {
 				outputStream.write(buf, 0, read);
 			}
+
+			image = new Image().withFile(outputStream.toByteArray()).withName(url.getPath());
+
 		} finally {
 			closeQuietly(outputStream, inputStream);
 		}
 
-		return null;
+		return image;
 	}
 
 	private static void closeQuietly(Closeable... closeables) {
@@ -43,7 +47,7 @@ public class ImageDownloader {
 				try {
 					closeable.close();
 				} catch (IOException e) {
-				
+
 				}
 			}
 		}

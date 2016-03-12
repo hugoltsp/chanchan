@@ -7,6 +7,9 @@ public class Image {
 	private String name;
 	private byte[] file;
 
+	public Image() {
+	}
+
 	public Image withName(String name) {
 		this.name = name;
 		return this;

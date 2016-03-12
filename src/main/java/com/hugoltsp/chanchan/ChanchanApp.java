@@ -97,6 +97,7 @@ public class ChanchanApp implements CommandLineRunner {
 		}
 
 		controller.startNonBlocking(new ChanchanWebCrawlerFactory(this.threadCrawler), numberOfCrawlers);
+		controller.waitUntilFinish();
 	}
 
 	private Collection<String> crawlCatalogs(String[] seeds) throws Exception {

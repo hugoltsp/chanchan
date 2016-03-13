@@ -32,19 +32,18 @@ public class ImageDownloader {
 	 * @throws ImageDownloadException
 	 */
 	public Image downloadImageFromUrl(URL url) throws ImageDownloadException {
-		if (IMAGE_EXTENSIONS.matcher(url.getPath()).matches() 
-				&& !url.getPath().contains("s.")) {
-			logger.info("Downloading image at:: {}", url.toString());
+
+		if (IMAGE_EXTENSIONS.matcher(url.getPath()).matches() && !url.getPath().contains("s.")) {
 			try {
+				logger.info("Downloading image at:: {}", url.toString());
 				byte[] bytes = IOUtils.toByteArray(url);
 				return new Image().withFile(bytes).withName(url.getPath());
 			} catch (IOException e) {
 				throw new ImageDownloadException(e);
 			}
 		} else {
-			throw new ImageDownloadException("Invalid URL Image Source: " + url.getPath());
+			throw new ImageDownloadException();
 		}
-
 	}
 
 }

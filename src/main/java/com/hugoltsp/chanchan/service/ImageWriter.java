@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ import com.hugoltsp.chanchan.utils.Image;
 
 @Service
 public class ImageWriter {
+
+	private static final Logger logger = LoggerFactory.getLogger(ImageWriter.class);
 
 	private static final int BUFFER_SIZE = 16384;
 
@@ -31,8 +35,10 @@ public class ImageWriter {
 		OutputStream outputStream = null;
 
 		try {
+			String path = this.outputPath + image.getName();
+			logger.info("Writing image at:: {}", path);
 
-			File file = new File(this.outputPath + image.getName());
+			File file = new File(path);
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 

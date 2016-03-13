@@ -1,18 +1,12 @@
 package com.hugoltsp.chanchan.crawlers;
 
-import java.net.MalformedURLException;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.hugoltsp.chanchan.exception.ImageDownloadException;
-import com.hugoltsp.chanchan.exception.ImageWriteException;
-import com.hugoltsp.chanchan.service.ImageDownloader;
-import com.hugoltsp.chanchan.service.ImageWriter;
-import com.hugoltsp.chanchan.utils.Image;
+import com.hugoltsp.chanchan.service.ImageService;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
@@ -24,23 +18,15 @@ public class ThreadCrawler extends WebCrawler {
 	private static final Logger logger = LoggerFactory.getLogger(ThreadCrawler.class);
 
 	@Inject
-	private ImageDownloader downloader;
-
-	@Inject
-	private ImageWriter writer;
-
+	private ImageService imageService;
+	
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL().toLowerCase();
 
 		try {
-			Image image = this.downloader.downloadImageFromUrl(href);
-			this.writer.writeImage(image);
-		} catch (ImageDownloadException e) {
-			logger.debug("Could not download board image at the following URL: {}, Error: {}", href, e);
-		} catch (MalformedURLException e) {
-			logger.debug("Error: ", e);
-		} catch (ImageWriteException e) {
+			this.imageService.download(href);
+		} catch (Exception e) {
 			logger.debug("An error ocurred while trying to write the image on disk: {}", e);
 		}
 

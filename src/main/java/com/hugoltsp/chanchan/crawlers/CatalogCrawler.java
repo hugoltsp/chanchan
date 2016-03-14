@@ -1,8 +1,6 @@
 package com.hugoltsp.chanchan.crawlers;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -21,15 +19,15 @@ public class CatalogCrawler extends WebCrawler {
 	private static final String THREAD_RESOURCE_URL = "/thread/";
 
 	private List<String> boardResourceUrlIds;
-	private Collection<String> threadUrls;
+	private List<String> threadUrls;
 
 	public CatalogCrawler() {
 		this.threadUrls = new ArrayList<>();
 		this.boardResourceUrlIds = new ArrayList<>();
 	}
 
-	public Collection<String> getThreadUrls() {
-		return Collections.unmodifiableCollection(this.threadUrls);
+	public List<String> getThreadUrls() {
+		return this.threadUrls;
 	}
 
 	@Override
@@ -41,7 +39,7 @@ public class CatalogCrawler extends WebCrawler {
 			this.boardResourceUrlIds.add(boardResourceUrlId);
 		}
 
-		if (hasResourceId(url.getURL(), this.boardResourceUrlIds, false)) {
+		if (hasResourceId(url.getURL(), false)) {
 			return true;
 		}
 
@@ -52,23 +50,23 @@ public class CatalogCrawler extends WebCrawler {
 	public void visit(Page page) {
 		String path = page.getWebURL().getPath();
 
-		if (hasResourceId(path, this.boardResourceUrlIds, true)) {
+		if (hasResourceId(path, true)) {
 			String url = page.getWebURL().getURL();
 			logger.info("Adding the following URL:: {}", url);
 			this.threadUrls.add(url);
 		}
 	}
 
-	private static boolean hasResourceId(String search, List<String> boardResourceUrls, boolean isThread) {
+	private boolean hasResourceId(String searchPath, boolean isThread) {
 
-		for (int i = 0; i < boardResourceUrls.size(); i++) {
+		for (int i = 0; i < this.boardResourceUrlIds.size(); i++) {
 			String boardResourceUrl = null;
 			if (isThread) {
-				boardResourceUrl = boardResourceUrls.get(i) + THREAD_RESOURCE_URL;
+				boardResourceUrl = this.boardResourceUrlIds.get(i) + THREAD_RESOURCE_URL;
 			} else {
-				boardResourceUrl = boardResourceUrls.get(i);
+				boardResourceUrl = this.boardResourceUrlIds.get(i);
 			}
-			if (search.contains(boardResourceUrl)) {
+			if (searchPath.contains(boardResourceUrl)) {
 				return true;
 			}
 		}

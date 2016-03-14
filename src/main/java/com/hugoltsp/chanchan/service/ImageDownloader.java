@@ -1,7 +1,6 @@
 package com.hugoltsp.chanchan.service;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Pattern;
 
@@ -20,10 +19,6 @@ public class ImageDownloader {
 
 	private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*(\\.(bmp|gif|jpe?g|png|tiff?))$");
 
-	public Image downloadImageFromUrl(String url) throws ImageDownloadException, MalformedURLException {
-		return downloadImageFromUrl(new URL(url));
-	}
-
 	/**
 	 * 
 	 * @param url
@@ -31,7 +26,7 @@ public class ImageDownloader {
 	 * @return image representation containing it's name and bytes array
 	 * @throws ImageDownloadException
 	 */
-	public Image downloadImageFromUrl(URL url) throws ImageDownloadException {
+	public Image downloadImage(URL url) throws ImageDownloadException {
 
 		if (IMAGE_EXTENSIONS.matcher(url.getPath()).matches() && !url.getPath().contains("s.")) {
 			try {
@@ -42,7 +37,7 @@ public class ImageDownloader {
 				throw new ImageDownloadException(e);
 			}
 		} else {
-			throw new ImageDownloadException();
+			throw new ImageDownloadException("Unsupported extension");
 		}
 	}
 

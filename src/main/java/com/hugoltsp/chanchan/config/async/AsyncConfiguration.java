@@ -25,7 +25,7 @@ public class AsyncConfiguration implements AsyncConfigurer {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(availableProcessors + 1);
 		executor.setThreadNamePrefix("ChanChan-Executor-");
-//		executor.initialize();
+		executor.initialize();
 
 		return executor;
 	}

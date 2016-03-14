@@ -1,6 +1,7 @@
 package com.hugoltsp.chanchan.service;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
@@ -26,14 +27,14 @@ public class ImageService {
 	private ImageDownloader downloader;
 
 	@Async
-	public void download(String url) throws ExecutionException{
+	public void download(String url) throws ExecutionException {
 		try {
-			Image image = this.downloader.downloadImageFromUrl(url);
+			Image image = this.downloader.downloadImage(new URL(url));
 			this.writer.writeImage(image);
 		} catch (ImageDownloadException e) {
 			logger.debug("Could not download board image at the following URL: {}, Error: {}", url, e);
 		} catch (MalformedURLException e) {
-			logger.debug("Url Error: ", e);
+			logger.debug("Url formation Error: ", e);
 		} catch (ImageWriteException e) {
 			logger.debug("An error ocurred while trying to write the image on disk: {}", e);
 		} catch (Exception e) {

@@ -1,6 +1,5 @@
 package com.hugoltsp.chanchan.service;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,6 +40,15 @@ public class CrawlerService {
 				Runtime.getRuntime().availableProcessors());
 		this.outputPath = environment.getProperty("chanchan.output.path");
 		this.requestDelay = environment.getProperty("chanchan.requestdelay", int.class);
+	}
+
+	public void crawl(List<String> catalogs) {
+		try {
+			List<String> threadsToCrawl = this.crawlCatalogs(catalogs);
+			this.crawlThreads(threadsToCrawl);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void crawlThreads(List<String> threadUrls) throws Exception {

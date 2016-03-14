@@ -27,7 +27,7 @@ public class ThreadCrawler extends WebCrawler {
 		try {
 			this.imageService.download(href);
 		} catch (Exception e) {
-			logger.debug("An error ocurred while trying to write the image on disk: {}", e);
+			logger.error("An error ocurred while trying to write the image on disk: {}", e);
 		}
 
 		return false;

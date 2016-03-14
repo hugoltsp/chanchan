@@ -32,13 +32,13 @@ public class ImageService {
 			Image image = this.downloader.downloadImage(new URL(url));
 			this.writer.writeImage(image);
 		} catch (ImageDownloadException e) {
-			logger.debug("Could not download board image at the following URL: {}, Error: {}", url, e);
+			logger.error("Could not download board image at the following URL: {}, Error: {}", url, e);
 		} catch (MalformedURLException e) {
-			logger.debug("Url formation Error: ", e);
+			logger.error("Url formation Error: ", e);
 		} catch (ImageWriteException e) {
-			logger.debug("An error ocurred while trying to write the image on disk: {}", e);
+			logger.error("An error ocurred while trying to write the image on disk: {}", e);
 		} catch (Exception e) {
-			logger.debug("Error: ", e);
+			logger.error("Error: ", e);
 		}
 	}
 }

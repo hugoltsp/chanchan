@@ -47,7 +47,7 @@ public class CrawlerService {
 			List<String> threadsToCrawl = this.crawlCatalogs(catalogs);
 			this.crawlThreads(threadsToCrawl);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error: ", e);
 		}
 	}
 

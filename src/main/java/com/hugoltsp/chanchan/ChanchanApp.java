@@ -51,7 +51,7 @@ public class ChanchanApp implements CommandLineRunner {
 
 			long start = System.currentTimeMillis();
 			logger.info("Chanchan started");
-
+			
 			this.crawlerService.crawl(seeds);
 
 			logger.info("Success! Chanchan finished in {} ", (System.currentTimeMillis() - start) / 1000);

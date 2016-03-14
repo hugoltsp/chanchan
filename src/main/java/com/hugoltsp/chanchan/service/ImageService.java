@@ -26,16 +26,18 @@ public class ImageService {
 	private ImageDownloader downloader;
 
 	@Async
-	public void download(String url) throws ImageDownloadException, MalformedURLException, ExecutionException {
+	public void download(String url) throws ExecutionException{
 		try {
 			Image image = this.downloader.downloadImageFromUrl(url);
 			this.writer.writeImage(image);
 		} catch (ImageDownloadException e) {
 			logger.debug("Could not download board image at the following URL: {}, Error: {}", url, e);
 		} catch (MalformedURLException e) {
-			logger.debug("Error: ", e);
+			logger.debug("Url Error: ", e);
 		} catch (ImageWriteException e) {
 			logger.debug("An error ocurred while trying to write the image on disk: {}", e);
+		} catch (Exception e) {
+			logger.debug("Error: ", e);
 		}
 	}
 }

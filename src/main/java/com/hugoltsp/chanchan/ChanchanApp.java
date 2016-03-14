@@ -3,7 +3,6 @@ package com.hugoltsp.chanchan;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,12 +63,14 @@ public class ChanchanApp implements CommandLineRunner {
 			outputPath = this.environment.getProperty("chanchan.output.path");
 			requestDelay = Integer.parseInt(this.environment.getProperty("chanchan.requestdelay"));
 
+			logger.info("Reading Catalog File At:: {}", this.environment.getProperty("chanchan.catalogseeds"));
+			
 			List<String> seeds = getCatalogs(this.environment.getProperty("chanchan.catalogseeds"));
 
 			logger.info("Number of Concurrent Crawlers:: {}", numberOfCrawlers);
 			logger.info("Output Directory:: {}", outputPath);
 			logger.info("Catalog Seeds:: {}", seeds);
-			logger.info("Request Delay Between Requests:: {}", requestDelay);
+			logger.info("Delay Between Requests:: {}", requestDelay);
 
 			long start = System.currentTimeMillis();
 			logger.info("Chanchan started");

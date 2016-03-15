@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.hugoltsp.chanchan.exception.ImageDownloadException;
+import com.hugoltsp.chanchan.exception.InvalidImageException;
 import com.hugoltsp.chanchan.utils.Image;
 
 @Service
@@ -26,7 +27,7 @@ public class ImageDownloader {
 	 * @return image representation containing it's name and bytes array
 	 * @throws ImageDownloadException
 	 */
-	public Image downloadImage(URL url) throws ImageDownloadException {
+	public Image downloadImage(URL url) throws ImageDownloadException, InvalidImageException {
 
 		if (IMAGE_EXTENSIONS.matcher(url.getPath()).matches() && !url.getPath().contains("s.")) {
 			try {
@@ -37,7 +38,7 @@ public class ImageDownloader {
 				throw new ImageDownloadException(e);
 			}
 		} else {
-			throw new ImageDownloadException("Unsupported extension");
+			throw new InvalidImageException("Unsupported extension");
 		}
 	}
 

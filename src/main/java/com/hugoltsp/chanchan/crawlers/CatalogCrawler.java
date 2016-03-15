@@ -27,7 +27,7 @@ public class CatalogCrawler extends WebCrawler {
 	}
 
 	public List<String> getThreadUrls() {
-		return this.threadUrls;
+		return threadUrls;
 	}
 
 	@Override

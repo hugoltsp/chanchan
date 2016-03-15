@@ -73,7 +73,7 @@ public class CrawlerService {
 	}
 
 	private List<String> crawlCatalogs(List<String> catalogUrls) throws Exception {
-		logger.info("Crawling through  catalogs");
+		logger.info("Crawling through catalogs");
 
 		CrawlConfig config = new CrawlConfig();
 		config.setPolitenessDelay(requestDelay);

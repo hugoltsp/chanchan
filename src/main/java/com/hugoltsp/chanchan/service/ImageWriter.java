@@ -36,7 +36,7 @@ public class ImageWriter {
 
 		try {
 			String path = this.outputPath + image.getName();
-			logger.info("Writing image at:: {}", path);
+			logger.info("Writing image to:: {}", path);
 
 			File file = new File(path);
 			file.getParentFile().mkdirs();

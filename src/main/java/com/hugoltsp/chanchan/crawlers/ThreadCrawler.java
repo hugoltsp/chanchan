@@ -19,7 +19,7 @@ public class ThreadCrawler extends WebCrawler {
 
 	@Inject
 	private ImageService imageService;
-	
+
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL().toLowerCase();

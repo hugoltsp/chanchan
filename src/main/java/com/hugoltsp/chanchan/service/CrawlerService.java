@@ -10,6 +10,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import com.hugoltsp.chanchan.crawlers.CatalogCrawler;
+import com.hugoltsp.chanchan.crawlers.ThreadCrawler;
 import com.hugoltsp.chanchan.crawlers.factory.ChanchanWebCrawlerFactory;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
@@ -25,10 +27,10 @@ public class CrawlerService {
 
 	@Inject
 	private ImageService imageService;
-	
+
 	@Inject
 	private ThreadPoolTaskExecutor executor;
-	
+
 	private final String outputPath;
 	private final int numberOfCrawlers;
 	private final int requestDelay;
@@ -45,14 +47,14 @@ public class CrawlerService {
 		try {
 			List<String> threadsToCrawl = this.crawlCatalogs(catalogs);
 			List<String> hrefs = this.crawlThreads(threadsToCrawl);
-			
+
 			for (String href : hrefs) {
 				this.imageService.download(href);
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("Error: ", e);
-		}finally {
+		} finally {
 			this.executor.shutdown();
 		}
 	}
@@ -74,12 +76,16 @@ public class CrawlerService {
 			controller.addSeed(threadUrl);
 		}
 
-		ChanchanWebCrawlerFactory crawlerFactory = new ChanchanWebCrawlerFactory();
-		
+		ChanchanWebCrawlerFactory crawlerFactory = new ChanchanWebCrawlerFactory(ThreadCrawler::new);
+
 		controller.startNonBlocking(crawlerFactory, numberOfCrawlers);
 		controller.waitUntilFinish();
 		
-		return crawlerFactory.getUrls();
+		List<String> urls = crawlerFactory.getUrls();
+		
+		logger.info(urls.size() + " images found..");
+		
+		return urls;
 	}
 
 	private List<String> crawlCatalogs(List<String> catalogUrls) throws Exception {
@@ -99,14 +105,14 @@ public class CrawlerService {
 			controller.addSeed(seed);
 		}
 
-		ChanchanWebCrawlerFactory crawlerFactory = new ChanchanWebCrawlerFactory();
+		ChanchanWebCrawlerFactory crawlerFactory = new ChanchanWebCrawlerFactory(CatalogCrawler::new);
 		controller.startNonBlocking(crawlerFactory, numberOfCrawlers);
 		controller.waitUntilFinish();
 
-		List<String> threadUrls = crawlerFactory.getUrls();
+		List<String> urls = crawlerFactory.getUrls();
 
-		logger.info(threadUrls.size() + " Eligible threads have been found for these catalogs");
+		logger.info(urls.size() + " Eligible threads have been found for these catalogs");
 
-		return threadUrls;
+		return urls;
 	}
 }

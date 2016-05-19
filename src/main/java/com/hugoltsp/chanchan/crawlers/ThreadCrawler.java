@@ -24,7 +24,7 @@ public class ThreadCrawler extends ChanchanCrawler {
 	}
 
 	@Override
-	public Collection<? extends Object> getData() {
+	public Collection<String> getData() {
 		return this.urls;
 	}
 

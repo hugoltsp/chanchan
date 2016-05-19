@@ -1,33 +1,41 @@
 package com.hugoltsp.chanchan.crawlers;
 
-import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
-import com.hugoltsp.chanchan.service.ImageService;
 
 import edu.uci.ics.crawler4j.crawler.Page;
-import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
 
-@Component
-public class ThreadCrawler extends WebCrawler {
+public class ThreadCrawler extends ChanchanCrawler {
 
 	private static final Logger logger = LoggerFactory.getLogger(ThreadCrawler.class);
 
-	@Inject
-	private ImageService imageService;
+	private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*(\\.(bmp|gif|jpe?g|png|tiff?))$");
+
+	private final List<String> urls;
+
+	public ThreadCrawler() {
+		urls = new ArrayList<>();
+	}
+
+	@Override
+	public Collection<? extends Object> getData() {
+		return this.urls;
+	}
 
 	@Override
 	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL().toLowerCase();
 
-		try {
-			this.imageService.download(href);
-		} catch (Exception e) {
-			logger.error("An error ocurred while trying to write the image on disk: {}", e);
+		if (IMAGE_EXTENSIONS.matcher(url.getPath()).matches() && !url.getPath().contains("s.")) {
+			urls.add(href);
+		} else {
+			logger.error("Unsupported URL:: " + href);
 		}
 
 		return false;

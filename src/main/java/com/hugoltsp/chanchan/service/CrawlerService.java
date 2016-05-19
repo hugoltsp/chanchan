@@ -7,10 +7,9 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
-import com.hugoltsp.chanchan.crawlers.CatalogCrawler;
-import com.hugoltsp.chanchan.crawlers.ThreadCrawler;
 import com.hugoltsp.chanchan.crawlers.factory.ChanchanWebCrawlerFactory;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
@@ -25,11 +24,11 @@ public class CrawlerService {
 	private static final Logger logger = LoggerFactory.getLogger(CrawlerService.class);
 
 	@Inject
-	private ThreadCrawler threadCrawler;
-
+	private ImageService imageService;
+	
 	@Inject
-	private CatalogCrawler catalogCrawler;
-
+	private ThreadPoolTaskExecutor executor;
+	
 	private final String outputPath;
 	private final int numberOfCrawlers;
 	private final int requestDelay;
@@ -45,13 +44,20 @@ public class CrawlerService {
 	public void crawl(List<String> catalogs) {
 		try {
 			List<String> threadsToCrawl = this.crawlCatalogs(catalogs);
-			this.crawlThreads(threadsToCrawl);
+			List<String> hrefs = this.crawlThreads(threadsToCrawl);
+			
+			for (String href : hrefs) {
+				this.imageService.download(href);
+			}
+			
 		} catch (Exception e) {
 			logger.error("Error: ", e);
+		}finally {
+			this.executor.shutdown();
 		}
 	}
 
-	private void crawlThreads(List<String> threadUrls) throws Exception {
+	private List<String> crawlThreads(List<String> threadUrls) throws Exception {
 		logger.info("Crawling through threads");
 
 		CrawlConfig config = new CrawlConfig();
@@ -68,8 +74,12 @@ public class CrawlerService {
 			controller.addSeed(threadUrl);
 		}
 
-		controller.startNonBlocking(new ChanchanWebCrawlerFactory(this.threadCrawler), numberOfCrawlers);
+		ChanchanWebCrawlerFactory crawlerFactory = new ChanchanWebCrawlerFactory();
+		
+		controller.startNonBlocking(crawlerFactory, numberOfCrawlers);
 		controller.waitUntilFinish();
+		
+		return crawlerFactory.getUrls();
 	}
 
 	private List<String> crawlCatalogs(List<String> catalogUrls) throws Exception {
@@ -89,10 +99,11 @@ public class CrawlerService {
 			controller.addSeed(seed);
 		}
 
-		controller.startNonBlocking(new ChanchanWebCrawlerFactory(this.catalogCrawler), numberOfCrawlers);
+		ChanchanWebCrawlerFactory crawlerFactory = new ChanchanWebCrawlerFactory();
+		controller.startNonBlocking(crawlerFactory, numberOfCrawlers);
 		controller.waitUntilFinish();
 
-		List<String> threadUrls = this.catalogCrawler.getThreadUrls();
+		List<String> threadUrls = crawlerFactory.getUrls();
 
 		logger.info(threadUrls.size() + " Eligible threads have been found for these catalogs");
 

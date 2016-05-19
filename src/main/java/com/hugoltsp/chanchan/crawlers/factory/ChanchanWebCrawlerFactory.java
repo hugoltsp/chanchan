@@ -1,5 +1,10 @@
 package com.hugoltsp.chanchan.crawlers.factory;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.hugoltsp.chanchan.crawlers.ChanchanCrawler;
+
 import edu.uci.ics.crawler4j.crawler.CrawlController.WebCrawlerFactory;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 
@@ -7,17 +12,23 @@ import edu.uci.ics.crawler4j.crawler.WebCrawler;
  * @author hugo
  *	 simple WebCrawlerFactory for user or container instantiated web crawlers
  */
-public class ChanchanWebCrawlerFactory implements WebCrawlerFactory<WebCrawler> {
+public class ChanchanWebCrawlerFactory implements WebCrawlerFactory<ChanchanCrawler> {
 
-	private final WebCrawler webCrawler;
+	private List<ChanchanCrawler> crawlers;
 
-	public ChanchanWebCrawlerFactory(WebCrawler webCrawler) {
-		this.webCrawler = webCrawler;
+	public ChanchanWebCrawlerFactory() {
+		this.crawlers = new ArrayList<>();
 	}
 
 	@Override
-	public WebCrawler newInstance() throws Exception {
-		return this.webCrawler;
+	public ChanchanCrawler newInstance() throws Exception {
+		
+		return null;
+	}
+	
+	public List<String> getUrls(){
+		
+		return null;
 	}
 
 }

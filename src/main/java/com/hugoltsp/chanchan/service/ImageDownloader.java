@@ -27,7 +27,7 @@ public class ImageDownloader {
 	 * @return image representation containing it's name and bytes array
 	 * @throws ImageDownloadException
 	 */
-	public Image downloadImage(URL url) throws ImageDownloadException, InvalidImageException {
+	public Image downloadImage(URL url) throws ImageDownloadException {
 
 		if (IMAGE_EXTENSIONS.matcher(url.getPath()).matches() && !url.getPath().contains("s.")) {
 			try {

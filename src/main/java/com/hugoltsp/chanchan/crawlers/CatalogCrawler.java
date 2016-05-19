@@ -1,33 +1,29 @@
 package com.hugoltsp.chanchan.crawlers;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import edu.uci.ics.crawler4j.crawler.Page;
-import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
 
-@Component
-public class CatalogCrawler extends WebCrawler {
+public class CatalogCrawler extends ChanchanCrawler {
 
 	private static final Logger logger = LoggerFactory.getLogger(CatalogCrawler.class);
 
 	private static final String THREAD_RESOURCE_URL = "/thread/";
 
-	private List<String> boardResourceUrlIds;
-	private List<String> threadUrls;
+	private final Set<String> boardResourceUrlIds;
+	private final List<String> threadUrls;
 
 	public CatalogCrawler() {
 		this.threadUrls = new ArrayList<>();
-		this.boardResourceUrlIds = new ArrayList<>();
-	}
-
-	public List<String> getThreadUrls() {
-		return threadUrls;
+		this.boardResourceUrlIds = new HashSet<>();
 	}
 
 	@Override
@@ -35,9 +31,7 @@ public class CatalogCrawler extends WebCrawler {
 		String webUrl = referringPage.getWebURL().getPath();
 		String boardResourceUrlId = webUrl.substring(0, webUrl.lastIndexOf("/"));
 
-		if (!this.boardResourceUrlIds.contains(boardResourceUrlId)) {
-			this.boardResourceUrlIds.add(boardResourceUrlId);
-		}
+		this.boardResourceUrlIds.add(boardResourceUrlId);
 
 		if (hasResourceId(url.getURL(), false)) {
 			return true;
@@ -58,20 +52,17 @@ public class CatalogCrawler extends WebCrawler {
 	}
 
 	private boolean hasResourceId(String searchPath, boolean isThread) {
-
-		for (int i = 0; i < this.boardResourceUrlIds.size(); i++) {
-			String boardResourceUrl = null;
+		return this.boardResourceUrlIds.stream().map(b -> {
 			if (isThread) {
-				boardResourceUrl = this.boardResourceUrlIds.get(i) + THREAD_RESOURCE_URL;
-			} else {
-				boardResourceUrl = this.boardResourceUrlIds.get(i);
+				return b + THREAD_RESOURCE_URL;
 			}
-			if (searchPath.contains(boardResourceUrl)) {
-				return true;
-			}
-		}
+			return b;
+		}).anyMatch(searchPath::contains);
+	}
 
-		return false;
+	@Override
+	public Collection<? extends Object> getData() {
+		return this.threadUrls;
 	}
 
 }

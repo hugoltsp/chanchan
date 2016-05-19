@@ -1,6 +1,9 @@
 package com.hugoltsp.chanchan.service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.inject.Inject;
 
@@ -44,7 +47,10 @@ public class CrawlerService {
 	}
 
 	public void crawl(List<String> catalogs) {
+		Instant now = Instant.now();
+
 		try {
+
 			List<String> threadsToCrawl = this.crawlCatalogs(catalogs);
 			List<String> hrefs = this.crawlThreads(threadsToCrawl);
 
@@ -56,6 +62,20 @@ public class CrawlerService {
 			logger.error("Error: ", e);
 		} finally {
 			this.executor.shutdown();
+
+			ThreadPoolExecutor threadPoolExecutor = executor.getThreadPoolExecutor();
+			while (threadPoolExecutor.isTerminating()) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+				}
+				if (threadPoolExecutor.isTerminated()) {
+					Duration duration = Duration.between(now, Instant.now());
+					logger.info("Chanchan finished in {} seconds", duration.getSeconds());
+					break;
+				}
+			}
+
 		}
 	}
 
@@ -80,11 +100,11 @@ public class CrawlerService {
 
 		controller.startNonBlocking(crawlerFactory, numberOfCrawlers);
 		controller.waitUntilFinish();
-		
+
 		List<String> urls = crawlerFactory.getUrls();
-		
+
 		logger.info(urls.size() + " images found..");
-		
+
 		return urls;
 	}
 

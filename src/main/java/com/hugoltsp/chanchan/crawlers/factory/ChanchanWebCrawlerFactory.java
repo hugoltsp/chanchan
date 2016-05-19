@@ -31,7 +31,7 @@ public class ChanchanWebCrawlerFactory implements WebCrawlerFactory<ChanchanCraw
 
 	public List<String> getUrls() {
 		List<String> list = new ArrayList<>();
-		this.crawlers.parallelStream().map(c -> c.getData()).forEach(list::addAll);
+		this.crawlers.stream().map(c -> c.getData()).forEach(list::addAll);
 		return list;
 	}
 

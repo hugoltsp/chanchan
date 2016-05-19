@@ -49,12 +49,8 @@ public class ChanchanApp implements CommandLineRunner {
 			logger.info("Catalog Seeds:: {}", seeds);
 			logger.info("Delay Between Requests:: {}", this.environment.getProperty("chanchan.requestdelay"));
 
-			long start = System.currentTimeMillis();
 			logger.info("Chanchan started");
-			
 			this.crawlerService.crawl(seeds);
-
-			logger.info("Success! Chanchan finished in {} ", (System.currentTimeMillis() - start) / 1000);
 		} catch (Exception e) {
 			logger.error("Error", e);
 		}

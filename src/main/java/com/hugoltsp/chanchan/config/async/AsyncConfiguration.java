@@ -26,7 +26,7 @@ public class AsyncConfiguration implements AsyncConfigurer {
 
 	@Inject
 	public AsyncConfiguration(ChanchanConfig cfg) {
-		threadPoolSize = cfg.getThreadPoolSize();
+		this.threadPoolSize = cfg.getThreadPoolSize();
 	}
 	
 	@Override

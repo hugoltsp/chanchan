@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -21,10 +23,11 @@ public final class ChanchanConfig {
 	private final List<String> catalogSeeds;
 	private final int numberOfCrawlers;
 	private final int threadPoolSize;
+	private final int requestDelay;
 	private final String catalogSeedsPath;
 	private final String outputPath;
-	private final String requestDelay;
 
+	@Inject
 	public ChanchanConfig(Environment env) throws ChanchanConfigException {
 		try {
 
@@ -36,7 +39,7 @@ public final class ChanchanConfig {
 			this.numberOfCrawlers = env.getProperty("chanchan.numberofcrawlers", int.class, availableProcessors);
 			this.threadPoolSize = env.getProperty("chanchan.threadpoolsize", int.class, availableProcessors * 2);
 			this.outputPath = env.getProperty("chanchan.output.path");
-			this.requestDelay = env.getProperty("chanchan.requestdelay");
+			this.requestDelay = env.getProperty("chanchan.requestdelay", int.class, 300);
 
 		} catch (Exception e) {
 			logger.error("Config Error::", e);
@@ -64,7 +67,7 @@ public final class ChanchanConfig {
 		return threadPoolSize;
 	}
 
-	public String getRequestDelay() {
+	public int getRequestDelay() {
 		return requestDelay;
 	}
 

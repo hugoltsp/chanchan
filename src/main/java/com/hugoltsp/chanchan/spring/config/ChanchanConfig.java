@@ -1,6 +1,5 @@
 package com.hugoltsp.chanchan.spring.config;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -41,6 +40,26 @@ public final class ChanchanConfig {
 			logger.error("Config Error::", e);
 			throw new ChanchanException(e);
 		}
+	}
+
+	public List<String> getCatalogSeeds() {
+		return catalogSeeds;
+	}
+
+	public String getCatalogSeedsPath() {
+		return catalogSeedsPath;
+	}
+
+	public int getNumberOfCrawlers() {
+		return numberOfCrawlers;
+	}
+
+	public String getOutputPath() {
+		return outputPath;
+	}
+
+	public String getRequestDelay() {
+		return requestDelay;
 	}
 
 }

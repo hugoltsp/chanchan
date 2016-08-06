@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import com.hugoltsp.chanchan.exception.ChanchanException;
+import com.hugoltsp.chanchan.exception.ChanchanConfigException;
 
 @Component
 public final class ChanchanConfig {
@@ -19,12 +19,13 @@ public final class ChanchanConfig {
 	private static final Logger logger = LoggerFactory.getLogger(ChanchanConfig.class);
 
 	private final List<String> catalogSeeds;
-	private final String catalogSeedsPath;
 	private final int numberOfCrawlers;
+	private final int threadPoolSize;
+	private final String catalogSeedsPath;
 	private final String outputPath;
 	private final String requestDelay;
 
-	public ChanchanConfig(Environment env) {
+	public ChanchanConfig(Environment env) throws ChanchanConfigException {
 		try {
 
 			int availableProcessors = Runtime.getRuntime().availableProcessors();
@@ -32,13 +33,14 @@ public final class ChanchanConfig {
 			this.catalogSeedsPath = env.getProperty("chanchan.catalogseeds");
 			this.catalogSeeds = Collections
 					.unmodifiableList(Files.lines(Paths.get(catalogSeedsPath)).collect(Collectors.toList()));
-			this.numberOfCrawlers = env.getProperty("chanchan.numberofcrawlers", Integer.class, availableProcessors);
+			this.numberOfCrawlers = env.getProperty("chanchan.numberofcrawlers", int.class, availableProcessors);
+			this.threadPoolSize = env.getProperty("chanchan.threadpoolsize", int.class, availableProcessors * 2);
 			this.outputPath = env.getProperty("chanchan.output.path");
 			this.requestDelay = env.getProperty("chanchan.requestdelay");
 
 		} catch (Exception e) {
 			logger.error("Config Error::", e);
-			throw new ChanchanException(e);
+			throw new ChanchanConfigException(e);
 		}
 	}
 
@@ -56,6 +58,10 @@ public final class ChanchanConfig {
 
 	public String getOutputPath() {
 		return outputPath;
+	}
+
+	public int getThreadPoolSize() {
+		return threadPoolSize;
 	}
 
 	public String getRequestDelay() {

@@ -4,19 +4,4 @@ public class ImageDownloadException extends ChanchanException {
 
 	private static final long serialVersionUID = -2383240145996366767L;
 
-	public ImageDownloadException() {
-	}
-
-	public ImageDownloadException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public ImageDownloadException(String message) {
-		super(message);
-	}
-
-	public ImageDownloadException(Throwable cause) {
-		super(cause);
-	}
-
 }

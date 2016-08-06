@@ -17,6 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
 import com.hugoltsp.chanchan.service.CrawlerService;
+import com.hugoltsp.chanchan.spring.config.ChanchanConfig;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "com.hugoltsp.chanchan")
@@ -32,6 +33,10 @@ public class ChanchanApp implements CommandLineRunner {
 	@Inject
 	private CrawlerService crawlerService;
 
+	public ChanchanApp(ChanchanConfig cfg) {
+		
+	}
+	
 	public static void main(String[] args) {
 		SpringApplication.run(ChanchanApp.class);
 	}

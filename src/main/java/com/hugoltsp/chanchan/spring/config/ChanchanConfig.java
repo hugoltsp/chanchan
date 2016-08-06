@@ -18,16 +18,25 @@ import com.hugoltsp.chanchan.exception.ChanchanException;
 public final class ChanchanConfig {
 
 	private static final Logger logger = LoggerFactory.getLogger(ChanchanConfig.class);
+
 	private final List<String> catalogSeeds;
 	private final String catalogSeedsPath;
+	private final int numberOfCrawlers;
+	private final String outputPath;
+	private final String requestDelay;
 
 	public ChanchanConfig(Environment env) {
 		try {
 
+			int availableProcessors = Runtime.getRuntime().availableProcessors();
+
 			this.catalogSeedsPath = env.getProperty("chanchan.catalogseeds");
 			this.catalogSeeds = Collections
 					.unmodifiableList(Files.lines(Paths.get(catalogSeedsPath)).collect(Collectors.toList()));
-			
+			this.numberOfCrawlers = env.getProperty("chanchan.numberofcrawlers", Integer.class, availableProcessors);
+			this.outputPath = env.getProperty("chanchan.output.path");
+			this.requestDelay = env.getProperty("chanchan.requestdelay");
+
 		} catch (Exception e) {
 			logger.error("Config Error::", e);
 			throw new ChanchanException(e);

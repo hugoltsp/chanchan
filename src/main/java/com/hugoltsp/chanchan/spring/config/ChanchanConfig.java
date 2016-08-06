@@ -35,8 +35,8 @@ public final class ChanchanConfig {
 
 			this.catalogSeedsPath = env.getProperty("chanchan.catalogseeds");
 			this.catalogSeeds = Collections
-					.unmodifiableList(Files.lines(Paths.get(catalogSeedsPath)).collect(Collectors.toList()));
-			this.numberOfCrawlers = env.getProperty("chanchan.numberofcrawlers", int.class, availableProcessors);
+					.unmodifiableList(Files.lines(Paths.get(this.catalogSeedsPath)).collect(Collectors.toList()));
+			this.numberOfCrawlers = env.getProperty("chanchan.numberofcrawlers", int.class, availableProcessors * 2);
 			this.threadPoolSize = env.getProperty("chanchan.threadpoolsize", int.class, availableProcessors * 2);
 			this.outputPath = env.getProperty("chanchan.output.path");
 			this.requestDelay = env.getProperty("chanchan.requestdelay", int.class, 300);

@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 
 import com.hugoltsp.chanchan.exception.ChanchanException;
 import com.hugoltsp.chanchan.exception.ChanchanInvalidMediaException;
@@ -17,7 +16,6 @@ import com.hugoltsp.chanchan.exception.ChanchanMediaWriteException;
 import com.hugoltsp.chanchan.spring.config.ChanchanConfig;
 import com.hugoltsp.chanchan.utils.Image;
 
-@Service
 public class MediaService {
 
 	private static final Logger logger = LoggerFactory.getLogger(MediaService.class);

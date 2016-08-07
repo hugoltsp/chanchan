@@ -35,11 +35,11 @@ public class CrawlerService {
 	private final int requestDelay;
 
 	@Inject
-	public CrawlerService(ChanchanConfig cfg, ThreadPoolTaskExecutor executor) {
+	public CrawlerService(ChanchanConfig cfg, ThreadPoolTaskExecutor executor, MediaService mediaService) {
 		this.numberOfCrawlers = cfg.getNumberOfCrawlers();
 		this.outputPath = cfg.getOutputPath();
 		this.requestDelay = cfg.getRequestDelay();
-		this.mediaService = new MediaService(cfg);
+		this.mediaService = mediaService;
 		this.executor = executor;
 	}
 

@@ -1,4 +1,4 @@
-package com.hugoltsp.chanchan.config.async;
+package com.hugoltsp.chanchan.config;
 
 import java.util.concurrent.Executor;
 
@@ -14,18 +14,16 @@ import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import com.hugoltsp.chanchan.spring.config.ChanchanConfig;
-
 @Configuration
 @EnableAsync
-public class AsyncConfiguration implements AsyncConfigurer {
+public class AsyncConfig implements AsyncConfigurer {
 
-	private static final Logger logger = LoggerFactory.getLogger(AsyncConfiguration.class);
+	private static final Logger logger = LoggerFactory.getLogger(AsyncConfig.class);
 	
 	private final int threadPoolSize;
 
 	@Inject
-	public AsyncConfiguration(ChanchanConfig cfg) {
+	public AsyncConfig(ChanchanConfig cfg) {
 		this.threadPoolSize = cfg.getThreadPoolSize();
 	}
 	

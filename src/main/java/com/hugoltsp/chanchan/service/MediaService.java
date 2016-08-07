@@ -9,11 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 
+import com.hugoltsp.chanchan.config.ChanchanConfig;
 import com.hugoltsp.chanchan.exception.ChanchanException;
 import com.hugoltsp.chanchan.exception.ChanchanInvalidMediaException;
 import com.hugoltsp.chanchan.exception.ChanchanMediaDownloadException;
 import com.hugoltsp.chanchan.exception.ChanchanMediaWriteException;
-import com.hugoltsp.chanchan.spring.config.ChanchanConfig;
 import com.hugoltsp.chanchan.utils.Image;
 
 public class MediaService {

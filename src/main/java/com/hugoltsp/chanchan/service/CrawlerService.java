@@ -12,10 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import com.hugoltsp.chanchan.config.ChanchanConfig;
 import com.hugoltsp.chanchan.crawlers.CatalogCrawler;
 import com.hugoltsp.chanchan.crawlers.ThreadCrawler;
 import com.hugoltsp.chanchan.crawlers.factory.ChanchanWebCrawlerFactory;
-import com.hugoltsp.chanchan.spring.config.ChanchanConfig;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;

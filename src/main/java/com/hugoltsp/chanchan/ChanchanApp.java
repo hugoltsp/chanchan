@@ -11,8 +11,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.hugoltsp.chanchan.config.ChanchanConfig;
 import com.hugoltsp.chanchan.service.CrawlerService;
-import com.hugoltsp.chanchan.spring.config.ChanchanConfig;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "com.hugoltsp.chanchan")

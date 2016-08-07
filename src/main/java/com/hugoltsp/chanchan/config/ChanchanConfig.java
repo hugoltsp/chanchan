@@ -1,7 +1,9 @@
-package com.hugoltsp.chanchan.spring.config;
+package com.hugoltsp.chanchan.config;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +22,7 @@ public final class ChanchanConfig {
 
 	private static final Logger logger = LoggerFactory.getLogger(ChanchanConfig.class);
 
-	private final List<String> catalogSeeds;
+	private final List<String> catalogSeeds = new ArrayList<>();
 	private final int numberOfCrawlers;
 	private final int threadPoolSize;
 	private final int requestDelay;
@@ -34,16 +36,42 @@ public final class ChanchanConfig {
 			int availableProcessors = Runtime.getRuntime().availableProcessors();
 
 			this.catalogSeedsPath = env.getProperty("chanchan.catalogseeds");
-			this.catalogSeeds = Collections
-					.unmodifiableList(Files.lines(Paths.get(this.catalogSeedsPath)).collect(Collectors.toList()));
+			this.catalogSeeds.addAll(Collections
+					.unmodifiableList(Files.lines(Paths.get(this.catalogSeedsPath)).collect(Collectors.toList())));
 			this.numberOfCrawlers = env.getProperty("chanchan.numberofcrawlers", int.class, availableProcessors * 2);
 			this.threadPoolSize = env.getProperty("chanchan.threadpoolsize", int.class, availableProcessors * 2);
 			this.outputPath = env.getProperty("chanchan.output.path");
 			this.requestDelay = env.getProperty("chanchan.requestdelay", int.class, 300);
 
-		} catch (Exception e) {
-			logger.error("Config Error::", e);
+			this.validateConfig();
+		} catch (IOException e) {
+			logger.error("Could not load catalogs file::", e);
 			throw new ChanchanConfigException(e);
+		} catch (ChanchanConfigException e) {
+			logger.error("Config Error::", e);
+			throw e;
+		}
+	}
+
+	private void validateConfig() throws ChanchanConfigException {
+		if (this.catalogSeeds.isEmpty()) {
+			throw new ChanchanConfigException("At least one catalog must be specified");
+		}
+
+		if (this.numberOfCrawlers < 1) {
+			throw new ChanchanConfigException("Invalid number of crawlers of:: " + this.numberOfCrawlers);
+		}
+
+		if (this.threadPoolSize < 1) {
+			throw new ChanchanConfigException("Invalid thread pool size of::" + this.threadPoolSize);
+		}
+
+		if (this.requestDelay < 1) {
+			throw new ChanchanConfigException("Invalid request delay of::" + this.requestDelay);
+		}
+
+		if (this.outputPath == null || "".equals(this.outputPath)) {
+			throw new ChanchanConfigException("A ouyput path must be specified");
 		}
 	}
 

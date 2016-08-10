@@ -20,7 +20,7 @@ public class ThreadCrawler extends ChanchanCrawler {
 	private final List<String> urls;
 
 	public ThreadCrawler() {
-		urls = new ArrayList<>();
+		this.urls = new ArrayList<>();
 	}
 
 	@Override

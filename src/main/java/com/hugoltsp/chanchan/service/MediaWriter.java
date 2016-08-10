@@ -6,32 +6,25 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.inject.Inject;
-
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Service;
 
-import com.hugoltsp.chanchan.exception.ImageWriteException;
+import com.hugoltsp.chanchan.exception.ChanchanMediaWriteException;
 import com.hugoltsp.chanchan.utils.Image;
 
-@Service
-public class ImageWriter {
+public class MediaWriter {
 
-	private static final Logger logger = LoggerFactory.getLogger(ImageWriter.class);
-
+	private static final Logger logger = LoggerFactory.getLogger(MediaWriter.class);
 	private static final int BUFFER_SIZE = 16384;
 
 	private final String outputPath;
 
-	@Inject
-	public ImageWriter(Environment environment) {
-		this.outputPath = environment.getProperty("chanchan.output.path");
+	public MediaWriter(String outputPath) {
+		this.outputPath = outputPath;
 	}
 
-	public void writeImage(Image image) throws ImageWriteException {
+	public void writeImage(Image image) throws ChanchanMediaWriteException {
 		OutputStream outputStream = null;
 
 		try {
@@ -46,7 +39,7 @@ public class ImageWriter {
 			outputStream.write(image.getFile());
 			outputStream.flush();
 		} catch (IOException e) {
-			throw new ImageWriteException(e);
+			throw new ChanchanMediaWriteException(e);
 		} finally {
 			IOUtils.closeQuietly(outputStream);
 		}

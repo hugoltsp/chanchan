@@ -1,2 +1,6 @@
 /target/
+/logs/
 .settings/
+.settings
+.idea/
+catalogs

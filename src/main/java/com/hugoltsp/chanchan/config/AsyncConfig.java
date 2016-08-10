@@ -1,4 +1,4 @@
-package com.hugoltsp.chanchan.config.async;
+package com.hugoltsp.chanchan.config;
 
 import java.util.concurrent.Executor;
 
@@ -10,32 +10,31 @@ import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
 @EnableAsync
-public class AsyncConfiguration implements AsyncConfigurer {
+public class AsyncConfig implements AsyncConfigurer {
 
-	private static final Logger logger = LoggerFactory.getLogger(AsyncConfiguration.class);
+	private static final Logger logger = LoggerFactory.getLogger(AsyncConfig.class);
+	
+	private final int threadPoolSize;
 
 	@Inject
-	private Environment environment;
-
+	public AsyncConfig(ChanchanConfig cfg) {
+		this.threadPoolSize = cfg.getThreadPoolSize();
+	}
+	
 	@Override
 	@Bean
 	public Executor getAsyncExecutor() {
 		logger.info("Getting Async Executor");
-		logger.info("Threadpool size:: {}", this.environment.getProperty("chanchan.threadpoolsize", int.class,
-				(2 * Runtime.getRuntime().availableProcessors())));
+		logger.info("Threadpool size:: {}", this.threadPoolSize);
 		
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-
-		executor.setCorePoolSize(this.environment.getProperty("chanchan.threadpoolsize", int.class,
-				(2 * Runtime.getRuntime().availableProcessors())));
-		
+		executor.setCorePoolSize(this.threadPoolSize);
 		executor.setThreadNamePrefix("ChanChan-Executor-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);

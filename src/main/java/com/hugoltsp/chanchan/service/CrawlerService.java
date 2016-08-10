@@ -9,10 +9,10 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import com.hugoltsp.chanchan.config.ChanchanConfig;
 import com.hugoltsp.chanchan.crawlers.CatalogCrawler;
 import com.hugoltsp.chanchan.crawlers.ThreadCrawler;
 import com.hugoltsp.chanchan.crawlers.factory.ChanchanWebCrawlerFactory;
@@ -28,22 +28,19 @@ public class CrawlerService {
 
 	private static final Logger logger = LoggerFactory.getLogger(CrawlerService.class);
 
-	@Inject
-	private ImageService imageService;
-
-	@Inject
-	private ThreadPoolTaskExecutor executor;
-
+	private final MediaService mediaService;
+	private final ThreadPoolTaskExecutor executor;
 	private final String outputPath;
 	private final int numberOfCrawlers;
 	private final int requestDelay;
 
 	@Inject
-	public CrawlerService(Environment environment) {
-		this.numberOfCrawlers = environment.getProperty("chanchan.numberofcrawlers", int.class,
-				Runtime.getRuntime().availableProcessors());
-		this.outputPath = environment.getProperty("chanchan.output.path");
-		this.requestDelay = environment.getProperty("chanchan.requestdelay", int.class);
+	public CrawlerService(ChanchanConfig cfg, ThreadPoolTaskExecutor executor, MediaService mediaService) {
+		this.numberOfCrawlers = cfg.getNumberOfCrawlers();
+		this.outputPath = cfg.getOutputPath();
+		this.requestDelay = cfg.getRequestDelay();
+		this.mediaService = mediaService;
+		this.executor = executor;
 	}
 
 	public void crawl(List<String> catalogs) {
@@ -55,7 +52,7 @@ public class CrawlerService {
 			List<String> hrefs = this.crawlThreads(threadsToCrawl);
 
 			for (String href : hrefs) {
-				this.imageService.download(href);
+				this.mediaService.download(href);
 			}
 
 		} catch (Exception e) {

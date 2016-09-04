@@ -3,3 +3,7 @@
 .idea/
 catalogs
 .catalogs
+.project
+.classpath
+.settings/
+.settings

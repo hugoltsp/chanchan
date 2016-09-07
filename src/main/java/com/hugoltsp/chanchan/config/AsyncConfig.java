@@ -2,8 +2,6 @@ package com.hugoltsp.chanchan.config;
 
 import java.util.concurrent.Executor;
 
-import javax.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -22,7 +20,6 @@ public class AsyncConfig implements AsyncConfigurer {
 	
 	private final int threadPoolSize;
 
-	@Inject
 	public AsyncConfig(ChanchanConfig cfg) {
 		this.threadPoolSize = cfg.getThreadPoolSize();
 	}

@@ -5,8 +5,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import javax.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -34,7 +32,6 @@ public class CrawlerService {
 	private final int numberOfCrawlers;
 	private final int requestDelay;
 
-	@Inject
 	public CrawlerService(ChanchanConfig cfg, ThreadPoolTaskExecutor executor, MediaService mediaService) {
 		this.numberOfCrawlers = cfg.getNumberOfCrawlers();
 		this.outputPath = cfg.getOutputPath();

@@ -2,8 +2,6 @@ package com.hugoltsp.chanchan;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -27,7 +25,6 @@ public class ChanchanApp implements CommandLineRunner {
 		SpringApplication.run(ChanchanApp.class);
 	}
 
-	@Inject
 	public ChanchanApp(ChanchanConfig cfg, CrawlerService crawlerService) {
 		this.config = cfg;
 		this.crawlerService = crawlerService;

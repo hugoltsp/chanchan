@@ -3,8 +3,6 @@ package com.hugoltsp.chanchan.service;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -25,7 +23,6 @@ public class MediaService {
 	private final MediaWriter writer;
 	private final MediaDownloader downloader;
 
-	@Inject
 	public MediaService(ChanchanConfig config) {
 		this.downloader = new MediaDownloader();
 		this.writer = new MediaWriter(config.getOutputPath());

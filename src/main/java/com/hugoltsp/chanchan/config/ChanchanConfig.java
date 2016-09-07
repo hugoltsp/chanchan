@@ -8,8 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -29,7 +27,6 @@ public final class ChanchanConfig {
 	private final String catalogSeedsPath;
 	private final String outputPath;
 
-	@Inject
 	public ChanchanConfig(Environment env) throws ChanchanConfigException {
 		try {
 

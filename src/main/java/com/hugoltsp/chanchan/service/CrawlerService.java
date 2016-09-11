@@ -2,8 +2,10 @@ package com.hugoltsp.chanchan.service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,15 +13,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.hugoltsp.chanchan.config.ChanchanConfig;
-import com.hugoltsp.chanchan.crawlers.CatalogCrawler;
-import com.hugoltsp.chanchan.crawlers.ThreadCrawler;
-import com.hugoltsp.chanchan.crawlers.factory.ChanchanWebCrawlerFactory;
-
-import edu.uci.ics.crawler4j.crawler.CrawlConfig;
-import edu.uci.ics.crawler4j.crawler.CrawlController;
-import edu.uci.ics.crawler4j.fetcher.PageFetcher;
-import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
-import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import com.teles.chanclient.ChanFeignClient;
+import com.teles.chanclient.domain.response.CatalogPage;
+import com.teles.chanclient.util.ImageUriResolver;
 
 @Service
 public class CrawlerService {
@@ -28,16 +24,14 @@ public class CrawlerService {
 
 	private final MediaService mediaService;
 	private final ThreadPoolTaskExecutor executor;
-	private final String outputPath;
-	private final int numberOfCrawlers;
-	private final int requestDelay;
+	private final ChanFeignClient chanFeignClient;
+	private final String chanCdnUrl;
 
 	public CrawlerService(ChanchanConfig cfg, ThreadPoolTaskExecutor executor, MediaService mediaService) {
-		this.numberOfCrawlers = cfg.getNumberOfCrawlers();
-		this.outputPath = cfg.getOutputPath();
-		this.requestDelay = cfg.getRequestDelay();
 		this.mediaService = mediaService;
 		this.executor = executor;
+		this.chanFeignClient = new ChanFeignClient(cfg.getChanApiUrl());
+		this.chanCdnUrl = cfg.getChanCdnUrl();
 	}
 
 	public void crawl(List<String> catalogs) {
@@ -45,8 +39,7 @@ public class CrawlerService {
 
 		try {
 
-			List<String> threadsToCrawl = this.crawlCatalogs(catalogs);
-			List<String> hrefs = this.crawlThreads(threadsToCrawl);
+			List<String> hrefs = this.crawlBoards(catalogs);
 
 			for (String href : hrefs) {
 				this.mediaService.download(href);
@@ -60,7 +53,7 @@ public class CrawlerService {
 			ThreadPoolExecutor threadPoolExecutor = executor.getThreadPoolExecutor();
 			while (threadPoolExecutor.isTerminating()) {
 				try {
-					Thread.sleep(1000);
+					java.lang.Thread.sleep(1000);
 				} catch (InterruptedException e) {
 				}
 				if (threadPoolExecutor.isTerminated()) {
@@ -73,59 +66,23 @@ public class CrawlerService {
 		}
 	}
 
-	private List<String> crawlThreads(List<String> threadUrls) throws Exception {
-		logger.info("Crawling through threads");
-
-		CrawlConfig config = new CrawlConfig();
-		config.setPolitenessDelay(requestDelay);
-		config.setCrawlStorageFolder(outputPath);
-		config.setIncludeBinaryContentInCrawling(true);
-
-		PageFetcher pageFetcher = new PageFetcher(config);
-		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
-		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
-		CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
-
-		for (String threadUrl : threadUrls) {
-			controller.addSeed(threadUrl);
-		}
-
-		ChanchanWebCrawlerFactory crawlerFactory = new ChanchanWebCrawlerFactory(ThreadCrawler::new);
-
-		controller.startNonBlocking(crawlerFactory, numberOfCrawlers);
-		controller.waitUntilFinish();
-
-		List<String> urls = crawlerFactory.getUrls();
-
-		logger.info(urls.size() + " images found..");
-
-		return urls;
-	}
-
-	private List<String> crawlCatalogs(List<String> catalogUrls) throws Exception {
+	private List<String> crawlBoards(List<String> catalogBoards) {
 		logger.info("Crawling through catalogs");
 
-		CrawlConfig config = new CrawlConfig();
-		config.setPolitenessDelay(requestDelay);
-		config.setCrawlStorageFolder(outputPath);
-		config.setMaxDepthOfCrawling(2);
+		ImageUriResolver imageUriResolver = new ImageUriResolver(this.chanCdnUrl);
 
-		PageFetcher pageFetcher = new PageFetcher(config);
-		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
-		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
-		CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
+		List<String> urls = new ArrayList<>();
 
-		for (String seed : catalogUrls) {
-			controller.addSeed(seed);
+		for (String board : catalogBoards) {
+			List<CatalogPage> pages = this.chanFeignClient.getCatalogPages(board);
+			urls.addAll(pages.stream().flatMap(c -> c.getThreads().stream()).flatMap(t -> {
+				return this.chanFeignClient.getPosts(board, t.getNumber()).stream();
+			}).filter(p -> p.getFileExtension() != null).map(p -> {
+				return imageUriResolver.getPostImageUrl(board, p);
+			}).collect(Collectors.toList()));
 		}
 
-		ChanchanWebCrawlerFactory crawlerFactory = new ChanchanWebCrawlerFactory(CatalogCrawler::new);
-		controller.startNonBlocking(crawlerFactory, numberOfCrawlers);
-		controller.waitUntilFinish();
-
-		List<String> urls = crawlerFactory.getUrls();
-
-		logger.info(urls.size() + " Eligible threads have been found for these catalogs");
+		logger.info(urls.size() + " Eligible posts have been found for these catalogs");
 
 		return urls;
 	}

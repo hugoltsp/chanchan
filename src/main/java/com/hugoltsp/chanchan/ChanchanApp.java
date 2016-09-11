@@ -36,7 +36,7 @@ public class ChanchanApp implements CommandLineRunner {
 
 			logger.info("Reading Catalog File At:: {}", this.config.getCatalogSeedsPath());
 
-			List<String> seeds = this.config.getCatalogSeeds();
+			List<String> seeds = this.config.getCatalogBoards();
 
 			logger.info("Number of Concurrent Crawlers:: {}", this.config.getNumberOfCrawlers());
 			logger.info("Output Directory:: {}", this.config.getOutputPath());

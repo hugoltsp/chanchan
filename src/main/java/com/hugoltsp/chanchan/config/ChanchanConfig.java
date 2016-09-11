@@ -20,25 +20,28 @@ public final class ChanchanConfig {
 
 	private static final Logger logger = LoggerFactory.getLogger(ChanchanConfig.class);
 
-	private final List<String> catalogSeeds = new ArrayList<>();
+	private final List<String> catalogBoards = new ArrayList<>();
 	private final int numberOfCrawlers;
 	private final int threadPoolSize;
 	private final int requestDelay;
 	private final String catalogSeedsPath;
 	private final String outputPath;
+	private final String chanApiUrl;
+	private final String chanCdnUrl;
 
 	public ChanchanConfig(Environment env) throws ChanchanConfigException {
 		try {
-
 			int availableProcessors = Runtime.getRuntime().availableProcessors();
 
 			this.catalogSeedsPath = env.getProperty("chanchan.catalogseeds");
-			this.catalogSeeds.addAll(Collections
+			this.catalogBoards.addAll(Collections
 					.unmodifiableList(Files.lines(Paths.get(this.catalogSeedsPath)).collect(Collectors.toList())));
 			this.numberOfCrawlers = env.getProperty("chanchan.numberofcrawlers", int.class, availableProcessors * 2);
 			this.threadPoolSize = env.getProperty("chanchan.threadpoolsize", int.class, availableProcessors * 2);
 			this.outputPath = env.getProperty("chanchan.output.path");
 			this.requestDelay = env.getProperty("chanchan.requestdelay", int.class, 300);
+			this.chanApiUrl = env.getProperty("4chan.api.url", "http://api.4chan.org");
+			this.chanCdnUrl = env.getProperty("4chan.cdn.url", "http://i.4cdn.org");
 
 			this.validateConfig();
 		} catch (IOException e) {
@@ -51,7 +54,7 @@ public final class ChanchanConfig {
 	}
 
 	private void validateConfig() throws ChanchanConfigException {
-		if (this.catalogSeeds.isEmpty()) {
+		if (this.catalogBoards.isEmpty()) {
 			throw new ChanchanConfigException("At least one catalog must be specified");
 		}
 
@@ -68,12 +71,16 @@ public final class ChanchanConfig {
 		}
 
 		if (this.outputPath == null || "".equals(this.outputPath)) {
-			throw new ChanchanConfigException("A ouyput path must be specified");
+			throw new ChanchanConfigException("An output path must be specified");
+		}
+
+		if (this.chanApiUrl == null || "".equals(this.chanApiUrl)) {
+			throw new ChanchanConfigException("4chan api url absent");
 		}
 	}
 
-	public List<String> getCatalogSeeds() {
-		return catalogSeeds;
+	public List<String> getCatalogBoards() {
+		return catalogBoards;
 	}
 
 	public String getCatalogSeedsPath() {
@@ -94,6 +101,22 @@ public final class ChanchanConfig {
 
 	public int getRequestDelay() {
 		return requestDelay;
+	}
+
+	public String getChanApiUrl() {
+		return chanApiUrl;
+	}
+
+	public String getChanCdnUrl() {
+		return chanCdnUrl;
+	}
+
+	@Override
+	public String toString() {
+		return "ChanchanConfig [catalogBoards=" + catalogBoards + ", numberOfCrawlers=" + numberOfCrawlers
+				+ ", threadPoolSize=" + threadPoolSize + ", requestDelay=" + requestDelay + ", catalogSeedsPath="
+				+ catalogSeedsPath + ", outputPath=" + outputPath + ", chanApiUrl=" + chanApiUrl + ", chanCdnUrl="
+				+ chanCdnUrl + "]";
 	}
 
 }

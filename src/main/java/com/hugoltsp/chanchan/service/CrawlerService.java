@@ -73,14 +73,21 @@ public class CrawlerService {
 
 		List<String> urls = new ArrayList<>();
 
-		for (String board : catalogBoards) {
+		catalogBoards.parallelStream().forEach(board -> {
+
 			List<CatalogPage> pages = this.chanFeignClient.getCatalogPages(board);
+		
+			logger.info("{} pages found for the following board:: {}",pages.size(), board);
+			
 			urls.addAll(pages.stream().flatMap(c -> c.getThreads().stream()).flatMap(t -> {
-				return this.chanFeignClient.getPosts(board, t.getNumber()).stream();
-			}).filter(p -> p.getFileExtension() != null).map(p -> {
-				return imageUriResolver.getPostImageUrl(board, p);
-			}).collect(Collectors.toList()));
-		}
+				
+				logger.info("searching for posts on thread {} of {}", t.getNumber(), t.getBoard());
+				
+				return this.chanFeignClient.getPosts(t).stream();
+			
+			}).filter(p -> p.getFileExtension() != null).map(imageUriResolver::getPostImageUrl).collect(Collectors.toList()));
+
+		});
 
 		logger.info(urls.size() + " Eligible posts have been found for these catalogs");
 

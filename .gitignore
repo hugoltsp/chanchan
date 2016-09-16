@@ -1,8 +1,6 @@
 /target/
 /logs/
 .idea/
-catalogs
-.catalogs
 .project
 .classpath
 .settings/

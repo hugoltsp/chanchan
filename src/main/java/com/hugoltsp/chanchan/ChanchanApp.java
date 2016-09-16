@@ -1,6 +1,8 @@
 package com.hugoltsp.chanchan;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.hugoltsp.chanchan.config.ChanchanConfig;
+import com.hugoltsp.chanchan.exception.ChanchanException;
 import com.hugoltsp.chanchan.service.CrawlerService;
 
 @SpringBootApplication
@@ -22,7 +25,7 @@ public class ChanchanApp implements CommandLineRunner {
 	private final CrawlerService crawlerService;
 
 	public static void main(String[] args) {
-		SpringApplication.run(ChanchanApp.class);
+		SpringApplication.run(ChanchanApp.class, args);
 	}
 
 	public ChanchanApp(ChanchanConfig cfg, CrawlerService crawlerService) {
@@ -34,13 +37,16 @@ public class ChanchanApp implements CommandLineRunner {
 
 		try {
 
-			logger.info("Reading Catalog File At:: {}", this.config.getCatalogSeedsPath());
+			if (args == null || args.length < 1) {
+				throw new ChanchanException("At least one catalog must be specified");
+			}
 
-			List<String> seeds = this.config.getCatalogBoards();
+			List<String> seeds = Stream.of(args[0].split(",")).map(String::trim).map(String::toLowerCase)
+					.collect(Collectors.toList());
 
-			logger.info("Number of Concurrent Crawlers:: {}", this.config.getNumberOfCrawlers());
+			logger.info("Board Seeds:: {}", seeds);
+
 			logger.info("Output Directory:: {}", this.config.getOutputPath());
-			logger.info("Catalog Seeds:: {}", seeds);
 			logger.info("Delay Between Requests:: {}", this.config.getRequestDelay());
 
 			logger.info("Chanchan started");

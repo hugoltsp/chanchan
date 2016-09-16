@@ -45,10 +45,7 @@ public class ChanchanApp implements CommandLineRunner {
 					.collect(Collectors.toList());
 
 			logger.info("Board Seeds:: {}", seeds);
-
 			logger.info("Output Directory:: {}", this.config.getOutputPath());
-			logger.info("Delay Between Requests:: {}", this.config.getRequestDelay());
-
 			logger.info("Chanchan started");
 			this.crawlerService.crawl(seeds);
 		} catch (Exception e) {

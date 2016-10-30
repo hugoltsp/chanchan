@@ -19,6 +19,8 @@
 	<modules>
 		<module>scraper</module>
 		<module>4chan-api-client</module>
+		<module>data</module>
+		<module>domain</module>
 	</modules>
 
 	<dependencies>

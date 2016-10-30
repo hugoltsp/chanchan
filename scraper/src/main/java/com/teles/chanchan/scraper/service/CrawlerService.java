@@ -13,8 +13,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.teles.chanchan.domain.fourchan.FourchanCatalogPage;
+import com.teles.chanchan.domain.fourchan.FourchanPost;
 import com.teles.chanchan.fourchan.client.FourchanChanFeignClient;
-import com.teles.chanchan.fourchan.client.util.ImageUriResolver;
 import com.teles.chanchan.scraper.config.ChanchanConfig;
 
 @Service
@@ -25,13 +25,11 @@ public class CrawlerService {
 	private final MediaService mediaService;
 	private final ThreadPoolTaskExecutor executor;
 	private final FourchanChanFeignClient chanFeignClient;
-	private final String chanCdnUrl;
 
 	public CrawlerService(ChanchanConfig cfg, ThreadPoolTaskExecutor executor, MediaService mediaService) {
 		this.mediaService = mediaService;
 		this.executor = executor;
-		this.chanFeignClient = new FourchanChanFeignClient(cfg.getChanApiUrl());
-		this.chanCdnUrl = cfg.getChanCdnUrl();
+		this.chanFeignClient = new FourchanChanFeignClient(cfg.getChanApiUrl(), cfg.getChanCdnUrl());
 	}
 
 	public void crawl(List<String> catalogs) {
@@ -69,24 +67,17 @@ public class CrawlerService {
 	private List<String> crawlBoards(List<String> catalogBoards) {
 		logger.info("Crawling through catalogs");
 
-		ImageUriResolver imageUriResolver = new ImageUriResolver(this.chanCdnUrl);
-
 		List<String> urls = new ArrayList<>();
 
 		catalogBoards.parallelStream().forEach(board -> {
-
 			List<FourchanCatalogPage> pages = this.chanFeignClient.getCatalogPages(board);
 
 			logger.info("{} pages found for the following board:: {}", pages.size(), board);
 
 			urls.addAll(pages.stream().flatMap(c -> c.getThreads().stream()).flatMap(t -> {
-
 				logger.info("searching for posts on thread {} of {}", t.getNumber(), t.getBoard());
-
 				return this.chanFeignClient.getPosts(t).stream();
-
-			}).filter(p -> p.getFileExtension() != null).map(imageUriResolver::getPostImageUrl)
-					.collect(Collectors.toList()));
+			}).filter(p -> p.getFileExtension() != null).map(FourchanPost::getThumbUrl).collect(Collectors.toList()));
 
 		});
 

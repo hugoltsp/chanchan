@@ -7,6 +7,7 @@ import com.teles.chanchan.domain.fourchan.FourchanCatalogPage;
 import com.teles.chanchan.domain.fourchan.FourchanPost;
 import com.teles.chanchan.domain.fourchan.FourchanThread;
 import com.teles.chanchan.fourchan.client.exception.ChanClientException;
+import com.teles.chanchan.fourchan.client.util.PostContentUrlResolver;
 
 import feign.Feign;
 import feign.FeignException;
@@ -17,12 +18,14 @@ import feign.jackson.JacksonEncoder;
 public class FourchanChanFeignClient {
 
 	private final String apiUrl;
+	private final PostContentUrlResolver imageUrlResolver;
 
-	public FourchanChanFeignClient(String apiUrl) throws IllegalArgumentException {
-		if (apiUrl == null) {
+	public FourchanChanFeignClient(String apiUrl, String cdnUrl) throws IllegalArgumentException {
+		if (apiUrl == null || cdnUrl == null) {
 			throw new IllegalArgumentException();
 		}
 
+		this.imageUrlResolver = new PostContentUrlResolver(cdnUrl);
 		this.apiUrl = apiUrl;
 	}
 
@@ -33,7 +36,11 @@ public class FourchanChanFeignClient {
 
 			ChanResource resource = createResource();
 			catalog = resource.getCatalog(board);
-			catalog.forEach(c -> c.setBoard(board));
+
+			for (int i = 0; i < catalog.size(); i++) {
+				FourchanCatalogPage c = catalog.get(i);
+				c.setBoard(board);
+			}
 
 		} catch (FeignException e) {
 			throw new ChanClientException(e);
@@ -47,10 +54,20 @@ public class FourchanChanFeignClient {
 
 		try {
 
+			String board = thread.getBoard();
 			ChanResource resource = createResource();
-			posts = resource.getThreadPosts(thread.getBoard(), thread.getNumber()).getPosts();
-			posts.forEach(p -> p.setBoard(thread.getBoard()));
-		
+			posts = resource.getThreadPosts(board, thread.getNumber()).getPosts();
+
+			for (int i = 0; i < posts.size(); i++) {
+				FourchanPost p = posts.get(i);
+				p.setBoard(board);
+
+				if (p.getFileExtension() != null && p.getTimeStamp() != 0) {
+					p.setThumbUrl(this.imageUrlResolver.getThumbUrl(p));
+					p.setContentUrl(this.imageUrlResolver.getImageUrl(p));
+				}
+			}
+
 		} catch (FeignException e) {
 			throw new ChanClientException(e);
 		}

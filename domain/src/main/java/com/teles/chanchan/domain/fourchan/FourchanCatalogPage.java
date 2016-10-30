@@ -40,7 +40,7 @@ public class FourchanCatalogPage {
 
 	@Override
 	public String toString() {
-		return "Catalog [board=" + board + ", page=" + page + ", threads=" + threads + "]";
+		return "FourchanCatalogPage [board=" + board + ", page=" + page + ", threads=" + threads + "]";
 	}
 
 }

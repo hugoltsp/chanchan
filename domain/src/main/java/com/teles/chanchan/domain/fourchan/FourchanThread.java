@@ -76,7 +76,7 @@ public class FourchanThread {
 
 	@Override
 	public String toString() {
-		return "Thread [number=" + number + ", name=" + name + ", description=" + description + ", semanticUrl="
+		return "FourchanThread [number=" + number + ", name=" + name + ", description=" + description + ", semanticUrl="
 				+ semanticUrl + ", board=" + board + ", posts=" + posts + "]";
 	}
 

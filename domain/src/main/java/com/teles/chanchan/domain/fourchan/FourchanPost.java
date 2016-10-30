@@ -24,6 +24,26 @@ public class FourchanPost {
 
 	private String board;
 
+	private String thumbUrl;
+
+	private String contentUrl;
+
+	public String getThumbUrl() {
+		return thumbUrl;
+	}
+
+	public void setThumbUrl(String thumbUrl) {
+		this.thumbUrl = thumbUrl;
+	}
+
+	public String getContentUrl() {
+		return contentUrl;
+	}
+
+	public void setContentUrl(String contentUrl) {
+		this.contentUrl = contentUrl;
+	}
+
 	public String getBoard() {
 		return board;
 	}
@@ -82,9 +102,10 @@ public class FourchanPost {
 
 	@Override
 	public String toString() {
-		return "Post [originalFileName=" + originalFileName + ", fileExtension=" + fileExtension + ", imageWidth="
-				+ imageWidth + ", imageHeight=" + imageHeight + ", timeStamp=" + timeStamp + ", fileSize=" + fileSize
-				+ ", board=" + board + "]";
+		return "FourchanPost [originalFileName=" + originalFileName + ", fileExtension=" + fileExtension
+				+ ", imageWidth=" + imageWidth + ", imageHeight=" + imageHeight + ", timeStamp=" + timeStamp
+				+ ", fileSize=" + fileSize + ", board=" + board + ", thumbUrl=" + thumbUrl + ", contentUrl="
+				+ contentUrl + "]";
 	}
 
 }

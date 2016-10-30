@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Document(collection = "4chan")
+@Document(collection = "4chan-thread")
 public class FourchanThread {
 
 	@Id
@@ -26,6 +27,7 @@ public class FourchanThread {
 
 	private String board;
 
+	@DBRef
 	private List<FourchanPost> posts = new ArrayList<>();
 
 	public Integer getNumber() {

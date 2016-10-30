@@ -17,7 +17,7 @@
 	</parent>
 
 	<modules>
-		<module>scrapper</module>
+		<module>scraper</module>
 		<module>4chan-api-client</module>
 	</modules>
 

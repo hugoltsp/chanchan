@@ -3,6 +3,7 @@ package com.teles.chanchan.domain.fourchan;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,8 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Document(collection = "4chan")
 public class FourchanThread {
 
+	@Id
 	@JsonProperty("no")
-	private int number;
+	private Integer number;
 
 	@JsonProperty("sub")
 	private String name;
@@ -26,11 +28,11 @@ public class FourchanThread {
 
 	private List<FourchanPost> posts = new ArrayList<>();
 
-	public int getNumber() {
+	public Integer getNumber() {
 		return number;
 	}
 
-	public void setNumber(int number) {
+	public void setNumber(Integer number) {
 		this.number = number;
 	}
 

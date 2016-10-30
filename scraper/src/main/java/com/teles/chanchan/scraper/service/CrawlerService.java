@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import com.teles.chanchan.data.repository.FourchanThreadRepository;
 import com.teles.chanchan.domain.fourchan.FourchanCatalogPage;
 import com.teles.chanchan.domain.fourchan.FourchanPost;
 import com.teles.chanchan.fourchan.client.FourchanChanFeignClient;
@@ -25,11 +26,14 @@ public class CrawlerService {
 	private final MediaService mediaService;
 	private final ThreadPoolTaskExecutor executor;
 	private final FourchanChanFeignClient chanFeignClient;
+	private final FourchanThreadRepository fourchanThreadRepository;
 
-	public CrawlerService(ChanchanConfig cfg, ThreadPoolTaskExecutor executor, MediaService mediaService) {
+	public CrawlerService(ChanchanConfig cfg, ThreadPoolTaskExecutor executor, MediaService mediaService,
+			FourchanThreadRepository fourchanThreadRepository) {
 		this.mediaService = mediaService;
 		this.executor = executor;
 		this.chanFeignClient = new FourchanChanFeignClient(cfg.getChanApiUrl(), cfg.getChanCdnUrl());
+		this.fourchanThreadRepository = fourchanThreadRepository;
 	}
 
 	public void crawl(List<String> catalogs) {
@@ -76,6 +80,7 @@ public class CrawlerService {
 
 			urls.addAll(pages.stream().flatMap(c -> c.getThreads().stream()).flatMap(t -> {
 				logger.info("searching for posts on thread {} of {}", t.getNumber(), t.getBoard());
+				this.fourchanThreadRepository.save(t);
 				return this.chanFeignClient.getPosts(t).stream();
 			}).filter(p -> p.getFileExtension() != null).map(FourchanPost::getContentUrl).collect(Collectors.toList()));
 

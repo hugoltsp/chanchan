@@ -77,7 +77,7 @@ public class CrawlerService {
 			urls.addAll(pages.stream().flatMap(c -> c.getThreads().stream()).flatMap(t -> {
 				logger.info("searching for posts on thread {} of {}", t.getNumber(), t.getBoard());
 				return this.chanFeignClient.getPosts(t).stream();
-			}).filter(p -> p.getFileExtension() != null).map(FourchanPost::getThumbUrl).collect(Collectors.toList()));
+			}).filter(p -> p.getFileExtension() != null).map(FourchanPost::getContentUrl).collect(Collectors.toList()));
 
 		});
 

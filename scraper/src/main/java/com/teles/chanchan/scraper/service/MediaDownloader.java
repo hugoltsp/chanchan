@@ -7,8 +7,8 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.teles.chanchan.domain.util.Image;
 import com.teles.chanchan.scraper.exception.ChanchanMediaDownloadException;
-import com.teles.chanchan.scraper.utils.Image;
 
 public class MediaDownloader {
 

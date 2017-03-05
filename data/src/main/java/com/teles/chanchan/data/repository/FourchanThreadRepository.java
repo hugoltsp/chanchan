@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.teles.chanchan.domain.fourchan.FourchanThread;
 
 @Repository
-public interface FourchanThreadRepository  extends MongoRepository<FourchanThread, Integer>{
+public interface FourchanThreadRepository extends MongoRepository<FourchanThread, Integer> {
 
 }

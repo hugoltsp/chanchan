@@ -10,8 +10,8 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.teles.chanchan.domain.util.Image;
 import com.teles.chanchan.scraper.exception.ChanchanMediaWriteException;
-import com.teles.chanchan.scraper.utils.Image;
 
 public class MediaWriter {
 
@@ -30,10 +30,8 @@ public class MediaWriter {
 		try {
 			String path = this.outputPath + image.getName();
 			logger.info("Writing image to:: {}", path);
-
 			File file = new File(path);
 			file.getParentFile().mkdirs();
-			file.createNewFile();
 
 			outputStream = new BufferedOutputStream(new FileOutputStream(file), BUFFER_SIZE);
 			outputStream.write(image.getFile());

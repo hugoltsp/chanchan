@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.teles.chanchan.domain.util.Image;
 import com.teles.chanchan.scraper.config.ChanchanConfig;
 import com.teles.chanchan.scraper.exception.ChanchanException;
 import com.teles.chanchan.scraper.exception.ChanchanInvalidMediaException;
 import com.teles.chanchan.scraper.exception.ChanchanMediaDownloadException;
 import com.teles.chanchan.scraper.exception.ChanchanMediaWriteException;
-import com.teles.chanchan.scraper.utils.Image;
 
 @Service
 public class MediaService {

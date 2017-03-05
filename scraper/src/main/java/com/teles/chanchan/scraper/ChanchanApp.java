@@ -9,14 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.teles.chanchan.scraper.config.ChanchanConfig;
 import com.teles.chanchan.scraper.exception.ChanchanException;
 import com.teles.chanchan.scraper.service.CrawlerService;
 
 @SpringBootApplication
-@EnableMongoRepositories("com.teles.chanchan.data.repository")
 public class ChanchanApp implements CommandLineRunner {
 
 	private static final Logger logger = LoggerFactory.getLogger(ChanchanApp.class);
@@ -47,7 +45,9 @@ public class ChanchanApp implements CommandLineRunner {
 			logger.info("Board Seeds:: {}", seeds);
 			logger.info("Output Directory:: {}", this.config.getOutputPath());
 			logger.info("Chanchan started");
+			
 			this.crawlerService.crawl(seeds);
+			
 		} catch (Exception e) {
 			logger.error("Error", e);
 		}

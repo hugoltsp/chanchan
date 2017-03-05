@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,7 +26,6 @@ public class FourchanThread {
 
 	private String board;
 
-	@DBRef
 	private List<FourchanPost> posts = new ArrayList<>();
 
 	public Integer getNumber() {
@@ -76,6 +74,10 @@ public class FourchanThread {
 
 	public void setPosts(List<FourchanPost> posts) {
 		this.posts = posts;
+	}
+	
+	public void addPosts(List<FourchanPost> posts) {
+		this.posts.addAll(posts);
 	}
 
 	@Override

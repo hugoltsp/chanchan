@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.teles.chanchan.domain.fourchan.FourchanCatalogPage;
 import com.teles.chanchan.domain.fourchan.FourchanPost;
+import com.teles.chanchan.domain.fourchan.FourchanThread;
 import com.teles.chanchan.fourchan.client.FourchanChanFeignClient;
 import com.teles.chanchan.scraper.config.ChanchanConfig;
 
@@ -33,16 +33,14 @@ public class CrawlerService {
 	}
 
 	public void crawl(List<String> catalogs) {
-		Instant now = Instant.now();
+		Instant start = Instant.now();
 
 		try {
-
-			List<String> hrefs = this.crawlBoards(catalogs);
-
-			for (String href : hrefs) {
-				this.mediaService.download(href);
-			}
-
+			
+			List<FourchanThread> threads = this.getThreads(catalogs);
+		
+ 			this.downloadImagesFromThreads(threads);
+			
 		} catch (Exception e) {
 			logger.error("Error: ", e);
 		} finally {
@@ -55,7 +53,7 @@ public class CrawlerService {
 				} catch (InterruptedException e) {
 				}
 				if (threadPoolExecutor.isTerminated()) {
-					Duration duration = Duration.between(now, Instant.now());
+					Duration duration = Duration.between(start, Instant.now());
 					logger.info("Chanchan finished in {} seconds", duration.getSeconds());
 					break;
 				}
@@ -64,27 +62,40 @@ public class CrawlerService {
 		}
 	}
 
-	private List<String> crawlBoards(List<String> catalogBoards) {
+	private List<FourchanThread> getThreads(List<String> catalogBoards) {
 		logger.info("Crawling through catalogs");
+		
+		List<FourchanThread> threads = new ArrayList<>();
+		
+		for (String catalog : catalogBoards) {
+			
+			List<FourchanCatalogPage> pages = this.chanFeignClient.getCatalogPages(catalog);
 
-		List<String> urls = new ArrayList<>();
+			logger.info("{} pages found for the following board:: {}", pages.size(), catalog);
 
-		catalogBoards.parallelStream().forEach(board -> {
-			List<FourchanCatalogPage> pages = this.chanFeignClient.getCatalogPages(board);
+			for (FourchanCatalogPage page : pages) {
+			
+				for (FourchanThread thread : page.getThreads()) {
+					logger.info("searching for posts on thread {} of {}", thread.getNumber(), thread.getBoard());
+					
+					List<FourchanPost> posts = this.chanFeignClient.getPosts(thread);
+					
+					thread.addPosts(posts);
+					threads.add(thread);
+					
+				}
+				
+			}
+			
+		}
 
-			logger.info("{} pages found for the following board:: {}", pages.size(), board);
-
-			urls.addAll(pages.stream().flatMap(c -> c.getThreads().stream()).flatMap(t -> {
-				logger.info("searching for posts on thread {} of {}", t.getNumber(), t.getBoard());
-				List<FourchanPost> posts = this.chanFeignClient.getPosts(t);
-				t.setPosts(posts);
-				return posts.stream();
-			}).filter(p -> p.getFileExtension() != null).map(FourchanPost::getContentUrl).collect(Collectors.toList()));
-
-		});
-
-		logger.info(urls.size() + " Eligible posts have been found for these catalogs");
-
-		return urls;
+		return threads;
 	}
+	
+	private void downloadImagesFromThreads(List<FourchanThread> threads){
+		threads.stream().flatMap(t -> t.getPosts().stream())
+				.filter(p -> p.getFileExtension() != null).map(FourchanPost::getContentUrl)
+				.forEach(this.mediaService::download);
+	}
+	
 }

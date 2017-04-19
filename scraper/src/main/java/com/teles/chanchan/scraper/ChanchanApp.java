@@ -9,11 +9,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
+import com.teles.chanchan.scraper.config.AsyncConfig;
 import com.teles.chanchan.scraper.config.ChanchanConfig;
 import com.teles.chanchan.scraper.exception.ChanchanException;
 import com.teles.chanchan.scraper.service.CrawlerService;
 
+@EnableMongoRepositories(basePackages="com.teles.chanchan.data.repository")
+@ComponentScan({"com.teles.chanchan" })
+@Import(value = { AsyncConfig.class 
+		})
 @SpringBootApplication
 public class ChanchanApp implements CommandLineRunner {
 

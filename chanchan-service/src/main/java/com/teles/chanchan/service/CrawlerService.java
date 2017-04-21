@@ -31,7 +31,7 @@ public class CrawlerService {
 	}
 
 	private List<FourchanCatalogPage> pages(List<String> catalogBoards){
-		return catalogBoards.parallelStream().flatMap(b->this.chanFeignClient.getCatalogPages(b).stream()).collect(Collectors.toList());
+		return catalogBoards.stream().flatMap(b->this.chanFeignClient.getCatalogPages(b).stream()).collect(Collectors.toList());
 	}
 	
 	private List<FourchanThread> threads(List<FourchanCatalogPage> pages){

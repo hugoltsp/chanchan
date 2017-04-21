@@ -104,7 +104,7 @@ public class ChanchanSettings {
 			return outputPath;
 		}
 
-		void setOutputPath(String outputPath) {
+		public void setOutputPath(String outputPath) {
 			this.outputPath = outputPath;
 		}
 

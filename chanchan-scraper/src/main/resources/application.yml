@@ -16,5 +16,5 @@ chanchan:
   client-four-chan:
       api-url: http://api.4chan.org
       cdn-url: http://i.4cdn.org
-      request-delay: 300
+      request-delay: 100
       miniature-suffix: s.jpg

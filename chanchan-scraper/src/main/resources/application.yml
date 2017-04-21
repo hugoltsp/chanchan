@@ -1,0 +1,20 @@
+logging:
+  level:
+    com.teles.chanchan: DEBUG  
+
+spring:
+  data:
+    mongodb:
+      database: chanchan
+
+chanchan:
+  io:
+    output-path: X://chanchan//out
+  async:
+    thread-pool-size: 20
+    thread-name-prefix: ChanChan-Executor-
+  client-four-chan:
+      api-url: http://api.4chan.org
+      cdn-url: http://i.4cdn.org
+      request-delay: 300
+      miniature-suffix: s.jpg

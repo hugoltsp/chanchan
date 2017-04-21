@@ -9,7 +9,7 @@ spring:
 
 chanchan:
   io:
-    output-path: X://chanchan//out
+    output-path: 
   async:
     thread-pool-size: 20
     thread-name-prefix: ChanChan-Executor-

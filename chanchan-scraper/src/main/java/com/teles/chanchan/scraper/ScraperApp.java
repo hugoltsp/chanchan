@@ -1,5 +1,6 @@
 package com.teles.chanchan.scraper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -51,18 +52,15 @@ public class ScraperApp implements CommandLineRunner {
 		}
 
 		logger.info("Chanchan started");
+		List<String> boards = this.parseBoards(args);
 
-		List<String> seeds = Stream.of(args[0].split(",")).map(String::trim).map(String::toLowerCase)
-				.collect(Collectors.toList());
-
-		logger.info("Board Seeds:: {}", seeds);
+		logger.info("Boards:: {}", boards);
 		logger.info("Ouput path:: {}", this.settings.getIo().getOutputPath());
 
-		List<FourchanThread> threads = this.crawlerService.crawl(seeds);
-
-		logger.info("{} files to download..", threads.size());
-
+		List<FourchanThread> threads = this.crawlerService.crawl(boards);
 		List<String> urls = this.extractDownloadUrls(threads);
+
+		logger.info("{} files to download..", urls.size());
 		urls.stream().map(this::createRunnable).forEach(this.executor::execute);
 
 		this.executor.shutdown();
@@ -83,6 +81,24 @@ public class ScraperApp implements CommandLineRunner {
 				downloaderService.downloadImage(url);
 			}
 		};
+	}
+
+	private List<String> parseBoards(String... args) {
+		List<String> boards = new ArrayList<>();
+		String collect = Stream.of(args).map(this::trimAndLowerCase).collect(Collectors.joining());
+
+		int indexOf = collect.indexOf("-");
+
+		if (indexOf != -1) {
+			collect = collect.substring(0, indexOf);
+		}
+
+		boards.addAll(Stream.of(collect.split(",")).distinct().collect(Collectors.toList()));
+		return boards;
+	}
+
+	private String trimAndLowerCase(String str) {
+		return str.trim().toLowerCase();
 	}
 
 }

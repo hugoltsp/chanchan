@@ -1,5 +1,6 @@
 package com.teles.chanchan.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.teles.chanchan.domain.client.fourchan.FourchanCatalogPage;
 import com.teles.chanchan.domain.client.fourchan.FourchanPost;
 import com.teles.chanchan.domain.client.fourchan.FourchanThread;
+import com.teles.chanchan.domain.exception.ChanchanClientException;
 import com.teles.chanchan.fourchan.client.FourchanChanFeignClient;
 
 @Service
@@ -45,7 +47,15 @@ public class CrawlerService {
 	}
 
 	private Stream<FourchanCatalogPage> mapToPages(String board) {
-		return this.chanFeignClient.getCatalogPages(board).stream();
+		List<FourchanCatalogPage> catalogPages = new ArrayList<>();
+
+		try {
+			catalogPages = this.chanFeignClient.getCatalogPages(board);
+		} catch (ChanchanClientException e) {
+			logger.error("Couldn't find board {}", board);
+		}
+
+		return catalogPages.stream();
 	}
 
 	private Stream<FourchanThread> mapToThreads(FourchanCatalogPage c) {
@@ -53,8 +63,14 @@ public class CrawlerService {
 	}
 
 	private FourchanThread mapThread(FourchanThread t) {
-		List<FourchanPost> posts = this.chanFeignClient.getPosts(t);
-		t.setPosts(posts);
+
+		try {
+			List<FourchanPost> posts = this.chanFeignClient.getPosts(t);
+			t.setPosts(posts);
+		} catch (ChanchanClientException e) {
+			logger.error("Couldn't find posts on thread {}", t.getNumber());
+		}
+
 		return t;
 	}
 

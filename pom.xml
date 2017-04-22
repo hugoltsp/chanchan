@@ -96,6 +96,7 @@
 		<module>chanchan-domain</module>
 		<module>chanchan-service</module>
 		<module>chanchan-config</module>
+		<module>chanchan-webapp</module>
 	</modules>
 
 	<build>

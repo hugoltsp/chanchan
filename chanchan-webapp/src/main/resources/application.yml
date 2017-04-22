@@ -2,6 +2,11 @@ logging:
   level:
     com.teles.chanchan: DEBUG  
 
+spring:
+  data:
+    mongodb:
+      database: chanchan
+
 chanchan:
   io:
     output-path: 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.teles.chanchan.domain.client.fourchan.FourchanCatalogPage;
 import com.teles.chanchan.domain.client.fourchan.FourchanPost;
 import com.teles.chanchan.domain.client.fourchan.FourchanThread;
-import com.teles.chanchan.domain.exception.ChanClientException;
+import com.teles.chanchan.domain.exception.ChanchanClientException;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
 import com.teles.chanchan.fourchan.client.url.PostContentUrlResolver;
 
@@ -29,7 +29,7 @@ public class FourchanChanFeignClient {
 		this.settings = settings;
 	}
 
-	public List<FourchanCatalogPage> getCatalogPages(String board) throws ChanClientException {
+	public List<FourchanCatalogPage> getCatalogPages(String board) throws ChanchanClientException {
 		List<FourchanCatalogPage> catalog = new ArrayList<>();
 
 		try {
@@ -37,19 +37,18 @@ public class FourchanChanFeignClient {
 			ChanResource resource = createResource();
 			catalog = resource.getCatalog(board);
 
-			for (int i = 0; i < catalog.size(); i++) {
-				FourchanCatalogPage c = catalog.get(i);
+			for (FourchanCatalogPage c : catalog) {
 				c.setBoard(board);
 			}
 
 		} catch (FeignException e) {
-			throw new ChanClientException(e);
+			throw new ChanchanClientException(e.status(), e);
 		}
 
 		return catalog;
 	}
 
-	public List<FourchanPost> getPosts(FourchanThread thread) throws ChanClientException {
+	public List<FourchanPost> getPosts(FourchanThread thread) throws ChanchanClientException {
 		List<FourchanPost> posts = new ArrayList<>();
 
 		try {
@@ -58,8 +57,7 @@ public class FourchanChanFeignClient {
 			ChanResource resource = createResource();
 			posts = resource.getThreadPosts(board, thread.getNumber()).getPosts();
 
-			for (int i = 0; i < posts.size(); i++) {
-				FourchanPost p = posts.get(i);
+			for (FourchanPost p : posts) {
 				p.setBoard(board);
 
 				if (p.getFileExtension() != null && p.getTimeStamp() != 0) {
@@ -69,7 +67,7 @@ public class FourchanChanFeignClient {
 			}
 
 		} catch (FeignException e) {
-			throw new ChanClientException(e);
+			throw new ChanchanClientException(e.status(), e);
 		}
 
 		return posts;

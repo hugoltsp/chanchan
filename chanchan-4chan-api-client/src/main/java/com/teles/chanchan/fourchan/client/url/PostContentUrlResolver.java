@@ -3,7 +3,7 @@ package com.teles.chanchan.fourchan.client.url;
 import org.springframework.stereotype.Component;
 
 import com.teles.chanchan.domain.client.fourchan.FourchanPost;
-import com.teles.chanchan.domain.exception.ChanClientException;
+import com.teles.chanchan.domain.exception.ChanchanClientException;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
 import com.teles.chanchan.domain.settings.ChanchanSettings.ClientFourChan;
 
@@ -18,21 +18,21 @@ public class PostContentUrlResolver {
 		this.settings = settings;
 	}
 
-	public String getImageUrl(FourchanPost post) throws ChanClientException {
+	public String getImageUrl(FourchanPost post) throws ChanchanClientException {
 		return this.resolveContentUrl(post, false);
 	}
 
-	public String getThumbUrl(FourchanPost post) throws ChanClientException {
+	public String getThumbUrl(FourchanPost post) throws ChanchanClientException {
 		return this.resolveContentUrl(post, true);
 	}
 
-	private String resolveContentUrl(FourchanPost post, boolean isMiniature) throws ChanClientException {
+	private String resolveContentUrl(FourchanPost post, boolean isMiniature) throws ChanchanClientException {
 		String extension = post.getFileExtension();
 		long timeStamp = post.getTimeStamp();
 		ClientFourChan clientFourChan = this.settings.getClientFourChan();
 
 		if (extension == null || timeStamp == 0) {
-			throw new ChanClientException("Post doesn't have any media content");
+			throw new ChanchanClientException("Post doesn't have any media content");
 		}
 
 		StringBuilder sbUrl = new StringBuilder();

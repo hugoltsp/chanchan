@@ -2,6 +2,7 @@ package com.teles.chanchan.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,24 +24,38 @@ public class CrawlerService {
 		this.chanFeignClient = fourchanChanFeignClient;
 	}
 
-	public List<FourchanThread> crawl(List<String> catalogs) {
-		logger.info("Crawling through catalogs:: {}", catalogs);
-		List<FourchanCatalogPage> pages = this.pages(catalogs);
+	public List<FourchanThread> crawl(List<String> boards) {
+		logger.info("Crawling through catalogs:: {}", boards);
+		List<FourchanCatalogPage> pages = this.pages(boards);
 		List<FourchanThread> threads = this.threads(pages);
 		return threads;
 	}
 
-	private List<FourchanCatalogPage> pages(List<String> catalogBoards){
-		return catalogBoards.stream().flatMap(b->this.chanFeignClient.getCatalogPages(b).stream()).collect(Collectors.toList());
+	private List<FourchanCatalogPage> pages(List<String> catalogBoards) {
+		return catalogBoards.stream().flatMap(this::mapToPages).collect(Collectors.toList());
 	}
-	
-	private List<FourchanThread> threads(List<FourchanCatalogPage> pages){
-		return pages.stream().flatMap(c->c.getThreads().stream()).map(t->{
-			logger.info("searching for posts on thread {} of {}", t.getNumber(), t.getBoard());
-			List<FourchanPost> posts = this.chanFeignClient.getPosts(t);
-			t.setPosts(posts);
-			return t;
-		}).collect(Collectors.toList());
+
+	private List<FourchanThread> threads(List<FourchanCatalogPage> pages) {
+		return pages.parallelStream().flatMap(this::mapToThreads).peek(this::peek).map(this::mapThread)
+				.collect(Collectors.toList());
 	}
-	
+
+	private void peek(FourchanThread t) {
+		logger.info("searching for posts on thread {} of {}", t.getNumber(), t.getBoard());
+	}
+
+	private Stream<FourchanCatalogPage> mapToPages(String board) {
+		return this.chanFeignClient.getCatalogPages(board).stream();
+	}
+
+	private Stream<FourchanThread> mapToThreads(FourchanCatalogPage c) {
+		return c.getThreads().stream();
+	}
+
+	private FourchanThread mapThread(FourchanThread t) {
+		List<FourchanPost> posts = this.chanFeignClient.getPosts(t);
+		t.setPosts(posts);
+		return t;
+	}
+
 }

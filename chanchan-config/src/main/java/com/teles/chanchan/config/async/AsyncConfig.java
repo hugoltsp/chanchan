@@ -21,20 +21,21 @@ public class AsyncConfig implements AsyncConfigurer {
 
 	private static final Logger logger = LoggerFactory.getLogger(AsyncConfig.class);
 
-	private final Async settings;
+	private final ChanchanSettings settings;
 
 	public AsyncConfig(ChanchanSettings settings) {
-		this.settings = settings.getAsync();
+		this.settings = settings;
 	}
 
 	@Bean
 	public Executor getAsyncExecutor() {
 		logger.info("Getting Async Executor");
-		logger.info("Threadpool size:: {}", this.settings.getThreadPoolSize());
+		Async async = this.settings.getAsync();
+		logger.info("Threadpool size:: {}", async.getThreadPoolSize());
 
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(this.settings.getThreadPoolSize());
-		executor.setThreadNamePrefix(this.settings.getThreadNamePrefix());
+		executor.setCorePoolSize(async.getThreadPoolSize());
+		executor.setThreadNamePrefix(async.getThreadNamePrefix());
 
 		return executor;
 	}

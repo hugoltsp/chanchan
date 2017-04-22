@@ -12,10 +12,10 @@ public class PostContentUrlResolver {
 
 	private static final String SLASH = "/";
 	
-	private final ClientFourChan settings;
+	private final ChanchanSettings settings;
 
 	public PostContentUrlResolver(ChanchanSettings settings) {
-		this.settings = settings.getClientFourChan();
+		this.settings = settings;
 	}
 
 	public String getImageUrl(FourchanPost post) throws ChanClientException {
@@ -29,16 +29,17 @@ public class PostContentUrlResolver {
 	private String resolveContentUrl(FourchanPost post, boolean isMiniature) throws ChanClientException {
 		String extension = post.getFileExtension();
 		long timeStamp = post.getTimeStamp();
+		ClientFourChan clientFourChan = this.settings.getClientFourChan();
 
 		if (extension == null || timeStamp == 0) {
 			throw new ChanClientException("Post doesn't have any media content");
 		}
 
 		StringBuilder sbUrl = new StringBuilder();
-		sbUrl.append(this.settings.getCdnUrl()).append(SLASH).append(post.getBoard()).append(SLASH).append(timeStamp);
+		sbUrl.append(clientFourChan.getCdnUrl()).append(SLASH).append(post.getBoard()).append(SLASH).append(timeStamp);
 
 		if (isMiniature) {
-			sbUrl.append(this.settings.getMiniatureSuffix());
+			sbUrl.append(clientFourChan.getMiniatureSuffix());
 		} else {
 			sbUrl.append(extension);
 		}

@@ -17,8 +17,8 @@
 			<artifactId>chanchan-service</artifactId>
 			<exclusions>
 				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-data-mongodb</artifactId>
+					<groupId>com.teles.chanchan</groupId>
+					<artifactId>chanchan-data</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>

@@ -60,23 +60,21 @@ public class ScraperApp implements CommandLineRunner {
 
 		List<FourchanThread> threads = this.crawlerService.crawl(seeds);
 
-		List<Runnable> urlDownloadRunnables = extractDownloadUrls(threads);
+		logger.info("{} files to download..", threads.size());
 
-		logger.info("{} files to download..", urlDownloadRunnables.size());
-
-		for (Runnable r : urlDownloadRunnables) {
-			this.executor.execute(r);
-		}
+		List<String> urls = this.extractDownloadUrls(threads);
+		urls.stream().map(this::createRunnable).forEach(this.executor::execute);
 
 		this.executor.shutdown();
-		while (!executor.isTerminated()) {
+
+		while (!this.executor.isTerminated()) {
 			Thread.sleep(1000);
 		}
 	}
 
-	private List<Runnable> extractDownloadUrls(List<FourchanThread> threads) {
+	private List<String> extractDownloadUrls(List<FourchanThread> threads) {
 		return threads.stream().flatMap(t -> t.getPosts().stream()).map(FourchanPost::getContentUrl)
-				.filter(Objects::nonNull).map(this::createRunnable).collect(Collectors.toList());
+				.filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
 	private Runnable createRunnable(String url) {

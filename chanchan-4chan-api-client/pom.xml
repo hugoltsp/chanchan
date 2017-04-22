@@ -5,10 +5,6 @@
 	<name>4Chan API Client</name>
 	<packaging>jar</packaging>
 
-	<properties>
-		<feign.version>8.18.0</feign.version>
-	</properties>
-
 	<parent>
 		<groupId>com.teles.chanchan</groupId>
 		<artifactId>chanchan</artifactId>

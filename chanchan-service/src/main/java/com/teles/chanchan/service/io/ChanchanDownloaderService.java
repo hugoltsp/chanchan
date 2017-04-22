@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.teles.chanchan.domain.exception.ChanchanMediaDownloadException;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
-import com.teles.chanchan.domain.settings.ChanchanSettings.Io;
 
 @Service
 public class ChanchanDownloaderService {
@@ -23,10 +22,10 @@ public class ChanchanDownloaderService {
 
 	private static final int BUFFER_SIZE = 16384;
 
-	private Io settings;
+	private final ChanchanSettings settings;
 
 	public ChanchanDownloaderService(ChanchanSettings settings) {
-		this.settings = settings.getIo();
+		this.settings = settings;
 	}
 
 	public void downloadImage(String path) throws ChanchanMediaDownloadException {
@@ -45,7 +44,7 @@ public class ChanchanDownloaderService {
 		OutputStream outputStream = null;
 
 		try {
-			String path = this.settings.getOutputPath() + name;
+			String path = this.settings.getIo().getOutputPath() + name;
 			File file = new File(path);
 			file.getParentFile().mkdirs();
 

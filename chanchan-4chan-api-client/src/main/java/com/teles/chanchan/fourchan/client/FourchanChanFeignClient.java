@@ -10,7 +10,6 @@ import com.teles.chanchan.domain.client.fourchan.FourchanPost;
 import com.teles.chanchan.domain.client.fourchan.FourchanThread;
 import com.teles.chanchan.domain.exception.ChanClientException;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
-import com.teles.chanchan.domain.settings.ChanchanSettings.ClientFourChan;
 import com.teles.chanchan.fourchan.client.url.PostContentUrlResolver;
 
 import feign.Feign;
@@ -23,11 +22,11 @@ import feign.jackson.JacksonEncoder;
 public class FourchanChanFeignClient {
 
 	private final PostContentUrlResolver imageUrlResolver;
-	private final ClientFourChan settings;
+	private final ChanchanSettings settings;
 
 	public FourchanChanFeignClient(PostContentUrlResolver imageUrlResolver, ChanchanSettings settings) {
 		this.imageUrlResolver = imageUrlResolver;
-		this.settings = settings.getClientFourChan();
+		this.settings = settings;
 	}
 
 	public List<FourchanCatalogPage> getCatalogPages(String board) throws ChanClientException {
@@ -78,6 +77,6 @@ public class FourchanChanFeignClient {
 
 	private ChanResource createResource() {
 		return Feign.builder().decoder(new JacksonDecoder()).encoder(new JacksonEncoder())
-				.client(new feign.okhttp.OkHttpClient()).logLevel(Level.FULL).target(ChanResource.class, this.settings.getApiUrl());
+				.client(new feign.okhttp.OkHttpClient()).logLevel(Level.FULL).target(ChanResource.class, this.settings.getClientFourChan().getApiUrl());
 	}
 }

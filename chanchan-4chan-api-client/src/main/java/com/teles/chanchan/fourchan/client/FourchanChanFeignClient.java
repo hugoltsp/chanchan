@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.teles.chanchan.domain.client.fourchan.FourchanCatalogPage;
-import com.teles.chanchan.domain.client.fourchan.FourchanPost;
-import com.teles.chanchan.domain.client.fourchan.FourchanThread;
+import com.teles.chanchan.domain.FourchanCatalogPage;
+import com.teles.chanchan.domain.FourchanPost;
+import com.teles.chanchan.domain.FourchanThread;
 import com.teles.chanchan.domain.exception.ChanchanClientException;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
 import com.teles.chanchan.fourchan.client.url.PostContentUrlResolver;

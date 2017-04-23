@@ -2,7 +2,7 @@ package com.teles.chanchan.fourchan.client.url;
 
 import org.springframework.stereotype.Component;
 
-import com.teles.chanchan.domain.client.fourchan.FourchanPost;
+import com.teles.chanchan.domain.FourchanPost;
 import com.teles.chanchan.domain.exception.ChanchanClientException;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
 import com.teles.chanchan.domain.settings.ChanchanSettings.ClientFourChan;

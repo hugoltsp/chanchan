@@ -3,7 +3,7 @@ package com.teles.chanchan.data.repository;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import com.teles.chanchan.domain.client.fourchan.FourchanThread;
+import com.teles.chanchan.domain.FourchanThread;
 
 @Repository
 public interface FourchanThreadRepository extends MongoRepository<FourchanThread, Integer> {

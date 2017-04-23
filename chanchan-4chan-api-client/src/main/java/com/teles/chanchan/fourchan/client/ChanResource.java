@@ -2,8 +2,8 @@ package com.teles.chanchan.fourchan.client;
 
 import java.util.List;
 
-import com.teles.chanchan.domain.client.fourchan.FourchanCatalogPage;
-import com.teles.chanchan.domain.client.fourchan.FourchanThread;
+import com.teles.chanchan.domain.FourchanCatalogPage;
+import com.teles.chanchan.domain.FourchanThread;
 
 import feign.Headers;
 import feign.Param;

@@ -1,4 +1,4 @@
-package com.teles.chanchan.domain.web.utils;
+package com.teles.chanchan.domain.util;
 
 import java.util.Collection;
 

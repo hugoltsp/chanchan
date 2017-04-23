@@ -16,8 +16,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
-import com.teles.chanchan.domain.client.fourchan.FourchanPost;
-import com.teles.chanchan.domain.client.fourchan.FourchanThread;
+import com.teles.chanchan.domain.FourchanPost;
+import com.teles.chanchan.domain.FourchanThread;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
 import com.teles.chanchan.service.CrawlerService;
 import com.teles.chanchan.service.io.ChanchanDownloaderService;

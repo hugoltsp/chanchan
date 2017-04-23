@@ -1,4 +1,4 @@
-package com.teles.chanchan.domain.client.fourchan;
+package com.teles.chanchan.domain;
 
 import java.util.ArrayList;
 import java.util.List;

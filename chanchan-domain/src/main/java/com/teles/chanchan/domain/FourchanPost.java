@@ -1,4 +1,4 @@
-package com.teles.chanchan.domain.client.fourchan;
+package com.teles.chanchan.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

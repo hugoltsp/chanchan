@@ -17,7 +17,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>com.teles.chanchan</groupId>
 			<artifactId>chanchan-domain</artifactId>

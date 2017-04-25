@@ -24,6 +24,11 @@ public final class JsonResponseBuilder {
 		return this;
 	}
 
+	public <T> JsonResponseBuilder withData(Map<String, T> data) {
+		this.data.putAll(data);
+		return this;
+	}
+
 	public JsonResponse build() throws ChanchanException {
 		JsonResponse response = null;
 

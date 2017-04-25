@@ -7,12 +7,13 @@ import org.springframework.context.annotation.Import;
 
 import com.teles.chanchan.domain.settings.ChanchanSettings;
 
-@ComponentScan({ "com.teles.chanchan.service", "com.teles.chanchan.fourchan" })
-@Import(value = { ChanchanSettings.class })
+@ComponentScan({ "com.teles.chanchan" })
+@Import(value = { ChanchanSettings.class, WebAppConfig.class })
 @SpringBootApplication
 public class ChanchanWebApp {
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(ChanchanWebApp.class, args);
 	}
+	
 }

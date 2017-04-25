@@ -1,3 +1,6 @@
+server:
+  contextPath:  
+
 logging:
   level:
     com.teles.chanchan: DEBUG  
@@ -6,6 +9,16 @@ spring:
   data:
     mongodb:
       database: chanchan
+
+security:
+  basic:
+    enabled: true
+  user:
+    name: user
+    password: churro$
+
+management:
+  context-path: /actuator
 
 chanchan:
   io:

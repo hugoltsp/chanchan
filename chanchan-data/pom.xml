@@ -28,6 +28,11 @@
 			<artifactId>chanchan-domain</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+		</dependency>
+
 	</dependencies>
 
 </project>

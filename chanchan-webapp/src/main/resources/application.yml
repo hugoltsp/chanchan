@@ -12,7 +12,7 @@ spring:
 
 security:
   basic:
-    enabled: true
+    enabled: false
   user:
     name: user
     password: churro$

@@ -39,6 +39,16 @@ public class FourchanPost {
 
 	private String contentUrl;
 
+	private String md5;
+
+	public String getMd5() {
+		return md5;
+	}
+
+	public void setMd5(String md5) {
+		this.md5 = md5;
+	}
+
 	public String getOriginalFileName() {
 		return originalFileName;
 	}
@@ -127,12 +137,11 @@ public class FourchanPost {
 		this.number = number;
 	}
 
-	@Override
 	public String toString() {
 		return "FourchanPost [number=" + number + ", originalFileName=" + originalFileName + ", fileExtension="
 				+ fileExtension + ", imageWidth=" + imageWidth + ", imageHeight=" + imageHeight + ", timeStamp="
 				+ timeStamp + ", fileSize=" + fileSize + ", comentary=" + comentary + ", board=" + board + ", thumbUrl="
-				+ thumbUrl + ", contentUrl=" + contentUrl + "]";
+				+ thumbUrl + ", contentUrl=" + contentUrl + ", md5=" + md5 + "]";
 	}
 
 }

@@ -50,7 +50,6 @@ public class ChanchanDownloaderService {
 
 			outputStream = new BufferedOutputStream(new FileOutputStream(file), BUFFER_SIZE);
 			outputStream.write(bytes);
-			outputStream.flush();
 		} catch (IOException e) {
 			throw new ChanchanMediaDownloadException(e);
 		} finally {

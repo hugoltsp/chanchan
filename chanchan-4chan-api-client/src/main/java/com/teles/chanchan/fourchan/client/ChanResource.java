@@ -5,11 +5,9 @@ import java.util.List;
 import com.teles.chanchan.domain.FourchanCatalogPage;
 import com.teles.chanchan.domain.FourchanThread;
 
-import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 
-@Headers(value = "User-Agent: ")
 interface ChanResource {
 
 	@RequestLine(value = "GET /{board}/catalog.json")

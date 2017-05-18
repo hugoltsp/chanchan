@@ -75,6 +75,7 @@ public class FourchanChanFeignClient {
 
 	private ChanResource createResource() {
 		return Feign.builder().decoder(new JacksonDecoder()).encoder(new JacksonEncoder())
-				.client(new feign.okhttp.OkHttpClient()).logLevel(Level.FULL).target(ChanResource.class, this.settings.getClientFourChan().getApiUrl());
+				.client(new feign.okhttp.OkHttpClient())
+				.target(ChanResource.class, this.settings.getClientFourChan().getApiUrl());
 	}
 }

@@ -14,7 +14,6 @@ import com.teles.chanchan.fourchan.client.url.PostContentUrlResolver;
 
 import feign.Feign;
 import feign.FeignException;
-import feign.Logger.Level;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 

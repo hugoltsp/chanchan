@@ -36,8 +36,8 @@ public class FourchanChanFeignClient {
 			ChanResource resource = createResource();
 			catalog = resource.getCatalog(board);
 
-			for (FourchanCatalogPage c : catalog) {
-				c.setBoard(board);
+			for (FourchanCatalogPage catalogPage : catalog) {
+				catalogPage.setBoard(board);
 			}
 
 		} catch (FeignException e) {
@@ -56,12 +56,12 @@ public class FourchanChanFeignClient {
 			ChanResource resource = createResource();
 			posts = resource.getThreadPosts(board, thread.getNumber()).getPosts();
 
-			for (FourchanPost p : posts) {
-				p.setBoard(board);
+			for (FourchanPost post : posts) {
+				post.setBoard(board);
 
-				if (p.getFileExtension() != null && p.getTimeStamp() != 0) {
-					p.setThumbUrl(this.imageUrlResolver.getThumbUrl(p));
-					p.setContentUrl(this.imageUrlResolver.getImageUrl(p));
+				if (this.imageUrlResolver.hasMedia(post)) {
+					post.setThumbUrl(this.imageUrlResolver.buildThumbNailUrl(post));
+					post.setContentUrl(this.imageUrlResolver.buildMediaUrl(post));
 				}
 			}
 

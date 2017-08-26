@@ -5,16 +5,10 @@ import java.util.List;
 
 public class FourchanCatalogPage {
 
-	private String board;
 	private int page;
 	private List<FourchanThread> threads = new ArrayList<>();
 
-	public String getBoard() {
-		return board;
-	}
-
 	public void setBoard(String board) {
-		this.board = board;
 		this.getThreads().stream().forEach(t -> t.setBoard(board));
 	}
 
@@ -40,7 +34,7 @@ public class FourchanCatalogPage {
 
 	@Override
 	public String toString() {
-		return "FourchanCatalogPage [board=" + board + ", page=" + page + ", threads=" + threads + "]";
+		return "FourchanCatalogPage [page=" + page + ", threads=" + threads + "]";
 	}
 
 }

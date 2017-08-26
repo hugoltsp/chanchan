@@ -20,7 +20,7 @@ import com.teles.chanchan.domain.FourchanPost;
 import com.teles.chanchan.domain.FourchanThread;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
 import com.teles.chanchan.service.CrawlerService;
-import com.teles.chanchan.service.io.ChanchanDownloaderService;
+import com.teles.chanchan.service.io.DownloaderService;
 
 @ComponentScan({ "com.teles.chanchan.service", "com.teles.chanchan.fourchan" })
 @Import(value = { ChanchanSettings.class })
@@ -31,11 +31,11 @@ public class ScraperApp implements CommandLineRunner {
 
 	private final ExecutorService executor;
 	private final CrawlerService crawlerService;
-	private final ChanchanDownloaderService downloaderService;
+	private final DownloaderService downloaderService;
 	private final ChanchanSettings settings;
 
 	public ScraperApp(CrawlerService crawlerService, ChanchanSettings settings,
-			ChanchanDownloaderService downloaderService) {
+			DownloaderService downloaderService) {
 		this.crawlerService = crawlerService;
 		this.settings = settings;
 		this.downloaderService = downloaderService;
@@ -57,7 +57,7 @@ public class ScraperApp implements CommandLineRunner {
 		logger.info("Boards:: {}", boards);
 		logger.info("Ouput path:: {}", this.settings.getIo().getOutputPath());
 
-		List<FourchanThread> threads = this.crawlerService.crawl(boards);
+		List<FourchanThread> threads = this.crawlerService.crawlBoards(boards);
 		List<String> urls = this.extractDownloadUrls(threads);
 
 		logger.info("{} files to download..", urls.size());

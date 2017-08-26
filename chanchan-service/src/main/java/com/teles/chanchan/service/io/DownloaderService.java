@@ -16,15 +16,15 @@ import com.teles.chanchan.domain.exception.ChanchanMediaDownloadException;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
 
 @Service
-public class ChanchanDownloaderService {
+public class DownloaderService {
 
-	private static final Logger logger = LoggerFactory.getLogger(ChanchanDownloaderService.class);
+	private static final Logger logger = LoggerFactory.getLogger(DownloaderService.class);
 
 	private static final int BUFFER_SIZE = 16384;
 
 	private final ChanchanSettings settings;
 
-	public ChanchanDownloaderService(ChanchanSettings settings) {
+	public DownloaderService(ChanchanSettings settings) {
 		this.settings = settings;
 	}
 

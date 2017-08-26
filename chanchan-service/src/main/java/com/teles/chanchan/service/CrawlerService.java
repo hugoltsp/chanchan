@@ -2,7 +2,6 @@ package com.teles.chanchan.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -26,28 +25,25 @@ public class CrawlerService {
 		this.chanFeignClient = fourchanChanFeignClient;
 	}
 
-	public List<FourchanThread> crawl(List<String> boards) {
+	public List<FourchanThread> crawlBoards(List<String> boards) {
 		logger.info("Crawling through catalogs:: {}", boards);
-		List<FourchanCatalogPage> pages = this.pages(boards);
-		List<FourchanThread> threads = this.threads(pages);
+		List<FourchanCatalogPage> pages = getCatalogs(boards);
+		List<FourchanThread> threads = getThreads(pages);
 		return threads;
 	}
 
-	private List<FourchanCatalogPage> pages(List<String> catalogBoards) {
-		return catalogBoards.stream().flatMap(this::mapToPages).collect(Collectors.toList());
+	private List<FourchanCatalogPage> getCatalogs(List<String> boards) {
+		List<FourchanCatalogPage> catalogs = new ArrayList<>();
+
+		for (String board : boards) {
+			catalogs.addAll(getCatalogFromBoard(board));
+		}
+
+		return catalogs;
 	}
 
-	private List<FourchanThread> threads(List<FourchanCatalogPage> pages) {
-		return pages.parallelStream().flatMap(this::mapToThreads).peek(this::peek).map(this::mapThread)
-				.collect(Collectors.toList());
-	}
-
-	private void peek(FourchanThread t) {
-		logger.info("searching for posts on thread {} of {}", t.getNumber(), t.getBoard());
-	}
-
-	private Stream<FourchanCatalogPage> mapToPages(String board) {
-		List<FourchanCatalogPage> catalogPages = new ArrayList<>();
+	private List<FourchanCatalogPage> getCatalogFromBoard(String board) {
+		List<FourchanCatalogPage> catalogPages = null;
 
 		try {
 			catalogPages = this.chanFeignClient.getCatalogPages(board);
@@ -55,23 +51,38 @@ public class CrawlerService {
 			logger.error("Couldn't find board {}", board);
 		}
 
-		return catalogPages.stream();
+		return catalogPages;
 	}
 
-	private Stream<FourchanThread> mapToThreads(FourchanCatalogPage c) {
+	private List<FourchanThread> getThreads(List<FourchanCatalogPage> pages) {
+		List<FourchanThread> threads = new ArrayList<>();
+
+		pages.parallelStream().flatMap(this::flatMapToThreads).peek(this::logThreads).forEach(t -> {
+			t.setPosts(getPosts(t));
+			threads.add(t);
+		});
+
+		return threads;
+	}
+
+	private void logThreads(FourchanThread t) {
+		logger.info("searching for posts on thread {} of {}", t.getNumber(), t.getBoard());
+	}
+
+	private Stream<FourchanThread> flatMapToThreads(FourchanCatalogPage c) {
 		return c.getThreads().stream();
 	}
 
-	private FourchanThread mapThread(FourchanThread t) {
+	private List<FourchanPost> getPosts(FourchanThread t) {
+		List<FourchanPost> posts = null;
 
 		try {
-			List<FourchanPost> posts = this.chanFeignClient.getPosts(t);
-			t.setPosts(posts);
+			posts = this.chanFeignClient.getPosts(t);
 		} catch (ChanchanClientException e) {
 			logger.error("Couldn't find posts on thread {}", t.getNumber());
 		}
 
-		return t;
+		return posts;
 	}
 
 }

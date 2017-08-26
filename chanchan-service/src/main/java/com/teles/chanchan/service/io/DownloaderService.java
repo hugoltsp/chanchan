@@ -17,10 +17,9 @@ import com.teles.chanchan.domain.settings.ChanchanSettings;
 @Service
 public class DownloaderService {
 
-	private static final int EOF = -1;
-
 	private static final Logger logger = LoggerFactory.getLogger(DownloaderService.class);
 
+	private static final int EOF = -1;
 	private static final int BUFFER_SIZE = 16384;
 
 	private final String outputPath;
@@ -49,10 +48,10 @@ public class DownloaderService {
 	}
 
 	private static void write(OutputStream outputStream, InputStream inputStream) throws IOException {
-		byte[] buf = new byte[BUFFER_SIZE];
-		int n;
-		while (EOF != (n = inputStream.read(buf))) {
-			outputStream.write(buf, 0, n);
+		byte[] buffer = new byte[BUFFER_SIZE];
+		int read;
+		while (EOF != (read = inputStream.read(buffer))) {
+			outputStream.write(buffer, 0, read);
 		}
 	}
 

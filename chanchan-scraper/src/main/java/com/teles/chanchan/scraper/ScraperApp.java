@@ -1,6 +1,5 @@
 package com.teles.chanchan.scraper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -20,7 +19,7 @@ import com.teles.chanchan.domain.FourchanPost;
 import com.teles.chanchan.domain.FourchanThread;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
 import com.teles.chanchan.service.CrawlerService;
-import com.teles.chanchan.service.io.ChanchanDownloaderService;
+import com.teles.chanchan.service.io.DownloaderService;
 
 @ComponentScan({ "com.teles.chanchan.service", "com.teles.chanchan.fourchan" })
 @Import(value = { ChanchanSettings.class })
@@ -31,13 +30,12 @@ public class ScraperApp implements CommandLineRunner {
 
 	private final ExecutorService executor;
 	private final CrawlerService crawlerService;
-	private final ChanchanDownloaderService downloaderService;
-	private final ChanchanSettings settings;
+	private final DownloaderService downloaderService;
+	private final String outputPath;
 
-	public ScraperApp(CrawlerService crawlerService, ChanchanSettings settings,
-			ChanchanDownloaderService downloaderService) {
+	public ScraperApp(CrawlerService crawlerService, ChanchanSettings settings, DownloaderService downloaderService) {
 		this.crawlerService = crawlerService;
-		this.settings = settings;
+		this.outputPath = settings.getIo().getOutputPath();
 		this.downloaderService = downloaderService;
 		this.executor = Executors.newFixedThreadPool(settings.getAsync().getThreadPoolSize());
 	}
@@ -55,9 +53,9 @@ public class ScraperApp implements CommandLineRunner {
 		List<String> boards = this.parseBoards(args);
 
 		logger.info("Boards:: {}", boards);
-		logger.info("Ouput path:: {}", this.settings.getIo().getOutputPath());
+		logger.info("Ouput path:: {}", this.outputPath);
 
-		List<FourchanThread> threads = this.crawlerService.crawl(boards);
+		List<FourchanThread> threads = this.crawlerService.crawlBoards(boards);
 		List<String> urls = this.extractDownloadUrls(threads);
 
 		logger.info("{} files to download..", urls.size());
@@ -76,15 +74,10 @@ public class ScraperApp implements CommandLineRunner {
 	}
 
 	private Runnable createRunnable(String url) {
-		return new Runnable() {
-			public void run() {
-				downloaderService.downloadImage(url);
-			}
-		};
+		return () -> downloaderService.downloadImage(url);
 	}
 
 	private List<String> parseBoards(String... args) {
-		List<String> boards = new ArrayList<>();
 		String collect = Stream.of(args).map(this::trimAndLowerCase).collect(Collectors.joining());
 
 		int indexOf = collect.indexOf("-");
@@ -93,8 +86,7 @@ public class ScraperApp implements CommandLineRunner {
 			collect = collect.substring(0, indexOf);
 		}
 
-		boards.addAll(Stream.of(collect.split(",")).distinct().collect(Collectors.toList()));
-		return boards;
+		return Stream.of(collect.split(",")).distinct().collect(Collectors.toList());
 	}
 
 	private String trimAndLowerCase(String str) {

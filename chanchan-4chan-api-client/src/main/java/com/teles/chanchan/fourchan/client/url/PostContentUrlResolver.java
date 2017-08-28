@@ -11,40 +11,38 @@ import com.teles.chanchan.domain.settings.ChanchanSettings.ClientFourChan;
 public class PostContentUrlResolver {
 
 	private static final String SLASH = "/";
-	
-	private final ChanchanSettings settings;
+
+	private final String miniatureSuffix;
+	private final String cdnUrl;
 
 	public PostContentUrlResolver(ChanchanSettings settings) {
-		this.settings = settings;
+		ClientFourChan clientFourChan = settings.getClientFourChan();
+		this.miniatureSuffix = clientFourChan.getMiniatureSuffix();
+		this.cdnUrl = clientFourChan.getCdnUrl();
 	}
 
-	public String getImageUrl(FourchanPost post) throws ChanchanClientException {
-		return this.resolveContentUrl(post, false);
+	public String buildMediaUrl(FourchanPost post) throws ChanchanClientException {
+		StringBuilder url = new StringBuilder();
+		url.append(this.resolveContentUrl(post));
+		url.append(post.getFileExtension());
+		return url.toString();
 	}
 
-	public String getThumbUrl(FourchanPost post) throws ChanchanClientException {
-		return this.resolveContentUrl(post, true);
+	public String buildThumbNailUrl(FourchanPost post) throws ChanchanClientException {
+		StringBuilder url = new StringBuilder();
+		url.append(this.resolveContentUrl(post));
+		url.append(this.miniatureSuffix);
+		return url.toString();
 	}
 
-	private String resolveContentUrl(FourchanPost post, boolean isMiniature) throws ChanchanClientException {
-		String extension = post.getFileExtension();
-		long timeStamp = post.getTimeStamp();
-		ClientFourChan clientFourChan = this.settings.getClientFourChan();
-
-		if (extension == null || timeStamp == 0) {
-			throw new ChanchanClientException("Post doesn't have any media content");
-		}
-
-		StringBuilder sbUrl = new StringBuilder();
-		sbUrl.append(clientFourChan.getCdnUrl()).append(SLASH).append(post.getBoard()).append(SLASH).append(timeStamp);
-
-		if (isMiniature) {
-			sbUrl.append(clientFourChan.getMiniatureSuffix());
-		} else {
-			sbUrl.append(extension);
-		}
-
+	private String resolveContentUrl(FourchanPost post) {
+		StringBuilder sbUrl = new StringBuilder().append(this.cdnUrl).append(SLASH).append(post.getBoard())
+				.append(SLASH).append(post.getTimeStamp());
 		return sbUrl.toString();
+	}
+
+	public boolean hasMedia(FourchanPost post) {
+		return post.getFileExtension() != null && post.getTimeStamp() != 0;
 	}
 
 }

@@ -16,16 +16,17 @@ import feign.Feign;
 import feign.FeignException;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
+import feign.okhttp.OkHttpClient;
 
 @Component
 public class FourchanChanFeignClient {
 
 	private final PostContentUrlResolver imageUrlResolver;
-	private final ChanchanSettings settings;
+	private final ChanResource resource;
 
 	public FourchanChanFeignClient(PostContentUrlResolver imageUrlResolver, ChanchanSettings settings) {
 		this.imageUrlResolver = imageUrlResolver;
-		this.settings = settings;
+		this.resource = createResource(settings.getClientFourChan().getApiUrl());
 	}
 
 	public List<FourchanCatalogPage> getCatalogPages(String board) throws ChanchanClientException {
@@ -33,11 +34,10 @@ public class FourchanChanFeignClient {
 
 		try {
 
-			ChanResource resource = createResource();
-			catalog = resource.getCatalog(board);
+			catalog.addAll(this.resource.getCatalog(board));
 
-			for (FourchanCatalogPage c : catalog) {
-				c.setBoard(board);
+			for (FourchanCatalogPage catalogPage : catalog) {
+				catalogPage.setBoard(board);
 			}
 
 		} catch (FeignException e) {
@@ -53,15 +53,14 @@ public class FourchanChanFeignClient {
 		try {
 
 			String board = thread.getBoard();
-			ChanResource resource = createResource();
-			posts = resource.getThreadPosts(board, thread.getNumber()).getPosts();
+			posts.addAll(this.resource.getThreadPosts(board, thread.getNumber()).getPosts());
 
-			for (FourchanPost p : posts) {
-				p.setBoard(board);
+			for (FourchanPost post : posts) {
+				post.setBoard(board);
 
-				if (p.getFileExtension() != null && p.getTimeStamp() != 0) {
-					p.setThumbUrl(this.imageUrlResolver.getThumbUrl(p));
-					p.setContentUrl(this.imageUrlResolver.getImageUrl(p));
+				if (this.imageUrlResolver.hasMedia(post)) {
+					post.setThumbUrl(this.imageUrlResolver.buildThumbNailUrl(post));
+					post.setContentUrl(this.imageUrlResolver.buildMediaUrl(post));
 				}
 			}
 
@@ -72,9 +71,8 @@ public class FourchanChanFeignClient {
 		return posts;
 	}
 
-	private ChanResource createResource() {
-		return Feign.builder().decoder(new JacksonDecoder()).encoder(new JacksonEncoder())
-				.client(new feign.okhttp.OkHttpClient())
-				.target(ChanResource.class, this.settings.getClientFourChan().getApiUrl());
+	private ChanResource createResource(String apiUrl) {
+		return Feign.builder().decoder(new JacksonDecoder()).encoder(new JacksonEncoder()).client(new OkHttpClient())
+				.target(ChanResource.class, apiUrl);
 	}
 }

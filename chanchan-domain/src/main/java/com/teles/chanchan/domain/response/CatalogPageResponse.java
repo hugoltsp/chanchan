@@ -1,12 +1,13 @@
-package com.teles.chanchan.domain;
+package com.teles.chanchan.domain.response;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FourchanCatalogPage {
+public class CatalogPageResponse {
 
 	private int page;
-	private List<FourchanThread> threads = new ArrayList<>();
+	
+	private List<ThreadResponse> threads = new ArrayList<>();
 
 	public void setBoard(String board) {
 		this.getThreads().stream().forEach(t -> t.setBoard(board));
@@ -20,15 +21,15 @@ public class FourchanCatalogPage {
 		this.page = page;
 	}
 
-	public List<FourchanThread> getThreads() {
+	public List<ThreadResponse> getThreads() {
 		return threads;
 	}
 
-	public void setThreads(List<FourchanThread> threads) {
+	public void setThreads(List<ThreadResponse> threads) {
 		this.threads = threads;
 	}
 
-	public void addThread(FourchanThread thread) {
+	public void addThread(ThreadResponse thread) {
 		this.threads.add(thread);
 	}
 

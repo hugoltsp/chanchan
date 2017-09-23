@@ -15,8 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
-import com.teles.chanchan.domain.FourchanPost;
-import com.teles.chanchan.domain.FourchanThread;
+import com.teles.chanchan.domain.response.PostResponse;
+import com.teles.chanchan.domain.response.ThreadResponse;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
 import com.teles.chanchan.service.CrawlerService;
 import com.teles.chanchan.service.io.DownloaderService;
@@ -55,7 +55,7 @@ public class ScraperApp implements CommandLineRunner {
 		logger.info("Boards:: {}", boards);
 		logger.info("Ouput path:: {}", this.outputPath);
 
-		List<FourchanThread> threads = this.crawlerService.crawlBoards(boards);
+		List<ThreadResponse> threads = this.crawlerService.crawlBoards(boards);
 		List<String> urls = this.extractDownloadUrls(threads);
 
 		logger.info("{} files to download..", urls.size());
@@ -68,8 +68,8 @@ public class ScraperApp implements CommandLineRunner {
 		}
 	}
 
-	private List<String> extractDownloadUrls(List<FourchanThread> threads) {
-		return threads.stream().flatMap(t -> t.getPosts().stream()).map(FourchanPost::getContentUrl)
+	private List<String> extractDownloadUrls(List<ThreadResponse> threads) {
+		return threads.stream().flatMap(t -> t.getPosts().stream()).map(PostResponse::getContentUrl)
 				.filter(Objects::nonNull).collect(Collectors.toList());
 	}
 

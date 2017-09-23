@@ -8,10 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.teles.chanchan.domain.FourchanCatalogPage;
-import com.teles.chanchan.domain.FourchanPost;
-import com.teles.chanchan.domain.FourchanThread;
 import com.teles.chanchan.domain.exception.ChanchanClientException;
+import com.teles.chanchan.domain.response.CatalogPageResponse;
+import com.teles.chanchan.domain.response.PostResponse;
+import com.teles.chanchan.domain.response.ThreadResponse;
 import com.teles.chanchan.fourchan.client.FourchanChanFeignClient;
 
 @Service
@@ -25,15 +25,15 @@ public class CrawlerService {
 		this.chanFeignClient = fourchanChanFeignClient;
 	}
 
-	public List<FourchanThread> crawlBoards(List<String> boards) {
+	public List<ThreadResponse> crawlBoards(List<String> boards) {
 		logger.info("Crawling through catalogs:: {}", boards);
-		List<FourchanCatalogPage> pages = getCatalogs(boards);
-		List<FourchanThread> threads = getThreads(pages);
+		List<CatalogPageResponse> pages = getCatalogs(boards);
+		List<ThreadResponse> threads = getThreads(pages);
 		return threads;
 	}
 
-	private List<FourchanCatalogPage> getCatalogs(List<String> boards) {
-		List<FourchanCatalogPage> catalogs = new ArrayList<>();
+	private List<CatalogPageResponse> getCatalogs(List<String> boards) {
+		List<CatalogPageResponse> catalogs = new ArrayList<>();
 
 		for (String board : boards) {
 			catalogs.addAll(getCatalogFromBoard(board));
@@ -42,8 +42,8 @@ public class CrawlerService {
 		return catalogs;
 	}
 
-	private List<FourchanCatalogPage> getCatalogFromBoard(String board) {
-		List<FourchanCatalogPage> catalogPages = null;
+	private List<CatalogPageResponse> getCatalogFromBoard(String board) {
+		List<CatalogPageResponse> catalogPages = null;
 
 		try {
 			catalogPages = this.chanFeignClient.getCatalogPages(board);
@@ -54,8 +54,8 @@ public class CrawlerService {
 		return catalogPages;
 	}
 
-	private List<FourchanThread> getThreads(List<FourchanCatalogPage> pages) {
-		List<FourchanThread> threads = new ArrayList<>();
+	private List<ThreadResponse> getThreads(List<CatalogPageResponse> pages) {
+		List<ThreadResponse> threads = new ArrayList<>();
 
 		pages.parallelStream().flatMap(this::flatMapToThreads).peek(this::logThreads).forEach(t -> {
 			t.setPosts(getPosts(t));
@@ -65,16 +65,16 @@ public class CrawlerService {
 		return threads;
 	}
 
-	private void logThreads(FourchanThread t) {
+	private void logThreads(ThreadResponse t) {
 		logger.info("searching for posts on thread {} of {}", t.getNumber(), t.getBoard());
 	}
 
-	private Stream<FourchanThread> flatMapToThreads(FourchanCatalogPage c) {
+	private Stream<ThreadResponse> flatMapToThreads(CatalogPageResponse c) {
 		return c.getThreads().stream();
 	}
 
-	private List<FourchanPost> getPosts(FourchanThread t) {
-		List<FourchanPost> posts = null;
+	private List<PostResponse> getPosts(ThreadResponse t) {
+		List<PostResponse> posts = null;
 
 		try {
 			posts = this.chanFeignClient.getPosts(t);

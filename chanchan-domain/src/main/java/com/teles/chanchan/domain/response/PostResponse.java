@@ -1,4 +1,4 @@
-package com.teles.chanchan.domain;
+package com.teles.chanchan.domain.response;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Document(collection = "4chan-post")
-public class FourchanPost {
+public class PostResponse {
 
 	@Id
 	@JsonProperty("no")

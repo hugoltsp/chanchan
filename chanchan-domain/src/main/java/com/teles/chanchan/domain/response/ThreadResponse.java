@@ -1,4 +1,4 @@
-package com.teles.chanchan.domain;
+package com.teles.chanchan.domain.response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Document(collection = "4chan-thread")
-public class FourchanThread{
-	
+public class ThreadResponse {
+
 	@Id
 	@JsonProperty("no")
 	private Integer number;
@@ -26,7 +26,18 @@ public class FourchanThread{
 
 	private String board;
 
-	private List<FourchanPost> posts = new ArrayList<>();
+	@JsonProperty("last_modified")
+	private long lastModified;
+
+	private List<PostResponse> posts = new ArrayList<>();
+
+	public long getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(long lastModified) {
+		this.lastModified = lastModified;
+	}
 
 	public Integer getNumber() {
 		return number;
@@ -68,15 +79,15 @@ public class FourchanThread{
 		this.semanticUrl = semanticUrl;
 	}
 
-	public List<FourchanPost> getPosts() {
+	public List<PostResponse> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(List<FourchanPost> posts) {
+	public void setPosts(List<PostResponse> posts) {
 		this.posts = posts;
 	}
-	
-	public void addPosts(List<FourchanPost> posts) {
+
+	public void addPosts(List<PostResponse> posts) {
 		this.posts.addAll(posts);
 	}
 

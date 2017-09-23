@@ -103,6 +103,7 @@
 		<module>chanchan-config</module>
 		<module>chanchan-webapp</module>
 		<module>chanchan-dto</module>
+		<module>chanchan-scheduler</module>
 	</modules>
 
 	<build>

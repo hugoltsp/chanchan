@@ -3,7 +3,7 @@ logging:
     com.teles.chanchan: DEBUG
 chanchan:
   io:
-    output-path: 
+    output-path: null
   async:
     thread-pool-size: 20
     thread-name-prefix: ChanChan-Executor-

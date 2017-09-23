@@ -2,13 +2,11 @@ package com.teles.chanchan.domain.orm;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -33,7 +31,8 @@ public class Post extends ChanchanEntity {
 	@JoinColumn(name = "thread_id")
 	private Thread thread;
 
-	@OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "post_content_id")
 	private PostContent postContent;
 
 	public Integer getNumber() {

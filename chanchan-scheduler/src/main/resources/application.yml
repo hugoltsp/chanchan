@@ -1,5 +1,3 @@
-server:
-  contextPath: null
 logging:
   level:
     com.teles.chanchan: DEBUG
@@ -22,3 +20,14 @@ chanchan:
     cdn-url: http://i.4cdn.org
     request-delay: 100
     miniature-suffix: s.jpg
+datasource:
+  url: jdbc:mysql://localhost/chanchan
+  class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+  username: root
+  password: null
+  pool:
+    name: chanchan-dspool
+  prepared-statements:
+    cache: true
+    size: 250
+    sql-limit: 2048

@@ -2,10 +2,10 @@ package com.teles.chanchan.domain.orm;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -39,8 +39,7 @@ public class PostContent extends ChanchanEntity {
 	@Column(name = "image_height")
 	private Integer imageHeight;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "post_id")
+	@OneToMany(mappedBy = "postContent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Post> posts;
 
 	public Long getFileSize() {

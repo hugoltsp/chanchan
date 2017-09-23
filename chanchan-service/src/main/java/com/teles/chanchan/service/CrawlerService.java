@@ -12,7 +12,7 @@ import com.teles.chanchan.domain.exception.ChanchanClientException;
 import com.teles.chanchan.domain.response.CatalogPageResponse;
 import com.teles.chanchan.domain.response.PostResponse;
 import com.teles.chanchan.domain.response.ThreadResponse;
-import com.teles.chanchan.fourchan.client.FourchanChanFeignClient;
+import com.teles.chanchan.fourchan.api.client.FourchanChanFeignClient;
 
 @Service
 public class CrawlerService {

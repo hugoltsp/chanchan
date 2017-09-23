@@ -1,4 +1,4 @@
-package com.teles.chanchan.fourchan.client.content;
+package com.teles.chanchan.fourchan.api.client.content;
 
 import org.springframework.stereotype.Component;
 

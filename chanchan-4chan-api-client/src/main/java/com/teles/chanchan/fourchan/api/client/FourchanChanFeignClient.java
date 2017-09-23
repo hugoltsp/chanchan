@@ -1,4 +1,4 @@
-package com.teles.chanchan.fourchan.client;
+package com.teles.chanchan.fourchan.api.client;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import com.teles.chanchan.domain.response.CatalogPageResponse;
 import com.teles.chanchan.domain.response.PostResponse;
 import com.teles.chanchan.domain.response.ThreadResponse;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
-import com.teles.chanchan.fourchan.client.content.ContentUrlResolver;
+import com.teles.chanchan.fourchan.api.client.content.ContentUrlResolver;
 
 import feign.Feign;
 import feign.FeignException;
@@ -31,11 +31,11 @@ public class FourchanChanFeignClient {
 	}
 
 	public List<BoardResponse> getBoards() {
-		ArrayList<BoardResponse> boards = new ArrayList<>();
+		List<BoardResponse> boards = new ArrayList<>();
 
 		try {
 
-			boards.addAll(this.resource.geBoards().getBoards());
+			boards.addAll(this.resource.geAllBoards().getBoards());
 
 		} catch (FeignException e) {
 			throw new ChanchanClientException(e.status(), e);

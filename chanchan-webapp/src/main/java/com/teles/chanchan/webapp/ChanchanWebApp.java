@@ -15,7 +15,7 @@ import com.teles.chanchan.data.repository.FourchanThreadRepository;
 import com.teles.chanchan.domain.response.BoardResponse;
 import com.teles.chanchan.domain.response.ThreadResponse;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
-import com.teles.chanchan.fourchan.client.FourchanChanFeignClient;
+import com.teles.chanchan.fourchan.api.client.FourchanChanFeignClient;
 import com.teles.chanchan.service.CrawlerService;
 
 @ComponentScan({ "com.teles.chanchan" })

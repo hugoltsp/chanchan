@@ -1,4 +1,4 @@
-package com.teles.chanchan.fourchan.client;
+package com.teles.chanchan.fourchan.api.client;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ interface FourchanChanResource {
 	ThreadResponse getThreadPosts(@Param(value = "board") String board, @Param(value = "number") int number);
 	
 	@RequestLine(value = "GET /boards.json")
-	BoardsResponse geBoards();
+	BoardsResponse geAllBoards();
 
 	@RequestLine(value = "GET /{board}/threads.json")
 	ThreadsResponse getThreads(@Param(value = "board") String board);

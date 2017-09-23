@@ -55,8 +55,12 @@ public class ScraperApp implements CommandLineRunner {
 		logger.info("Boards:: {}", boards);
 		logger.info("Ouput path:: {}", this.outputPath);
 
-		List<ThreadResponse> threads = this.crawlerService.crawlBoards(boards);
-		List<String> urls = this.extractDownloadUrls(threads);
+		List<ThreadResponse> threads = this.crawlerService.crawlThreads(boards);
+
+		List<PostResponse> posts = threads.parallelStream().flatMap(t -> this.crawlerService.crawlPosts(t).stream())
+				.collect(Collectors.toList());
+
+		List<String> urls = this.extractDownloadUrls(posts);
 
 		logger.info("{} files to download..", urls.size());
 		urls.stream().map(this::createRunnable).forEach(this.executor::execute);
@@ -67,10 +71,9 @@ public class ScraperApp implements CommandLineRunner {
 			Thread.sleep(1000);
 		}
 	}
-
-	private List<String> extractDownloadUrls(List<ThreadResponse> threads) {
-		return threads.stream().flatMap(t -> t.getPosts().stream()).map(PostResponse::getContentUrl)
-				.filter(Objects::nonNull).collect(Collectors.toList());
+	
+	private List<String> extractDownloadUrls(List<PostResponse> posts) {
+		return posts.stream().map(PostResponse::getContentUrl).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
 	private Runnable createRunnable(String url) {

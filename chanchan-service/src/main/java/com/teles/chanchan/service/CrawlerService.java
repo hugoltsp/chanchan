@@ -2,13 +2,11 @@ package com.teles.chanchan.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.teles.chanchan.domain.response.CatalogResponse;
 import com.teles.chanchan.domain.response.PostResponse;
 import com.teles.chanchan.domain.response.ThreadResponse;
 import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
@@ -25,64 +23,54 @@ public class CrawlerService {
 		this.chanFeignClient = fourchanChanFeignClient;
 	}
 
-	public List<ThreadResponse> crawlBoards(List<String> boards) {
-		logger.info("Crawling through catalogs:: {}", boards);
-		List<CatalogResponse> pages = getCatalogs(boards);
-		List<ThreadResponse> threads = getThreads(pages);
+	public List<ThreadResponse> crawlThreads(List<String> boards) {
+		logger.info("Crawling through boards: {}", boards);
+		List<ThreadResponse> threadsFromBoards = getThreadsFromBoards(boards);
+		logger.info("Total of {} threads found.", threadsFromBoards.size());
+		return threadsFromBoards;
+	}
+
+	public List<PostResponse> crawlPosts(ThreadResponse threadResponse) {
+		logger.info("searching for posts on thread {} of {}", threadResponse.getNumber(), threadResponse.getBoard());
+
+		List<PostResponse> posts = null;
+
+		try {
+
+			posts = this.chanFeignClient.getPostsFromBoardAndThreadNumber(threadResponse.getBoard(),
+					threadResponse.getNumber());
+
+		} catch (ChanchanClientException e) {
+			logger.error("Couldn't find posts on thread {}", threadResponse.getNumber());
+		}
+
+		return posts;
+	}
+
+	private List<ThreadResponse> getThreadsFromBoards(List<String> boards) {
+		List<ThreadResponse> threads = new ArrayList<>();
+
+		for (String board : boards) {
+			List<ThreadResponse> threadsFromBoard = getThreadsFromBoard(board);
+			logger.info("Total of {} threads found on board {}.", threadsFromBoard.size(), board);
+			threads.addAll(threadsFromBoard);
+		}
+
 		return threads;
 	}
 
-	private List<CatalogResponse> getCatalogs(List<String> boards) {
-		List<CatalogResponse> catalogs = new ArrayList<>();
-
-		for (String board : boards) {
-			catalogs.addAll(getCatalogFromBoard(board));
-		}
-
-		return catalogs;
-	}
-
-	private List<CatalogResponse> getCatalogFromBoard(String board) {
-		List<CatalogResponse> catalogPages = null;
+	private List<ThreadResponse> getThreadsFromBoard(String board) {
+		List<ThreadResponse> catalogPages = null;
 
 		try {
+
 			catalogPages = this.chanFeignClient.getThreadsFromBoard(board);
+
 		} catch (ChanchanClientException e) {
 			logger.error("Couldn't find board {}", board);
 		}
 
 		return catalogPages;
-	}
-
-	private List<ThreadResponse> getThreads(List<CatalogResponse> pages) {
-		List<ThreadResponse> threads = new ArrayList<>();
-
-		pages.parallelStream().flatMap(this::flatMapToThreads).peek(this::logThreads).forEach(t -> {
-			t.setPosts(getPosts(t));
-			threads.add(t);
-		});
-
-		return threads;
-	}
-
-	private void logThreads(ThreadResponse t) {
-		logger.info("searching for posts on thread {} of {}", t.getNumber(), t.getBoard());
-	}
-
-	private Stream<ThreadResponse> flatMapToThreads(CatalogResponse c) {
-		return c.getThreads().stream();
-	}
-
-	private List<PostResponse> getPosts(ThreadResponse t) {
-		List<PostResponse> posts = null;
-
-		try {
-			posts = this.chanFeignClient.getPostsFromBoardAndThreadNumber(t.getBoard(), t.getNumber());
-		} catch (ChanchanClientException e) {
-			logger.error("Couldn't find posts on thread {}", t.getNumber());
-		}
-
-		return posts;
 	}
 
 }

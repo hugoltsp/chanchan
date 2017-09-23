@@ -28,13 +28,13 @@ public class DownloaderService {
 		this.outputPath = settings.getIo().getOutputPath();
 	}
 
-	public void downloadImage(String path) {
+	public void downloadImage(String contentUrl) {
 
 		try {
 
-			logger.info("Downloading image at:: {}", path);
+			logger.info("Downloading image at:: {}", contentUrl);
 
-			URL url = new URL(path);
+			URL url = new URL(contentUrl);
 			File file = createFile(url.getPath());
 
 			try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file), BUFFER_SIZE);
@@ -43,7 +43,7 @@ public class DownloaderService {
 			}
 
 		} catch (IOException e) {
-			logger.error("Could not download file at :: {} ", path, e);
+			logger.error("Could not download file at:: {} ", contentUrl, e);
 		}
 	}
 

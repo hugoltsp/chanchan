@@ -1,5 +1,6 @@
 package com.teles.chanchan.domain.orm;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,7 +28,7 @@ public class Post extends ChanchanEntity {
 	@JoinColumn(name = "thread_id")
 	private Thread thread;
 
-	@OneToOne(mappedBy = "post", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private PostContent postContent;
 
 	public Integer getNumber() {

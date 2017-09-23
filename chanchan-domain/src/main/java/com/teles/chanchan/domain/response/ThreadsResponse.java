@@ -1,13 +1,12 @@
 package com.teles.chanchan.domain.response;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ThreadsResponse {
 
 	private int page;
 
-	private List<ThreadResponse> threads = new ArrayList<>();
+	private List<SimpleThreadResponse> threads;
 
 	public int getPage() {
 		return page;
@@ -17,11 +16,11 @@ public class ThreadsResponse {
 		this.page = page;
 	}
 
-	public List<ThreadResponse> getThreads() {
+	public List<SimpleThreadResponse> getThreads() {
 		return threads;
 	}
 
-	public void setThreads(List<ThreadResponse> threads) {
+	public void setThreads(List<SimpleThreadResponse> threads) {
 		this.threads = threads;
 	}
 

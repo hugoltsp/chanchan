@@ -2,10 +2,10 @@ package com.teles.chanchan.fourchan.api.client.content;
 
 import org.springframework.stereotype.Component;
 
-import com.teles.chanchan.domain.exception.ChanchanClientException;
 import com.teles.chanchan.domain.response.PostResponse;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
 import com.teles.chanchan.domain.settings.ChanchanSettings.ClientFourChan;
+import com.teles.chanchan.fourchan.api.client.exception.ChanchanClientException;
 
 @Component
 public class ContentUrlResolver {

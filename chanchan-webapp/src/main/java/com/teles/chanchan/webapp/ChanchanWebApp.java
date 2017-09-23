@@ -15,7 +15,7 @@ import com.teles.chanchan.data.repository.FourchanThreadRepository;
 import com.teles.chanchan.domain.response.BoardResponse;
 import com.teles.chanchan.domain.response.ThreadResponse;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
-import com.teles.chanchan.fourchan.api.client.FourchanChanFeignClient;
+import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
 import com.teles.chanchan.service.CrawlerService;
 
 @ComponentScan({ "com.teles.chanchan" })
@@ -28,7 +28,7 @@ public class ChanchanWebApp implements CommandLineRunner{
 	private FourchanThreadRepository fourchanThreadRepository;
 	
 	@Autowired
-	private FourchanChanFeignClient fourchanChanFeignClient;
+	private FourchanChanResourceClient fourchanChanFeignClient;
 	
 	@Autowired
 	private CrawlerService crawlerService;
@@ -39,7 +39,7 @@ public class ChanchanWebApp implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		List<String> boards = this.fourchanChanFeignClient.getBoards().stream().map(BoardResponse::getBoard)
+		List<String> boards = this.fourchanChanFeignClient.getAllBoards().stream().map(BoardResponse::getBoard)
 				.collect(Collectors.toList());
 
 		List<ThreadResponse> threads = this.crawlerService.crawlBoards(boards);

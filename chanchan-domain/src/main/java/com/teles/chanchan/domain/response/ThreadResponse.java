@@ -1,19 +1,10 @@
 package com.teles.chanchan.domain.response;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Document(collection = "4chan-thread")
-public class ThreadResponse {
-
-	@Id
-	@JsonProperty("no")
-	private Integer number;
+public class ThreadResponse extends SimpleThreadResponse {
 
 	@JsonProperty("sub")
 	private String name;
@@ -26,26 +17,7 @@ public class ThreadResponse {
 
 	private String board;
 
-	@JsonProperty("last_modified")
-	private long lastModified;
-
-	private List<PostResponse> posts = new ArrayList<>();
-
-	public long getLastModified() {
-		return lastModified;
-	}
-
-	public void setLastModified(long lastModified) {
-		this.lastModified = lastModified;
-	}
-
-	public Integer getNumber() {
-		return number;
-	}
-
-	public void setNumber(Integer number) {
-		this.number = number;
-	}
+	private List<PostResponse> posts;
 
 	public String getBoard() {
 		return board;
@@ -93,8 +65,9 @@ public class ThreadResponse {
 
 	@Override
 	public String toString() {
-		return "FourchanThread [number=" + number + ", name=" + name + ", description=" + description + ", semanticUrl="
-				+ semanticUrl + ", board=" + board + ", posts=" + posts + "]";
+		return "ThreadResponse [name=" + name + ", description=" + description + ", semanticUrl=" + semanticUrl
+				+ ", board=" + board + ", posts=" + posts + ", getNumber()=" + getNumber() + ", getLastModified()="
+				+ getLastModified() + "]";
 	}
 
 }

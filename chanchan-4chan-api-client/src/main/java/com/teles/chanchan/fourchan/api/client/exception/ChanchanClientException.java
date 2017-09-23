@@ -1,4 +1,6 @@
-package com.teles.chanchan.domain.exception;
+package com.teles.chanchan.fourchan.api.client.exception;
+
+import com.teles.chanchan.domain.exception.ChanchanException;
 
 public class ChanchanClientException extends ChanchanException {
 

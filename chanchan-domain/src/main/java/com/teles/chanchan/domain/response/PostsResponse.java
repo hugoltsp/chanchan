@@ -1,11 +1,10 @@
 package com.teles.chanchan.domain.response;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PostsResponse {
 
-	private List<PostResponse> posts = new ArrayList<>();
+	private List<PostResponse> posts;
 
 	public List<PostResponse> getPosts() {
 		return posts;

@@ -1,11 +1,10 @@
 package com.teles.chanchan.domain.response;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BoardsResponse {
 
-	private List<BoardResponse> boards = new ArrayList<>();
+	private List<BoardResponse> boards;
 
 	public List<BoardResponse> getBoards() {
 		return boards;

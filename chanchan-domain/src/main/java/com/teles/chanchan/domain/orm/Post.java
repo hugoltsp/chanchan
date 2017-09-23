@@ -1,5 +1,7 @@
 package com.teles.chanchan.domain.orm;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "post")
@@ -18,8 +22,9 @@ public class Post extends ChanchanEntity {
 	@Column(name = "number")
 	private Integer number;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "timestamp")
-	private Long timeStamp;
+	private Date timeStamp;
 
 	@Column(name = "comentary")
 	private String comentary;
@@ -39,11 +44,11 @@ public class Post extends ChanchanEntity {
 		this.number = number;
 	}
 
-	public Long getTimeStamp() {
+	public Date getTimeStamp() {
 		return timeStamp;
 	}
 
-	public void setTimeStamp(Long timeStamp) {
+	public void setTimeStamp(Date timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 

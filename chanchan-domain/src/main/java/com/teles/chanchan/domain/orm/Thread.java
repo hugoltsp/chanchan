@@ -1,6 +1,7 @@
 package com.teles.chanchan.domain.orm;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "thread")
@@ -30,8 +33,9 @@ public class Thread extends ChanchanEntity {
 	@Column(name = "number")
 	private Integer number;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "last_modified")
-	private Long lastModified;
+	private Date lastModified;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "board_id")
@@ -72,11 +76,11 @@ public class Thread extends ChanchanEntity {
 		this.number = number;
 	}
 
-	public Long getLastModified() {
+	public Date getLastModified() {
 		return lastModified;
 	}
 
-	public void setLastModified(Long lastModified) {
+	public void setLastModified(Date lastModified) {
 		this.lastModified = lastModified;
 	}
 

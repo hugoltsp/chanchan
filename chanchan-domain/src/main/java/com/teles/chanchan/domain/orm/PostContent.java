@@ -1,10 +1,12 @@
 package com.teles.chanchan.domain.orm;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -13,8 +15,8 @@ public class PostContent extends ChanchanEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "size")
-	private Integer fileSize;
+	@Column(name = "file_size")
+	private Long fileSize;
 
 	@Column(name = "thumb_url")
 	private String thumbUrl;
@@ -37,15 +39,15 @@ public class PostContent extends ChanchanEntity {
 	@Column(name = "image_height")
 	private Integer imageHeight;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id")
-	private Post post;
+	private List<Post> posts;
 
-	public Integer getFileSize() {
+	public Long getFileSize() {
 		return fileSize;
 	}
 
-	public void setFileSize(Integer fileSize) {
+	public void setFileSize(Long fileSize) {
 		this.fileSize = fileSize;
 	}
 
@@ -106,11 +108,15 @@ public class PostContent extends ChanchanEntity {
 	}
 
 	public Post getPost() {
-		return post;
+		return posts.get(0);
 	}
 
-	public void setPost(Post post) {
-		this.post = post;
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> post) {
+		this.posts = post;
 	}
 
 	@Override

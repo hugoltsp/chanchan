@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.teles.chanchan.domain.response.PostResponse;
+import com.teles.chanchan.domain.response.SimpleThreadResponse;
 import com.teles.chanchan.domain.response.ThreadResponse;
 import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
 import com.teles.chanchan.fourchan.api.client.exception.ChanchanClientException;
@@ -30,7 +31,7 @@ public class CrawlerService {
 		return threadsFromBoards;
 	}
 
-	public List<PostResponse> crawlPosts(ThreadResponse threadResponse) {
+	public List<PostResponse> crawlPosts(SimpleThreadResponse threadResponse) {
 		logger.info("searching for posts on thread {} of {}", threadResponse.getNumber(), threadResponse.getBoard());
 
 		List<PostResponse> posts = null;

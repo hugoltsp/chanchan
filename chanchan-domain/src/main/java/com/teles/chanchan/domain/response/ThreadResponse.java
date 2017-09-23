@@ -15,17 +15,7 @@ public class ThreadResponse extends SimpleThreadResponse {
 	@JsonProperty("semantic_url")
 	private String semanticUrl;
 
-	private String board;
-
 	private List<PostResponse> posts;
-
-	public String getBoard() {
-		return board;
-	}
-
-	public void setBoard(String board) {
-		this.board = board;
-	}
 
 	public String getName() {
 		return name;
@@ -51,14 +41,6 @@ public class ThreadResponse extends SimpleThreadResponse {
 		this.semanticUrl = semanticUrl;
 	}
 
-	public List<PostResponse> getPosts() {
-		return posts;
-	}
-
-	public void setPosts(List<PostResponse> posts) {
-		this.posts = posts;
-	}
-
 	public void addPosts(List<PostResponse> posts) {
 		this.posts.addAll(posts);
 	}
@@ -66,8 +48,8 @@ public class ThreadResponse extends SimpleThreadResponse {
 	@Override
 	public String toString() {
 		return "ThreadResponse [name=" + name + ", description=" + description + ", semanticUrl=" + semanticUrl
-				+ ", board=" + board + ", posts=" + posts + ", getNumber()=" + getNumber() + ", getLastModified()="
-				+ getLastModified() + "]";
+				+ ", posts=" + posts + ", getNumber()=" + getNumber() + ", getLastModified()=" + getLastModified()
+				+ ", getBoard()=" + getBoard() + "]";
 	}
 
 }

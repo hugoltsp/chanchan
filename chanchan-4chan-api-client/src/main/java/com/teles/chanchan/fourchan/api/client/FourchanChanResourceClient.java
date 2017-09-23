@@ -9,8 +9,8 @@ import com.teles.chanchan.domain.response.BoardResponse;
 import com.teles.chanchan.domain.response.PostResponse;
 import com.teles.chanchan.domain.response.SimpleThreadResponse;
 import com.teles.chanchan.domain.response.ThreadResponse;
-import com.teles.chanchan.domain.response.ThreadsResponse;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
+import com.teles.chanchan.fourchan.api.client.FourchanChanResource.ThreadsResponse;
 import com.teles.chanchan.fourchan.api.client.content.ContentUrlResolver;
 import com.teles.chanchan.fourchan.api.client.exception.ChanchanClientException;
 

@@ -10,6 +10,8 @@ public class SimpleThreadResponse {
 	@JsonProperty("last_modified")
 	private long lastModified;
 
+	private String board;
+
 	public Integer getNumber() {
 		return number;
 	}
@@ -26,9 +28,17 @@ public class SimpleThreadResponse {
 		this.lastModified = lastModified;
 	}
 
+	public String getBoard() {
+		return board;
+	}
+
+	public void setBoard(String board) {
+		this.board = board;
+	}
+
 	@Override
 	public String toString() {
-		return "SimpleThreadResponse [number=" + number + ", lastModified=" + lastModified + "]";
+		return "SimpleThreadResponse [number=" + number + ", lastModified=" + lastModified + ", board=" + board + "]";
 	}
 
 }

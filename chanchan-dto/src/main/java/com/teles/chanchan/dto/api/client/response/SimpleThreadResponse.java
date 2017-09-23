@@ -1,4 +1,4 @@
-package com.teles.chanchan.domain.response;
+package com.teles.chanchan.dto.api.client.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

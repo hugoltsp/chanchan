@@ -5,14 +5,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.teles.chanchan.domain.response.BoardResponse;
-import com.teles.chanchan.domain.response.PostResponse;
-import com.teles.chanchan.domain.response.SimpleThreadResponse;
-import com.teles.chanchan.domain.response.ThreadResponse;
+import com.teles.chanchan.domain.exception.ChanchanApiClientException;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
+import com.teles.chanchan.dto.api.client.response.BoardResponse;
+import com.teles.chanchan.dto.api.client.response.PostResponse;
+import com.teles.chanchan.dto.api.client.response.SimpleThreadResponse;
+import com.teles.chanchan.dto.api.client.response.ThreadResponse;
 import com.teles.chanchan.fourchan.api.client.FourchanChanResource.ThreadsResponse;
 import com.teles.chanchan.fourchan.api.client.content.ContentUrlResolver;
-import com.teles.chanchan.fourchan.api.client.exception.ChanchanClientException;
 
 import feign.Feign;
 import feign.FeignException;
@@ -39,13 +39,13 @@ public class FourchanChanResourceClient {
 			boards.addAll(this.resource.geAllBoards().getBoards());
 
 		} catch (FeignException e) {
-			throw new ChanchanClientException(e.status(), e);
+			throw new ChanchanApiClientException(e.status(), e);
 		}
 
 		return boards;
 	}
 
-	public List<ThreadResponse> getThreadsFromBoard(String board) throws ChanchanClientException {
+	public List<ThreadResponse> getThreadsFromBoard(String board) throws ChanchanApiClientException {
 		List<ThreadResponse> threads = new ArrayList<>();
 
 		try {
@@ -56,14 +56,14 @@ public class FourchanChanResourceClient {
 			});
 
 		} catch (FeignException e) {
-			throw new ChanchanClientException(e.status(), e);
+			throw new ChanchanApiClientException(e.status(), e);
 		}
 
 		return threads;
 	}
 
 	public List<PostResponse> getPostsFromBoardAndThreadNumber(String board, int threadNumber)
-			throws ChanchanClientException {
+			throws ChanchanApiClientException {
 		List<PostResponse> posts = new ArrayList<>();
 
 		try {
@@ -80,7 +80,7 @@ public class FourchanChanResourceClient {
 			}
 
 		} catch (FeignException e) {
-			throw new ChanchanClientException(e.status(), e);
+			throw new ChanchanApiClientException(e.status(), e);
 		}
 
 		return posts;
@@ -96,7 +96,7 @@ public class FourchanChanResourceClient {
 			}
 
 		} catch (FeignException e) {
-			throw new ChanchanClientException(e.status(), e);
+			throw new ChanchanApiClientException(e.status(), e);
 		}
 
 		return simpleThreadResponse;

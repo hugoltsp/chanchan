@@ -2,10 +2,10 @@ package com.teles.chanchan.fourchan.api.client.content;
 
 import org.springframework.stereotype.Component;
 
-import com.teles.chanchan.domain.response.PostResponse;
+import com.teles.chanchan.domain.exception.ChanchanApiClientException;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
 import com.teles.chanchan.domain.settings.ChanchanSettings.ClientFourChan;
-import com.teles.chanchan.fourchan.api.client.exception.ChanchanClientException;
+import com.teles.chanchan.dto.api.client.response.PostResponse;
 
 @Component
 public class ContentUrlResolver {
@@ -21,11 +21,11 @@ public class ContentUrlResolver {
 		this.cdnUrl = clientFourChan.getCdnUrl();
 	}
 
-	public String buildMediaUrl(PostResponse post) throws ChanchanClientException {
+	public String buildMediaUrl(PostResponse post) throws ChanchanApiClientException {
 		return new StringBuilder().append(this.resolveContentUrl(post)).append(post.getFileExtension()).toString();
 	}
 
-	public String buildThumbNailUrl(PostResponse post) throws ChanchanClientException {
+	public String buildThumbNailUrl(PostResponse post) throws ChanchanApiClientException {
 		return new StringBuilder().append(this.resolveContentUrl(post)).append(this.miniatureSuffix).toString();
 	}
 

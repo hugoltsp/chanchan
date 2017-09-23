@@ -15,9 +15,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
-import com.teles.chanchan.domain.response.PostResponse;
-import com.teles.chanchan.domain.response.ThreadResponse;
 import com.teles.chanchan.domain.settings.ChanchanSettings;
+import com.teles.chanchan.dto.api.client.response.PostResponse;
+import com.teles.chanchan.dto.api.client.response.ThreadResponse;
 import com.teles.chanchan.service.CrawlerService;
 import com.teles.chanchan.service.io.DownloaderService;
 

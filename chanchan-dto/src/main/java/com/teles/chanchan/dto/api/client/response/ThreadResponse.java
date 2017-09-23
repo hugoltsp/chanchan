@@ -1,7 +1,5 @@
 package com.teles.chanchan.dto.api.client.response;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ThreadResponse extends SimpleThreadResponse {
@@ -14,8 +12,6 @@ public class ThreadResponse extends SimpleThreadResponse {
 
 	@JsonProperty("semantic_url")
 	private String semanticUrl;
-
-	private List<PostResponse> posts;
 
 	public String getName() {
 		return name;
@@ -41,15 +37,11 @@ public class ThreadResponse extends SimpleThreadResponse {
 		this.semanticUrl = semanticUrl;
 	}
 
-	public void addPosts(List<PostResponse> posts) {
-		this.posts.addAll(posts);
-	}
-
 	@Override
 	public String toString() {
 		return "ThreadResponse [name=" + name + ", description=" + description + ", semanticUrl=" + semanticUrl
-				+ ", posts=" + posts + ", getNumber()=" + getNumber() + ", getLastModified()=" + getLastModified()
-				+ ", getBoard()=" + getBoard() + "]";
+				+ ", getNumber()=" + getNumber() + ", getLastModified()=" + getLastModified() + ", getBoard()="
+				+ getBoard() + "]";
 	}
 
 }

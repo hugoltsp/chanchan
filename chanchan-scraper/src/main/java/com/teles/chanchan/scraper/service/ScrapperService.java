@@ -1,4 +1,4 @@
-package com.teles.chanchan.service;
+package com.teles.chanchan.scraper.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +14,13 @@ import com.teles.chanchan.dto.api.client.response.ThreadResponse;
 import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
 
 @Service
-public class CrawlerService {
+public class ScrapperService {
 
-	private static final Logger logger = LoggerFactory.getLogger(CrawlerService.class);
+	private static final Logger logger = LoggerFactory.getLogger(ScrapperService.class);
 
 	private final FourchanChanResourceClient chanFeignClient;
 
-	public CrawlerService(FourchanChanResourceClient fourchanChanFeignClient) {
+	public ScrapperService(FourchanChanResourceClient fourchanChanFeignClient) {
 		this.chanFeignClient = fourchanChanFeignClient;
 	}
 
@@ -34,12 +34,12 @@ public class CrawlerService {
 	public List<PostResponse> crawlPosts(SimpleThreadResponse threadResponse) {
 		logger.info("searching for posts on thread {} of {}", threadResponse.getNumber(), threadResponse.getBoard());
 
-		List<PostResponse> posts = null;
+		List<PostResponse> posts = new ArrayList<>();
 
 		try {
 
-			posts = this.chanFeignClient.getPostsFromBoardAndThreadNumber(threadResponse.getBoard(),
-					threadResponse.getNumber());
+			posts.addAll(this.chanFeignClient.getPostsFromBoardAndThreadNumber(threadResponse.getBoard(),
+					threadResponse.getNumber()));
 
 		} catch (ChanchanApiClientException e) {
 			logger.error("Couldn't find posts on thread {}", threadResponse.getNumber());
@@ -61,11 +61,11 @@ public class CrawlerService {
 	}
 
 	private List<ThreadResponse> getThreadsFromBoard(String board) {
-		List<ThreadResponse> catalogPages = null;
+		List<ThreadResponse> catalogPages = new ArrayList<>();
 
 		try {
 
-			catalogPages = this.chanFeignClient.getThreadsFromBoard(board);
+			catalogPages.addAll(this.chanFeignClient.getThreadsFromBoard(board));
 
 		} catch (ChanchanApiClientException e) {
 			logger.error("Couldn't find board {}", board);

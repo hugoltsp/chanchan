@@ -12,8 +12,7 @@ import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import com.teles.chanchan.domain.settings.ChanchanSettings;
-import com.teles.chanchan.domain.settings.ChanchanSettings.Async;
+import com.teles.chanchan.config.settings.AsyncSettings;
 
 @EnableAsync
 @SpringBootConfiguration
@@ -21,21 +20,20 @@ public class AsyncConfig implements AsyncConfigurer {
 
 	private static final Logger logger = LoggerFactory.getLogger(AsyncConfig.class);
 
-	private final ChanchanSettings settings;
+	private final AsyncSettings settings;
 
-	public AsyncConfig(ChanchanSettings settings) {
+	public AsyncConfig(AsyncSettings settings) {
 		this.settings = settings;
 	}
 
 	@Bean
 	public Executor getAsyncExecutor() {
 		logger.info("Getting Async Executor");
-		Async async = this.settings.getAsync();
-		logger.info("Threadpool size:: {}", async.getThreadPoolSize());
+		logger.info("Threadpool size:: {}", settings.getThreadPoolSize());
 
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(async.getThreadPoolSize());
-		executor.setThreadNamePrefix(async.getThreadNamePrefix());
+		executor.setCorePoolSize(settings.getThreadPoolSize());
+		executor.setThreadNamePrefix(settings.getThreadNamePrefix());
 
 		return executor;
 	}

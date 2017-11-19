@@ -14,13 +14,12 @@
 
 		<dependency>
 			<groupId>com.teles.chanchan</groupId>
-			<artifactId>chanchan-service</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>com.teles.chanchan</groupId>
-					<artifactId>chanchan-data</artifactId>
-				</exclusion>
-			</exclusions>
+			<artifactId>chanchan-4chan-api-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.teles.chanchan</groupId>
+			<artifactId>chanchan-config</artifactId>
 		</dependency>
 
 	</dependencies>

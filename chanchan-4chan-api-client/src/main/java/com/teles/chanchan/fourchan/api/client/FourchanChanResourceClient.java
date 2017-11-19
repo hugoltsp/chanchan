@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.teles.chanchan.config.settings.Client4ChanSettings;
 import com.teles.chanchan.domain.exception.ChanchanApiClientException;
-import com.teles.chanchan.domain.settings.ChanchanSettings;
 import com.teles.chanchan.dto.api.client.response.BoardResponse;
 import com.teles.chanchan.dto.api.client.response.PostResponse;
 import com.teles.chanchan.dto.api.client.response.SimpleThreadResponse;
@@ -26,9 +26,9 @@ public class FourchanChanResourceClient {
 	private final ContentUrlResolver imageUrlResolver;
 	private final FourchanChanResource resource;
 
-	public FourchanChanResourceClient(ContentUrlResolver imageUrlResolver, ChanchanSettings settings) {
+	public FourchanChanResourceClient(ContentUrlResolver imageUrlResolver, Client4ChanSettings settings) {
 		this.imageUrlResolver = imageUrlResolver;
-		this.resource = createResource(settings.getClientFourChan().getApiUrl());
+		this.resource = createResource(settings.getApiUrl());
 	}
 
 	public List<BoardResponse> getAllBoards() {

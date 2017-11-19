@@ -13,31 +13,36 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.FilterType;
 
-import com.teles.chanchan.domain.settings.ChanchanSettings;
+import com.teles.chanchan.config.datasource.DataSourceConfig;
+import com.teles.chanchan.config.settings.AsyncSettings;
+import com.teles.chanchan.dto.api.client.response.BoardResponse;
 import com.teles.chanchan.dto.api.client.response.PostResponse;
 import com.teles.chanchan.dto.api.client.response.ThreadResponse;
-import com.teles.chanchan.service.CrawlerService;
-import com.teles.chanchan.service.io.DownloaderService;
+import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
+import com.teles.chanchan.scraper.service.ScrapperService;
+import com.teles.chanchan.scraper.service.io.DownloaderService;
 
-@ComponentScan({ "com.teles.chanchan.service", "com.teles.chanchan.fourchan" })
-@Import(value = { ChanchanSettings.class })
+@ComponentScan(basePackages = { "com.teles.chanchan" }, excludeFilters = {
+		@Filter(type = FilterType.ASSIGNABLE_TYPE, value = { DataSourceConfig.class }) })
 @SpringBootApplication
 public class ScraperApp implements CommandLineRunner {
 
 	private static final Logger logger = LoggerFactory.getLogger(ScraperApp.class);
 
 	private final ExecutorService executor;
-	private final CrawlerService crawlerService;
+	private final ScrapperService crawlerService;
 	private final DownloaderService downloaderService;
-	private final String outputPath;
+	private final FourchanChanResourceClient chanFeignClient;
 
-	public ScraperApp(CrawlerService crawlerService, ChanchanSettings settings, DownloaderService downloaderService) {
+	public ScraperApp(ScrapperService crawlerService, AsyncSettings asyncSettings,
+			DownloaderService downloaderService, FourchanChanResourceClient chanFeignClient) {
 		this.crawlerService = crawlerService;
-		this.outputPath = settings.getIo().getOutputPath();
+		this.chanFeignClient = chanFeignClient;
 		this.downloaderService = downloaderService;
-		this.executor = Executors.newFixedThreadPool(settings.getAsync().getThreadPoolSize());
+		this.executor = Executors.newFixedThreadPool(asyncSettings.getThreadPoolSize());
 	}
 
 	public static void main(String[] args) {
@@ -50,10 +55,10 @@ public class ScraperApp implements CommandLineRunner {
 		}
 
 		logger.info("Chanchan started");
-		List<String> boards = this.parseBoards(args);
+		List<String> boards = this.chanFeignClient.getAllBoards().stream().map(BoardResponse::getBoard)
+				.collect(Collectors.toList());// this.parseBoards(args);
 
 		logger.info("Boards:: {}", boards);
-		logger.info("Ouput path:: {}", this.outputPath);
 
 		List<ThreadResponse> threads = this.crawlerService.crawlThreads(boards);
 
@@ -71,7 +76,7 @@ public class ScraperApp implements CommandLineRunner {
 			Thread.sleep(1000);
 		}
 	}
-	
+
 	private List<String> extractDownloadUrls(List<PostResponse> posts) {
 		return posts.stream().map(PostResponse::getContentUrl).filter(Objects::nonNull).collect(Collectors.toList());
 	}

@@ -1,4 +1,4 @@
-package com.teles.chanchan.domain.settings;
+package com.teles.chanchan.config.settings;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

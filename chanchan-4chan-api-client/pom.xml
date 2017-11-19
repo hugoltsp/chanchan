@@ -24,6 +24,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.teles.chanchan</groupId>
+			<artifactId>chanchan-config</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>com.netflix.feign</groupId>
 			<artifactId>feign-okhttp</artifactId>
 			<version>${feign.version}</version>

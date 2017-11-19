@@ -1,4 +1,4 @@
-package com.teles.chanchan.service.io;
+package com.teles.chanchan.scraper.service.io;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.teles.chanchan.domain.settings.ChanchanSettings;
+import com.teles.chanchan.config.settings.IoSettings;
 
 @Service
 public class DownloaderService {
@@ -24,8 +24,8 @@ public class DownloaderService {
 
 	private final String outputPath;
 
-	public DownloaderService(ChanchanSettings settings) {
-		this.outputPath = settings.getIo().getOutputPath();
+	public DownloaderService(IoSettings settings) {
+		this.outputPath = settings.getOutputPath();
 	}
 
 	public void downloadImage(String contentUrl) {

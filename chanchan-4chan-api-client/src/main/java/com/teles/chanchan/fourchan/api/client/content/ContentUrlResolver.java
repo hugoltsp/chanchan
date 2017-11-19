@@ -2,9 +2,8 @@ package com.teles.chanchan.fourchan.api.client.content;
 
 import org.springframework.stereotype.Component;
 
+import com.teles.chanchan.config.settings.Client4ChanSettings;
 import com.teles.chanchan.domain.exception.ChanchanApiClientException;
-import com.teles.chanchan.domain.settings.ChanchanSettings;
-import com.teles.chanchan.domain.settings.ChanchanSettings.ClientFourChan;
 import com.teles.chanchan.dto.api.client.response.PostResponse;
 
 @Component
@@ -15,10 +14,9 @@ public class ContentUrlResolver {
 	private final String miniatureSuffix;
 	private final String cdnUrl;
 
-	public ContentUrlResolver(ChanchanSettings settings) {
-		ClientFourChan clientFourChan = settings.getClientFourChan();
-		this.miniatureSuffix = clientFourChan.getMiniatureSuffix();
-		this.cdnUrl = clientFourChan.getCdnUrl();
+	public ContentUrlResolver(Client4ChanSettings settings) {
+		this.miniatureSuffix = settings.getMiniatureSuffix();
+		this.cdnUrl = settings.getCdnUrl();
 	}
 
 	public String buildMediaUrl(PostResponse post) throws ChanchanApiClientException {

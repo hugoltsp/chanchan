@@ -1,12 +1,11 @@
 package com.teles.chanchan.fourchan.api.client.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.teles.chanchan.domain.settings.ChanchanSettings;
-import com.teles.chanchan.domain.settings.ChanchanSettings.ClientFourChan;
+import com.teles.chanchan.config.settings.Client4ChanSettings;
 import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
 import com.teles.chanchan.fourchan.api.client.content.ContentUrlResolver;
 
@@ -21,7 +20,7 @@ public class FourchanClientTests {
 
 	@Before
 	public void onStart() {
-		ChanchanSettings chanchanSettings = chanChanSettings();
+		Client4ChanSettings chanchanSettings = settings();
 		ContentUrlResolver imageUrlResolver = new ContentUrlResolver(chanchanSettings);
 		this.fourchanChanResourceClient = new FourchanChanResourceClient(imageUrlResolver, chanchanSettings);
 	}
@@ -82,13 +81,12 @@ public class FourchanClientTests {
 
 	}
 
-	private static ChanchanSettings chanChanSettings() {
-		ChanchanSettings chanchanSettings = new ChanchanSettings();
-		ClientFourChan clientFourChan = chanchanSettings.getClientFourChan();
+	private static Client4ChanSettings settings() {
+		Client4ChanSettings clientFourChan = new Client4ChanSettings();
 		clientFourChan.setApiUrl(API_4CHAN);
 		clientFourChan.setMiniatureSuffix(MINIATURE_SUFFIX);
 		clientFourChan.setCdnUrl(CDN_4CHAN);
-		return chanchanSettings;
+		return clientFourChan;
 	}
 
 }

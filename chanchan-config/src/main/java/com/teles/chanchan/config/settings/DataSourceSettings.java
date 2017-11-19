@@ -1,11 +1,17 @@
 package com.teles.chanchan.config.settings;
 
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "datasource")
+@ConfigurationProperties("datasource")
 public class DataSourceSettings {
+
+	private static final Logger logger = LoggerFactory.getLogger(DataSourceSettings.class);
 
 	private String url;
 	private String className;
@@ -13,6 +19,11 @@ public class DataSourceSettings {
 	private String password;
 	private final Pool pool = new Pool();
 	private final PreparedStatements preparedStatements = new PreparedStatements();
+
+	@PostConstruct
+	private void init() {
+		logger.info(toString());
+	}
 
 	public Pool getPool() {
 		return pool;
@@ -108,9 +119,10 @@ public class DataSourceSettings {
 
 	}
 
+	@Override
 	public String toString() {
-		return "DataSourceSettings [url=" + url + ", className=" + className + ", userName=" + username + ", password="
-				+ password + "]";
+		return "DataSourceSettings [url=" + url + ", className=" + className + ", username=" + username + ", password="
+				+ password + ", pool=" + pool + ", preparedStatements=" + preparedStatements + "]";
 	}
 
 }

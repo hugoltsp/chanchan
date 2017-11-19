@@ -61,17 +61,17 @@ public class ScrapperService {
 	}
 
 	private List<ThreadResponse> getThreadsFromBoard(String board) {
-		List<ThreadResponse> catalogPages = new ArrayList<>();
+		List<ThreadResponse> threads = new ArrayList<>();
 
 		try {
 
-			catalogPages.addAll(this.chanFeignClient.getThreadsFromBoard(board));
+			threads.addAll(this.chanFeignClient.getThreadsFromBoard(board));
 
 		} catch (ChanchanApiClientException e) {
 			logger.error("Couldn't find board {}", board);
 		}
 
-		return catalogPages;
+		return threads;
 	}
 
 }

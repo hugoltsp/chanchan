@@ -45,7 +45,7 @@ public class FourchanChanResourceClient {
 		return boards;
 	}
 
-	public List<ThreadResponse> getThreadsFromBoard(String board) throws ChanchanApiClientException {
+	public List<ThreadResponse> getThreadsFromBoard(String board) {
 		List<ThreadResponse> threads = new ArrayList<>();
 
 		try {
@@ -62,8 +62,7 @@ public class FourchanChanResourceClient {
 		return threads;
 	}
 
-	public List<PostResponse> getPostsFromBoardAndThreadNumber(String board, int threadNumber)
-			throws ChanchanApiClientException {
+	public List<PostResponse> getPostsFromBoardAndThreadNumber(String board, int threadNumber) {
 		List<PostResponse> posts = new ArrayList<>();
 
 		try {

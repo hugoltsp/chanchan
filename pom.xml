@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.teles.chanchan</groupId>
 	<artifactId>chanchan</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>pom</packaging>
 	<name>Root</name>
 
@@ -18,7 +18,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.3.RELEASE</version>
+		<version>1.5.8.RELEASE</version>
 	</parent>
 
 	<dependencyManagement>
@@ -118,9 +118,8 @@
 		<module>chanchan-domain</module>
 		<module>chanchan-service</module>
 		<module>chanchan-config</module>
-		<module>chanchan-webapp</module>
+		<module>chanchan-web-app</module>
 		<module>chanchan-dto</module>
-		<module>chanchan-scheduler</module>
 	</modules>
 
 	<build>

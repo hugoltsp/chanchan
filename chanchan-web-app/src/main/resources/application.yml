@@ -1,0 +1,28 @@
+server:
+  contextPath: null
+logging:
+  level:
+    com.teles.chanchan: DEBUG
+security:
+  basic:
+    enabled: false
+  user:
+    name: user
+    password: churro$
+management:
+  context-path: /actuator
+chanchan:
+  io:
+    output-path: null
+  async:
+    thread-pool-size: 20
+    thread-name-prefix: ChanChan-Executor-
+  client-four-chan:
+    api-url: http://api.4chan.org
+    cdn-url: http://i.4cdn.org
+    request-delay: 100
+    miniature-suffix: s.jpg
+spring:
+  data:
+    mongodb:
+      database: chanchan

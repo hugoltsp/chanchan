@@ -1,16 +1,12 @@
 package com.teles.chanchan.data.repository;
 
-import java.util.List;
-
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import com.teles.chanchan.domain.orm.Board;
+import com.teles.chanchan.domain.document.Board;
 
 @Repository
-public interface BoardRepository extends CrudRepository<Board, Long>{
+public interface BoardRepository extends MongoRepository<Board, String>{
 
-	List<Board> findAll();
-	
 	Board findByBoard(String board);
 }

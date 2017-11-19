@@ -23,7 +23,7 @@ public class PostResponse {
 	private Long timeStamp;
 
 	@JsonProperty("fsize")
-	private Integer fileSize;
+	private Long fileSize;
 
 	@JsonProperty("com")
 	private String comentary;
@@ -84,11 +84,11 @@ public class PostResponse {
 		this.timeStamp = timeStamp;
 	}
 
-	public Integer getFileSize() {
+	public Long getFileSize() {
 		return fileSize;
 	}
 
-	public void setFileSize(Integer fileSize) {
+	public void setFileSize(Long fileSize) {
 		this.fileSize = fileSize;
 	}
 

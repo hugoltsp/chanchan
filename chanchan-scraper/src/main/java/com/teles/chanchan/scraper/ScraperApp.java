@@ -13,20 +13,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.context.annotation.FilterType;
 
-import com.teles.chanchan.config.datasource.DataSourceConfig;
 import com.teles.chanchan.config.settings.AsyncSettings;
-import com.teles.chanchan.dto.api.client.response.BoardResponse;
 import com.teles.chanchan.dto.api.client.response.PostResponse;
 import com.teles.chanchan.dto.api.client.response.ThreadResponse;
-import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
+import com.teles.chanchan.scraper.service.DownloaderService;
 import com.teles.chanchan.scraper.service.ScrapperService;
-import com.teles.chanchan.scraper.service.io.DownloaderService;
 
-@ComponentScan(basePackages = { "com.teles.chanchan" }, excludeFilters = {
-		@Filter(type = FilterType.ASSIGNABLE_TYPE, value = { DataSourceConfig.class }) })
+@ComponentScan("com.teles.chanchan")
 @SpringBootApplication
 public class ScraperApp implements CommandLineRunner {
 
@@ -35,12 +29,10 @@ public class ScraperApp implements CommandLineRunner {
 	private final ExecutorService executor;
 	private final ScrapperService crawlerService;
 	private final DownloaderService downloaderService;
-	private final FourchanChanResourceClient chanFeignClient;
 
 	public ScraperApp(ScrapperService crawlerService, AsyncSettings asyncSettings,
-			DownloaderService downloaderService, FourchanChanResourceClient chanFeignClient) {
+			DownloaderService downloaderService) {
 		this.crawlerService = crawlerService;
-		this.chanFeignClient = chanFeignClient;
 		this.downloaderService = downloaderService;
 		this.executor = Executors.newFixedThreadPool(asyncSettings.getThreadPoolSize());
 	}
@@ -55,8 +47,7 @@ public class ScraperApp implements CommandLineRunner {
 		}
 
 		logger.info("Chanchan started");
-		List<String> boards = this.chanFeignClient.getAllBoards().stream().map(BoardResponse::getBoard)
-				.collect(Collectors.toList());// this.parseBoards(args);
+		List<String> boards = this.parseBoards(args);
 
 		logger.info("Boards:: {}", boards);
 

@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.teles.chanchan.domain.document.Board;
-import com.teles.chanchan.domain.document.Post;
 import com.teles.chanchan.domain.document.Thread;
 import com.teles.chanchan.dto.api.client.response.ThreadResponse;
 import com.teles.chanchan.service.BoardService;

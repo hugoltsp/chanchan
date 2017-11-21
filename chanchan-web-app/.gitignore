@@ -5,4 +5,5 @@
 .classpath
 .settings/
 .settings
-/data/
+.factorypath
+.springBeans

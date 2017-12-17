@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.teles.chanchan.data.repository.ThreadRepository;
 import com.teles.chanchan.domain.document.Thread;
-import com.teles.chanchan.dto.api.client.response.ThreadResponse;
 import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
+import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
 
 @Service
 public class ThreadService {

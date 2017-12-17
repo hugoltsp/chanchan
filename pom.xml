@@ -12,7 +12,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<commons.io.version>2.5</commons.io.version>
 		<feign.version>8.18.0</feign.version>
-		<com.google.guava.version>20.0</com.google.guava.version>
 	</properties>
 
 	<parent>
@@ -24,11 +23,6 @@
 	<dependencyManagement>
 
 		<dependencies>
-			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>${com.google.guava.version}</version>
-			</dependency>
 
 			<dependency>
 				<groupId>com.teles.chanchan</groupId>

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.teles.chanchan.data.repository.BoardRepository;
 import com.teles.chanchan.domain.document.Board;
-import com.teles.chanchan.dto.api.client.response.BoardResponse;
+import com.teles.chanchan.fourchan.api.client.dto.response.BoardResponse;
 
 @Service
 public class BoardService {

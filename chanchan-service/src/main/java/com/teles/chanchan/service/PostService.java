@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import com.teles.chanchan.domain.document.Post;
 import com.teles.chanchan.domain.document.PostContent;
 import com.teles.chanchan.domain.exception.ChanchanApiClientException;
-import com.teles.chanchan.dto.api.client.response.PostResponse;
 import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
+import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
 
 @Service
 public class PostService {

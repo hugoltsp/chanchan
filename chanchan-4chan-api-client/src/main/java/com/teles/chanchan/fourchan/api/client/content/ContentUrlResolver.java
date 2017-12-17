@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.teles.chanchan.config.settings.Client4ChanSettings;
 import com.teles.chanchan.domain.exception.ChanchanApiClientException;
-import com.teles.chanchan.dto.api.client.response.PostResponse;
+import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
 
 @Component
 public class ContentUrlResolver {

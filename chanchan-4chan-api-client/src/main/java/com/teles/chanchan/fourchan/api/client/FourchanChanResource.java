@@ -2,10 +2,10 @@ package com.teles.chanchan.fourchan.api.client;
 
 import java.util.List;
 
-import com.teles.chanchan.dto.api.client.response.BoardResponse;
-import com.teles.chanchan.dto.api.client.response.PostResponse;
-import com.teles.chanchan.dto.api.client.response.SimpleThreadResponse;
-import com.teles.chanchan.dto.api.client.response.ThreadResponse;
+import com.teles.chanchan.fourchan.api.client.dto.response.BoardResponse;
+import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
+import com.teles.chanchan.fourchan.api.client.dto.response.SimpleThreadResponse;
+import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
 
 import feign.Param;
 import feign.RequestLine;

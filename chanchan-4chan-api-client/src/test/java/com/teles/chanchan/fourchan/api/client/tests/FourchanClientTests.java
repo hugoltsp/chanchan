@@ -5,14 +5,12 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.teles.chanchan.config.settings.Client4ChanSettings;
 import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
 import com.teles.chanchan.fourchan.api.client.content.ContentUrlResolver;
 
-@SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FourchanClientTests {
 

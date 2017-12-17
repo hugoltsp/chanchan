@@ -15,8 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.teles.chanchan.config.settings.AsyncSettings;
-import com.teles.chanchan.dto.api.client.response.PostResponse;
-import com.teles.chanchan.dto.api.client.response.ThreadResponse;
+import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
+import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
 import com.teles.chanchan.scraper.service.DownloaderService;
 import com.teles.chanchan.scraper.service.ScrapperService;
 

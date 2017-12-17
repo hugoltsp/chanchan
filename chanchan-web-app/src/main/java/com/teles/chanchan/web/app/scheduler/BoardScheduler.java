@@ -9,10 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.teles.chanchan.domain.document.Board;
+import com.teles.chanchan.domain.document.ChanBoard;
 import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
 import com.teles.chanchan.fourchan.api.client.dto.response.BoardResponse;
-import com.teles.chanchan.service.BoardService;
+import com.teles.chanchan.web.app.service.BoardService;
 
 @Component
 public class BoardScheduler {
@@ -37,7 +37,7 @@ public class BoardScheduler {
 	}
 
 	private void saveBoardsIfNotFound(List<BoardResponse> allBoards) {
-		Set<String> boards = this.boardService.findAll().stream().map(Board::getBoard).collect(Collectors.toSet());
+		Set<String> boards = this.boardService.findAll().stream().map(ChanBoard::getBoard).collect(Collectors.toSet());
 		allBoards.stream().filter(b -> !boards.contains(b.getBoard())).forEach(this.boardService::create);
 	}
 

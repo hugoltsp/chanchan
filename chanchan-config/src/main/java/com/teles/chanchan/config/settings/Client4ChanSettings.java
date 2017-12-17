@@ -20,22 +20,12 @@ public class Client4ChanSettings {
 	@NotBlank
 	private String cdnUrl;
 
-	private int requestDelay;
-
 	@NotBlank
 	private String miniatureSuffix;
 
 	@PostConstruct
 	private void init() {
 		logger.info(toString());
-	}
-
-	public int getRequestDelay() {
-		return requestDelay;
-	}
-
-	public void setRequestDelay(int requestDelay) {
-		this.requestDelay = requestDelay;
 	}
 
 	public String getMiniatureSuffix() {
@@ -64,8 +54,8 @@ public class Client4ChanSettings {
 
 	@Override
 	public String toString() {
-		return "Client4ChanSettings [apiUrl=" + apiUrl + ", cdnUrl=" + cdnUrl + ", requestDelay=" + requestDelay
-				+ ", miniatureSuffix=" + miniatureSuffix + "]";
+		return "Client4ChanSettings [apiUrl=" + apiUrl + ", cdnUrl=" + cdnUrl + ", miniatureSuffix=" + miniatureSuffix
+				+ "]";
 	}
 
 }

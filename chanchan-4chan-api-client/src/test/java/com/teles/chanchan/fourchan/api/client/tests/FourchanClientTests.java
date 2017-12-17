@@ -4,14 +4,11 @@ import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.teles.chanchan.config.settings.Client4ChanSettings;
 import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
 import com.teles.chanchan.fourchan.api.client.content.ContentUrlResolver;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 public class FourchanClientTests {
 
 	private static final String BOARD_WALLPAPER_GENERAL = "wg";
@@ -23,9 +20,8 @@ public class FourchanClientTests {
 
 	@Before
 	public void onStart() {
-		Client4ChanSettings chanchanSettings = settings();
-		ContentUrlResolver imageUrlResolver = new ContentUrlResolver(chanchanSettings);
-		this.fourchanChanResourceClient = new FourchanChanResourceClient(imageUrlResolver, chanchanSettings);
+		Client4ChanSettings settings = settings();
+		this.fourchanChanResourceClient = new FourchanChanResourceClient(new ContentUrlResolver(settings), settings);
 	}
 
 	@Test

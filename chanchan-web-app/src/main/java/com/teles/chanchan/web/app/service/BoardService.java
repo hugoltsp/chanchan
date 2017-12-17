@@ -1,4 +1,4 @@
-package com.teles.chanchan.service;
+package com.teles.chanchan.web.app.service;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.teles.chanchan.data.repository.BoardRepository;
-import com.teles.chanchan.domain.document.Board;
+import com.teles.chanchan.domain.document.ChanBoard;
 import com.teles.chanchan.fourchan.api.client.dto.response.BoardResponse;
 
 @Service
@@ -23,20 +23,20 @@ public class BoardService {
 
 	public void create(BoardResponse boardResponse) {
 		logger.debug("Saving board: {}", boardResponse.getBoard());
-		Board board = buildBoardEntity(boardResponse);
+		ChanBoard board = buildBoardEntity(boardResponse);
 		this.boardRepository.save(board);
 	}
 
-	public List<Board> findAll() {
+	public List<ChanBoard> findAll() {
 		return this.boardRepository.findAll();
 	}
 
-	public Board findByBoard(String board) {
+	public ChanBoard findByBoard(String board) {
 		return this.boardRepository.findByBoard(board);
 	}
 
-	private static Board buildBoardEntity(BoardResponse boardResponse) {
-		Board board = new Board();
+	private static ChanBoard buildBoardEntity(BoardResponse boardResponse) {
+		ChanBoard board = new ChanBoard();
 		board.setBoard(boardResponse.getBoard());
 		board.setDescription(boardResponse.getDescription());
 		board.setTitle(boardResponse.getTitle());

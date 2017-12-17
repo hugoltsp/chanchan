@@ -1,4 +1,4 @@
-package com.teles.chanchan.service;
+package com.teles.chanchan.web.app.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.teles.chanchan.domain.document.Post;
-import com.teles.chanchan.domain.document.PostContent;
+import com.teles.chanchan.domain.document.ChanPost;
+import com.teles.chanchan.domain.document.ChanPostContent;
 import com.teles.chanchan.domain.exception.ChanchanApiClientException;
 import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
 import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
@@ -26,10 +26,10 @@ public class PostService {
 		this.chanClient = chanClient;
 	}
 
-	public List<Post> findPosts(String board, int number) {
+	public List<ChanPost> findPosts(String board, int number) {
 		logger.info("searching for posts on thread {} of {}", number, board);
 
-		List<Post> posts = new ArrayList<>();
+		List<ChanPost> posts = new ArrayList<>();
 
 		try {
 
@@ -43,9 +43,9 @@ public class PostService {
 		return posts;
 	}
 
-	private Post buildPost(PostResponse response) {
+	private ChanPost buildPost(PostResponse response) {
 
-		Post post = new Post();
+		ChanPost post = new ChanPost();
 		post.setComentary(response.getComentary());
 		post.setNumber(response.getNumber());
 
@@ -58,8 +58,8 @@ public class PostService {
 		return post;
 	}
 
-	private PostContent buildPostContent(PostResponse response) {
-		PostContent postContent = new PostContent();
+	private ChanPostContent buildPostContent(PostResponse response) {
+		ChanPostContent postContent = new ChanPostContent();
 		postContent.setContentUrl(response.getContentUrl());
 		postContent.setFileExtension(response.getFileExtension());
 		postContent.setFileSize(response.getFileSize());

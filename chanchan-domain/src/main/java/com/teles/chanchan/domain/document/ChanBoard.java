@@ -6,8 +6,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = Board.COLLECTION_NAME)
-public class Board {
+@Document(collection = ChanBoard.COLLECTION_NAME)
+public class ChanBoard {
 
 	public static final String COLLECTION_NAME = "boards";
 

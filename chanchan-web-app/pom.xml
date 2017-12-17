@@ -13,7 +13,17 @@
 
 		<dependency>
 			<groupId>com.teles.chanchan</groupId>
-			<artifactId>chanchan-service</artifactId>
+			<artifactId>chanchan-domain</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.teles.chanchan</groupId>
+			<artifactId>chanchan-data</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.teles.chanchan</groupId>
+			<artifactId>chanchan-4chan-api-client</artifactId>
 		</dependency>
 
 		<dependency>

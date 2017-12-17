@@ -38,12 +38,6 @@
 
 			<dependency>
 				<groupId>com.teles.chanchan</groupId>
-				<artifactId>chanchan-dto</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.teles.chanchan</groupId>
 				<artifactId>chanchan-4chan-api-client</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -51,12 +45,6 @@
 			<dependency>
 				<groupId>com.teles.chanchan</groupId>
 				<artifactId>chanchan-data</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.teles.chanchan</groupId>
-				<artifactId>chanchan-service</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -110,10 +98,8 @@
 		<module>chanchan-4chan-api-client</module>
 		<module>chanchan-data</module>
 		<module>chanchan-domain</module>
-		<module>chanchan-service</module>
 		<module>chanchan-config</module>
 		<module>chanchan-web-app</module>
-		<module>chanchan-dto</module>
 	</modules>
 
 	<build>

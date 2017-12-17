@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.springframework.data.mongodb.core.index.Indexed;
 
-public class Post {
+public class ChanPost {
 
 	@Indexed
 	private Integer number;
@@ -13,7 +13,7 @@ public class Post {
 
 	private String comentary;
 
-	private PostContent postContent;
+	private ChanPostContent postContent;
 
 	public Integer getNumber() {
 		return number;
@@ -39,11 +39,11 @@ public class Post {
 		this.comentary = comentary;
 	}
 
-	public PostContent getPostContent() {
+	public ChanPostContent getPostContent() {
 		return postContent;
 	}
 
-	public void setPostContent(PostContent postContent) {
+	public void setPostContent(ChanPostContent postContent) {
 		this.postContent = postContent;
 	}
 

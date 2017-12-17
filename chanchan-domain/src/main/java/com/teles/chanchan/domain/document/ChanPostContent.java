@@ -1,6 +1,6 @@
 package com.teles.chanchan.domain.document;
 
-public class PostContent {
+public class ChanPostContent {
 
 	private Long fileSize;
 

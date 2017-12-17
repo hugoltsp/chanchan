@@ -9,9 +9,9 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = Thread.COLLECTION_NAME)
+@Document(collection = ChanThread.COLLECTION_NAME)
 @CompoundIndex(def = "{'number': 1, 'board': -1}", unique = true)
-public class Thread {
+public class ChanThread {
 
 	public static final String COLLECTION_NAME = "threads";
 
@@ -34,7 +34,7 @@ public class Thread {
 
 	private Date lastModified;
 
-	private List<Post> posts = new ArrayList<>();
+	private List<ChanPost> posts = new ArrayList<>();
 
 	public String getId() {
 		return id;
@@ -100,11 +100,11 @@ public class Thread {
 		this.board = board;
 	}
 
-	public List<Post> getPosts() {
+	public List<ChanPost> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(List<Post> posts) {
+	public void setPosts(List<ChanPost> posts) {
 		this.posts = posts;
 	}
 

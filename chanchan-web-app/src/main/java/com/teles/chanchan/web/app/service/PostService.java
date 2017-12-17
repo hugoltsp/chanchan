@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.teles.chanchan.domain.document.ChanPost;
 import com.teles.chanchan.domain.document.ChanPostContent;
-import com.teles.chanchan.domain.exception.ChanchanApiClientException;
-import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
+import com.teles.chanchan.fourchan.api.client.FourchanChanClient;
 import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
 
 @Service
@@ -20,9 +19,9 @@ public class PostService {
 
 	private static final Logger logger = LoggerFactory.getLogger(PostService.class);
 
-	private final FourchanChanResourceClient chanClient;
+	private final FourchanChanClient chanClient;
 
-	public PostService(FourchanChanResourceClient chanClient) {
+	public PostService(FourchanChanClient chanClient) {
 		this.chanClient = chanClient;
 	}
 
@@ -31,14 +30,8 @@ public class PostService {
 
 		List<ChanPost> posts = new ArrayList<>();
 
-		try {
-
-			posts.addAll(this.chanClient.getPostsFromBoardAndThreadNumber(board, number).stream().map(this::buildPost)
-					.collect(Collectors.toList()));
-
-		} catch (ChanchanApiClientException e) {
-			logger.error("Couldn't find posts on thread {}", number);
-		}
+		posts.addAll(this.chanClient.getPostsFromBoardAndThreadNumber(board, number).stream().map(this::buildPost)
+				.collect(Collectors.toList()));
 
 		return posts;
 	}

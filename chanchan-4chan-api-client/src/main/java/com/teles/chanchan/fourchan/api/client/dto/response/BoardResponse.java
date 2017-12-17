@@ -1,5 +1,7 @@
 package com.teles.chanchan.fourchan.api.client.dto.response;
 
+import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BoardResponse {
@@ -16,7 +18,7 @@ public class BoardResponse {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = unescapeHtml4(description);
 	}
 
 	public String getTitle() {
@@ -24,7 +26,7 @@ public class BoardResponse {
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		this.title = unescapeHtml4(title);
 	}
 
 	public String getBoard() {

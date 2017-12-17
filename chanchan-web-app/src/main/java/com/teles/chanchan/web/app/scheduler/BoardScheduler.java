@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.teles.chanchan.domain.document.ChanBoard;
-import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
+import com.teles.chanchan.fourchan.api.client.FourchanChanClient;
 import com.teles.chanchan.fourchan.api.client.dto.response.BoardResponse;
 import com.teles.chanchan.web.app.service.BoardService;
 
@@ -22,9 +22,9 @@ public class BoardScheduler {
 	private static final int DAY = 1000 * 60 * 60 * 24;
 
 	private final BoardService boardService;
-	private final FourchanChanResourceClient fourchanChanResourceClient;
+	private final FourchanChanClient fourchanChanResourceClient;
 
-	public BoardScheduler(BoardService boardService, FourchanChanResourceClient fourchanChanResourceClient) {
+	public BoardScheduler(BoardService boardService, FourchanChanClient fourchanChanResourceClient) {
 		this.boardService = boardService;
 		this.fourchanChanResourceClient = fourchanChanResourceClient;
 	}

@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @ComponentScan("com.teles.chanchan")
-@EnableScheduling
 @EnableMongoRepositories("com.teles.chanchan.data.repository")
+@EnableScheduling
 @SpringBootApplication
 public class ChanchanWebApp {
 

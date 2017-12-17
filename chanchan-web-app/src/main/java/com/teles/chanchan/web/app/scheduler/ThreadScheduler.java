@@ -56,6 +56,7 @@ public class ThreadScheduler {
 		ChanThread thread = new ChanThread();
 		thread.setDescription(threadResponse.getDescription());
 		thread.setLastModified(new Date(threadResponse.getLastModified()));
+		thread.setCreationDate(new Date());
 		thread.setName(threadResponse.getName());
 		thread.setNumber(threadResponse.getNumber());
 		thread.setSemanticUrl(threadResponse.getSemanticUrl());

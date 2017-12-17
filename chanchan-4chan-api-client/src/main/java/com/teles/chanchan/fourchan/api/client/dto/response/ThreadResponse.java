@@ -2,6 +2,8 @@ package com.teles.chanchan.fourchan.api.client.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
+
 public class ThreadResponse extends SimpleThreadResponse {
 
 	@JsonProperty("sub")
@@ -18,7 +20,7 @@ public class ThreadResponse extends SimpleThreadResponse {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = unescapeHtml4(name);
 	}
 
 	public String getDescription() {
@@ -26,7 +28,7 @@ public class ThreadResponse extends SimpleThreadResponse {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = unescapeHtml4(description);
 	}
 
 	public String getSemanticUrl() {

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.teles.chanchan.data.repository.ThreadRepository;
 import com.teles.chanchan.domain.document.ChanThread;
-import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
+import com.teles.chanchan.fourchan.api.client.FourchanChanClient;
 import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
 
 @Service
@@ -17,9 +17,9 @@ public class ThreadService {
 	private static final Logger logger = LoggerFactory.getLogger(ThreadService.class);
 
 	private final ThreadRepository threadRepository;
-	private final FourchanChanResourceClient chanResourceClient;
+	private final FourchanChanClient chanResourceClient;
 
-	public ThreadService(ThreadRepository threadRepository, FourchanChanResourceClient chanResourceClient) {
+	public ThreadService(ThreadRepository threadRepository, FourchanChanClient chanResourceClient) {
 		this.threadRepository = threadRepository;
 		this.chanResourceClient = chanResourceClient;
 	}
@@ -30,10 +30,8 @@ public class ThreadService {
 	}
 
 	public List<ThreadResponse> findThreadsFromBoard(String board) {
-
 		List<ThreadResponse> threadsFromBoard = this.chanResourceClient.getThreadsFromBoard(board);
 		logger.info("Total of {} threads found on board {}.", threadsFromBoard.size(), board);
-
 		return threadsFromBoard;
 	}
 

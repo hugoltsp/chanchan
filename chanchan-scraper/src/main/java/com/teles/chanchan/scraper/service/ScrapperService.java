@@ -7,20 +7,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.teles.chanchan.domain.exception.ChanchanApiClientException;
-import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
+import com.teles.chanchan.fourchan.api.client.FourchanChanClient;
 import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.SimpleThreadResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
+import com.teles.chanchan.fourchan.api.client.exception.ChanchanApiClientException;
 
 @Service
 public class ScrapperService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ScrapperService.class);
 
-	private final FourchanChanResourceClient chanFeignClient;
+	private final FourchanChanClient chanFeignClient;
 
-	public ScrapperService(FourchanChanResourceClient fourchanChanFeignClient) {
+	public ScrapperService(FourchanChanClient fourchanChanFeignClient) {
 		this.chanFeignClient = fourchanChanFeignClient;
 	}
 

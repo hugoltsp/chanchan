@@ -1,5 +1,7 @@
 package com.teles.chanchan.fourchan.api.client.dto.response;
 
+import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PostResponse {
@@ -97,7 +99,7 @@ public class PostResponse {
 	}
 
 	public void setComentary(String comentary) {
-		this.comentary = comentary;
+		this.comentary = unescapeHtml4(comentary);
 	}
 
 	public String getBoard() {

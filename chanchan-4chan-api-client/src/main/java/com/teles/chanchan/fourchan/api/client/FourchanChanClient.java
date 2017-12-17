@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.teles.chanchan.config.settings.Client4ChanSettings;
-import com.teles.chanchan.domain.exception.ChanchanApiClientException;
 import com.teles.chanchan.fourchan.api.client.FourchanChanResource.ThreadsResponse;
 import com.teles.chanchan.fourchan.api.client.content.ContentUrlResolver;
 import com.teles.chanchan.fourchan.api.client.dto.response.BoardResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.SimpleThreadResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
+import com.teles.chanchan.fourchan.api.client.exception.ChanchanApiClientException;
 
 import feign.Feign;
 import feign.FeignException;
@@ -23,14 +23,14 @@ import feign.jackson.JacksonEncoder;
 import feign.okhttp.OkHttpClient;
 
 @Component
-public class FourchanChanResourceClient {
+public class FourchanChanClient {
 
-	private static final Logger logger = LoggerFactory.getLogger(FourchanChanResourceClient.class);
+	private static final Logger logger = LoggerFactory.getLogger(FourchanChanClient.class);
 	
 	private final ContentUrlResolver imageUrlResolver;
 	private final FourchanChanResource resource;
 
-	public FourchanChanResourceClient(ContentUrlResolver imageUrlResolver, Client4ChanSettings settings) {
+	public FourchanChanClient(ContentUrlResolver imageUrlResolver, Client4ChanSettings settings) {
 		this.imageUrlResolver = imageUrlResolver;
 		this.resource = createResource(settings.getApiUrl());
 	}
@@ -64,6 +64,8 @@ public class FourchanChanResourceClient {
 			logger.error("Unable to request resource", e);
 			throw new ChanchanApiClientException(e.status(), e);
 		}
+		
+		logger.debug("Total of {} threads found on board {}.", threads.size(), board);
 
 		return threads;
 	}

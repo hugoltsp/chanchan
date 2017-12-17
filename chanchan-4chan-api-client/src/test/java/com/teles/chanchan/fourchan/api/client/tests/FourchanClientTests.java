@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.teles.chanchan.config.settings.Client4ChanSettings;
-import com.teles.chanchan.fourchan.api.client.FourchanChanResourceClient;
+import com.teles.chanchan.fourchan.api.client.FourchanChanClient;
 import com.teles.chanchan.fourchan.api.client.content.ContentUrlResolver;
 
 public class FourchanClientTests {
@@ -16,12 +16,12 @@ public class FourchanClientTests {
 	private static final String MINIATURE_SUFFIX = "s.jpg";
 	private static final String API_4CHAN = "http://api.4chan.org";
 
-	private FourchanChanResourceClient fourchanChanResourceClient;
+	private FourchanChanClient fourchanChanResourceClient;
 
 	@Before
 	public void onStart() {
 		Client4ChanSettings settings = settings();
-		this.fourchanChanResourceClient = new FourchanChanResourceClient(new ContentUrlResolver(settings), settings);
+		this.fourchanChanResourceClient = new FourchanChanClient(new ContentUrlResolver(settings), settings);
 	}
 
 	@Test

@@ -1,12 +1,18 @@
 package com.teles.chanchan.domain.document;
 
+import java.util.Date;
+
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = Board.COLLECTION_NAME)
-public class Board extends ChanchanDocument {
+public class Board {
 
 	public static final String COLLECTION_NAME = "boards";
+
+	@Id
+	private String id;
 
 	@Indexed
 	private String board;
@@ -14,6 +20,24 @@ public class Board extends ChanchanDocument {
 	private String description;
 
 	private String title;
+
+	private Date creationDate;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
 
 	public String getBoard() {
 		return board;

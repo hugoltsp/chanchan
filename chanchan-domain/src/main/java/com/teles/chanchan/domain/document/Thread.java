@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = Thread.COLLECTION_NAME)
 @CompoundIndex(def = "{'number': 1, 'board': -1}", unique = true)
-public class Thread extends ChanchanDocument {
+public class Thread {
 
 	public static final String COLLECTION_NAME = "threads";
+
+	@Id
+	private String id;
 
 	@Indexed
 	private Integer number;
@@ -26,9 +30,27 @@ public class Thread extends ChanchanDocument {
 
 	private String semanticUrl;
 
+	private Date creationDate;
+
 	private Date lastModified;
 
 	private List<Post> posts = new ArrayList<>();
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
 
 	public String getName() {
 		return name;

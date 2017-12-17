@@ -26,3 +26,4 @@ spring:
   data:
     mongodb:
       database: chanchan
+      host: db

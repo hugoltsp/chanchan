@@ -7,21 +7,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.teles.chanchan.fourchan.api.client.FourchanChanClient;
+import com.teles.chanchan.fourchan.api.client.FourchanClient;
 import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.SimpleThreadResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
-import com.teles.chanchan.fourchan.api.client.exception.ChanchanApiClientException;
 
 @Service
 public class ScrapperService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ScrapperService.class);
 
-	private final FourchanChanClient chanFeignClient;
+	private final FourchanClient chanClient;
 
-	public ScrapperService(FourchanChanClient fourchanChanFeignClient) {
-		this.chanFeignClient = fourchanChanFeignClient;
+	public ScrapperService(FourchanClient chanClient) {
+		this.chanClient = chanClient;
 	}
 
 	public List<ThreadResponse> crawlThreads(List<String> boards) {
@@ -34,41 +33,15 @@ public class ScrapperService {
 	public List<PostResponse> crawlPosts(SimpleThreadResponse threadResponse) {
 		logger.info("searching for posts on thread {} of {}", threadResponse.getNumber(), threadResponse.getBoard());
 
-		List<PostResponse> posts = new ArrayList<>();
-
-		try {
-
-			posts.addAll(this.chanFeignClient.getPostsFromBoardAndThreadNumber(threadResponse.getBoard(),
-					threadResponse.getNumber()));
-
-		} catch (ChanchanApiClientException e) {
-			logger.error("Couldn't find posts on thread {}", threadResponse.getNumber());
-		}
-
-		return posts;
+		return this.chanClient.getPostsFromBoardAndThreadNumber(threadResponse.getBoard(),
+				threadResponse.getNumber());
 	}
 
 	private List<ThreadResponse> getThreadsFromBoards(List<String> boards) {
 		List<ThreadResponse> threads = new ArrayList<>();
 
 		for (String board : boards) {
-			List<ThreadResponse> threadsFromBoard = getThreadsFromBoard(board);
-			logger.info("Total of {} threads found on board {}.", threadsFromBoard.size(), board);
-			threads.addAll(threadsFromBoard);
-		}
-
-		return threads;
-	}
-
-	private List<ThreadResponse> getThreadsFromBoard(String board) {
-		List<ThreadResponse> threads = new ArrayList<>();
-
-		try {
-
-			threads.addAll(this.chanFeignClient.getThreadsFromBoard(board));
-
-		} catch (ChanchanApiClientException e) {
-			logger.error("Couldn't find board {}", board);
+			threads.addAll(this.chanClient.getThreadsFromBoard(board));
 		}
 
 		return threads;

@@ -56,7 +56,7 @@ public class ScraperApp implements CommandLineRunner {
 		List<PostResponse> posts = threads.parallelStream().flatMap(t -> this.crawlerService.crawlPosts(t).stream())
 				.collect(Collectors.toList());
 
-		List<String> urls = this.extractDownloadUrls(posts);
+		List<String> urls = extractDownloadUrls(posts);
 
 		logger.info("{} files to download..", urls.size());
 		urls.stream().map(this::createRunnable).forEach(this.executor::execute);

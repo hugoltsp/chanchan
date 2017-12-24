@@ -10,7 +10,7 @@ import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
 import feign.Param;
 import feign.RequestLine;
 
-interface FourchanChanResource {
+interface FourchanResource {
 
 	@RequestLine(value = "GET /{board}/catalog.json")
 	List<CatalogResponse> getCatalog(@Param(value = "board") String board);

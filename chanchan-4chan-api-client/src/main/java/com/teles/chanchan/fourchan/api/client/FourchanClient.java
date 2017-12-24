@@ -8,13 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.teles.chanchan.config.settings.Client4ChanSettings;
-import com.teles.chanchan.fourchan.api.client.FourchanChanResource.ThreadsResponse;
+import com.teles.chanchan.fourchan.api.client.FourchanResource.ThreadsResponse;
 import com.teles.chanchan.fourchan.api.client.content.ContentUrlResolver;
 import com.teles.chanchan.fourchan.api.client.dto.response.BoardResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.SimpleThreadResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
-import com.teles.chanchan.fourchan.api.client.exception.ChanchanApiClientException;
 
 import feign.Feign;
 import feign.FeignException;
@@ -23,14 +22,14 @@ import feign.jackson.JacksonEncoder;
 import feign.okhttp.OkHttpClient;
 
 @Component
-public class FourchanChanClient {
+public class FourchanClient {
 
-	private static final Logger logger = LoggerFactory.getLogger(FourchanChanClient.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(FourchanClient.class);
+
 	private final ContentUrlResolver imageUrlResolver;
-	private final FourchanChanResource resource;
+	private final FourchanResource resource;
 
-	public FourchanChanClient(ContentUrlResolver imageUrlResolver, Client4ChanSettings settings) {
+	public FourchanClient(ContentUrlResolver imageUrlResolver, Client4ChanSettings settings) {
 		this.imageUrlResolver = imageUrlResolver;
 		this.resource = createResource(settings.getApiUrl());
 	}
@@ -44,8 +43,9 @@ public class FourchanChanClient {
 
 		} catch (FeignException e) {
 			logger.error("Unable to request resource", e);
-			throw new ChanchanApiClientException(e.status(), e);
 		}
+
+		logger.debug("{} boards found.", boards.size());
 
 		return boards;
 	}
@@ -62,10 +62,9 @@ public class FourchanChanClient {
 
 		} catch (FeignException e) {
 			logger.error("Unable to request resource", e);
-			throw new ChanchanApiClientException(e.status(), e);
 		}
-		
-		logger.debug("Total of {} threads found on board {}.", threads.size(), board);
+
+		logger.debug("{} threads found on board {}.", threads.size(), board);
 
 		return threads;
 	}
@@ -78,7 +77,7 @@ public class FourchanChanClient {
 			for (PostResponse post : this.resource.getPosts(board, threadNumber).getPosts()) {
 				post.setBoard(board);
 
-				if (this.imageUrlResolver.hasMedia(post)) {
+				if (post.hasMedia()) {
 					post.setThumbUrl(this.imageUrlResolver.buildThumbNailUrl(post));
 					post.setContentUrl(this.imageUrlResolver.buildMediaUrl(post));
 				}
@@ -88,9 +87,10 @@ public class FourchanChanClient {
 
 		} catch (FeignException e) {
 			logger.error("Unable to request resource", e);
-			throw new ChanchanApiClientException(e.status(), e);
 		}
 
+		logger.debug("{} posts found on thread {}", threadNumber);
+		
 		return posts;
 	}
 
@@ -105,14 +105,15 @@ public class FourchanChanClient {
 
 		} catch (FeignException e) {
 			logger.error("Unable to request resource", e);
-			throw new ChanchanApiClientException(e.status(), e);
 		}
+		
+		logger.debug("{} threads found on board {}.", simpleThreadResponse.size(), board);
 
 		return simpleThreadResponse;
 	}
 
-	private static FourchanChanResource createResource(String apiUrl) {
+	private static FourchanResource createResource(String apiUrl) {
 		return Feign.builder().decoder(new JacksonDecoder()).encoder(new JacksonEncoder()).client(new OkHttpClient())
-				.target(FourchanChanResource.class, apiUrl);
+				.target(FourchanResource.class, apiUrl);
 	}
 }

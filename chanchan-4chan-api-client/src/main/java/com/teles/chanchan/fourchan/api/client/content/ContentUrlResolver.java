@@ -19,18 +19,14 @@ public class ContentUrlResolver {
 	}
 
 	public String buildMediaUrl(PostResponse post) {
-		return new StringBuilder().append(this.resolveContentUrl(post)).append(post.getFileExtension()).toString();
+		return new StringBuilder().append(buildContentUrl(post)).append(post.getFileExtension()).toString();
 	}
 
 	public String buildThumbNailUrl(PostResponse post) {
-		return new StringBuilder().append(this.resolveContentUrl(post)).append(this.miniatureSuffix).toString();
+		return new StringBuilder().append(buildContentUrl(post)).append(this.miniatureSuffix).toString();
 	}
 
-	public boolean hasMedia(PostResponse post) {
-		return post.getFileExtension() != null && post.getTimeStamp() != 0;
-	}
-
-	private String resolveContentUrl(PostResponse post) {
+	private String buildContentUrl(PostResponse post) {
 		return new StringBuilder().append(this.cdnUrl).append(SLASH).append(post.getBoard()).append(SLASH)
 				.append(post.getTimeStamp()).toString();
 	}

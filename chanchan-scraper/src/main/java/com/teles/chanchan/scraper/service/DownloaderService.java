@@ -32,18 +32,16 @@ public class DownloaderService {
 
 		try {
 
-			logger.info("Downloading image at:: {}", contentUrl);
+			logger.info("Downloading image at: {}", contentUrl);
 
 			URL url = new URL(contentUrl);
-			File file = createFile(url.getPath());
-
-			try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file), BUFFER_SIZE);
-					InputStream inputStream = url.openStream()) {
+			try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(createFile(url.getPath())),
+					BUFFER_SIZE); InputStream inputStream = url.openStream()) {
 				write(outputStream, inputStream);
 			}
 
 		} catch (IOException e) {
-			logger.error("Could not download file at:: {} ", contentUrl, e);
+			logger.error("Could not download file at: {} ", contentUrl, e);
 		}
 	}
 
@@ -56,8 +54,7 @@ public class DownloaderService {
 	}
 
 	private File createFile(String name) {
-		String path = new StringBuilder().append(this.outputPath).append(name).toString();
-		File file = new File(path);
+		File file = new File(new StringBuilder().append(this.outputPath).append(name).toString());
 		file.getParentFile().mkdirs();
 		return file;
 	}

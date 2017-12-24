@@ -134,8 +134,13 @@ public class PostResponse {
 		this.number = number;
 	}
 
+	public boolean hasMedia() {
+		return this.fileExtension != null && this.timeStamp != 0;
+	}
+
+	@Override
 	public String toString() {
-		return "FourchanPost [number=" + number + ", originalFileName=" + originalFileName + ", fileExtension="
+		return "PostResponse [number=" + number + ", originalFileName=" + originalFileName + ", fileExtension="
 				+ fileExtension + ", imageWidth=" + imageWidth + ", imageHeight=" + imageHeight + ", timeStamp="
 				+ timeStamp + ", fileSize=" + fileSize + ", comentary=" + comentary + ", board=" + board + ", thumbUrl="
 				+ thumbUrl + ", contentUrl=" + contentUrl + ", md5=" + md5 + "]";

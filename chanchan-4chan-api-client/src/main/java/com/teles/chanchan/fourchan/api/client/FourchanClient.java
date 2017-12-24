@@ -89,7 +89,7 @@ public class FourchanClient {
 			logger.error("Unable to request resource", e);
 		}
 
-		logger.debug("{} posts found on thread {}", threadNumber);
+		logger.debug("{} posts found on thread {}", posts.size(), threadNumber);
 		
 		return posts;
 	}

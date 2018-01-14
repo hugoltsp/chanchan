@@ -25,12 +25,6 @@
 
 			<dependency>
 				<groupId>com.teles.chanchan</groupId>
-				<artifactId>chanchan-config</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.teles.chanchan</groupId>
 				<artifactId>chanchan-domain</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -97,7 +91,6 @@
 		<module>chanchan-4chan-api-client</module>
 		<module>chanchan-data</module>
 		<module>chanchan-domain</module>
-		<module>chanchan-config</module>
 		<module>chanchan-web-app</module>
 	</modules>
 

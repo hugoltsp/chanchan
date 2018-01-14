@@ -1,4 +1,4 @@
-package com.teles.chanchan.config.settings;
+package com.teles.chanchan.domain.settings;
 
 import javax.annotation.PostConstruct;
 
@@ -13,7 +13,7 @@ public class AsyncSettings {
 
 	private static final Logger logger = LoggerFactory.getLogger(AsyncSettings.class);
 
-	private int threadPoolSize;
+	private Integer threadPoolSize;
 	private String threadNamePrefix;
 
 	@PostConstruct
@@ -29,17 +29,22 @@ public class AsyncSettings {
 		this.threadNamePrefix = threadNamePrefix;
 	}
 
-	public int getThreadPoolSize() {
-		return threadPoolSize;
+	public Integer getThreadPoolSize() {
+		return threadPoolSize == null ? getDefaultThreadPoolSize() : threadPoolSize;
 	}
 
-	public void setThreadPoolSize(int threadPoolSize) {
+	public void setThreadPoolSize(Integer threadPoolSize) {
 		this.threadPoolSize = threadPoolSize;
+	}
+
+	private static Integer getDefaultThreadPoolSize() {
+		return Runtime.getRuntime().availableProcessors() * 2;
 	}
 
 	@Override
 	public String toString() {
-		return "AsyncSettings [threadPoolSize=" + threadPoolSize + ", threadNamePrefix=" + threadNamePrefix + "]";
+		return "AsyncSettings [getThreadNamePrefix()=" + getThreadNamePrefix() + ", getThreadPoolSize()="
+				+ getThreadPoolSize() + "]";
 	}
 
 }

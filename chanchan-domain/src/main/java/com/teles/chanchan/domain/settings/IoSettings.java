@@ -1,4 +1,4 @@
-package com.teles.chanchan.config.settings;
+package com.teles.chanchan.domain.settings;
 
 import javax.annotation.PostConstruct;
 
@@ -13,12 +13,12 @@ public class IoSettings {
 
 	private static final Logger logger = LoggerFactory.getLogger(IoSettings.class);
 
+	private String outputPath;
+
 	@PostConstruct
 	private void init() {
 		logger.info(toString());
 	}
-
-	private String outputPath;
 
 	public String getOutputPath() {
 		return outputPath;

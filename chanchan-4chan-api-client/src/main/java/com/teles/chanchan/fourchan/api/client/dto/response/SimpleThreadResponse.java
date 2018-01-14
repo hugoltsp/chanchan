@@ -40,5 +40,4 @@ public class SimpleThreadResponse {
 	public String toString() {
 		return "SimpleThreadResponse [number=" + number + ", lastModified=" + lastModified + ", board=" + board + "]";
 	}
-
 }

@@ -2,7 +2,7 @@ package com.teles.chanchan.fourchan.api.client.content;
 
 import org.springframework.stereotype.Component;
 
-import com.teles.chanchan.config.settings.Client4ChanSettings;
+import com.teles.chanchan.domain.settings.Client4ChanSettings;
 import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
 
 @Component

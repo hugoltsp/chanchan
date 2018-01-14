@@ -1,4 +1,4 @@
-package com.teles.chanchan.config.settings;
+package com.teles.chanchan.domain.settings;
 
 import javax.annotation.PostConstruct;
 
@@ -7,8 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.annotation.Validated;
 
 @Configuration
+@Validated
 @ConfigurationProperties("chanchan.client-four-chan")
 public class Client4ChanSettings {
 

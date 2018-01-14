@@ -1,4 +1,4 @@
-package com.teles.chanchan.config.async;
+package com.teles.chanchan.web.app.config;
 
 import java.util.concurrent.Executor;
 
@@ -6,16 +6,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import com.teles.chanchan.config.settings.AsyncSettings;
+import com.teles.chanchan.domain.settings.AsyncSettings;
 
 @EnableAsync
-@SpringBootConfiguration
+@Configuration
 public class AsyncConfig implements AsyncConfigurer {
 
 	private static final Logger logger = LoggerFactory.getLogger(AsyncConfig.class);
@@ -28,13 +28,13 @@ public class AsyncConfig implements AsyncConfigurer {
 
 	@Bean
 	public Executor getAsyncExecutor() {
-		logger.info("Getting Async Executor");
-		logger.info("Threadpool size:: {}", settings.getThreadPoolSize());
+		logger.info("Configuring Async Executor");
 
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(settings.getThreadPoolSize());
 		executor.setThreadNamePrefix(settings.getThreadNamePrefix());
-
+		executor.setDaemon(true);
+		
 		return executor;
 	}
 

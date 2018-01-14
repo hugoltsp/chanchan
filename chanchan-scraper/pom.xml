@@ -19,7 +19,7 @@
 
 		<dependency>
 			<groupId>com.teles.chanchan</groupId>
-			<artifactId>chanchan-config</artifactId>
+			<artifactId>chanchan-domain</artifactId>
 		</dependency>
 
 	</dependencies>

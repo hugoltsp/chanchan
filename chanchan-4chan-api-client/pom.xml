@@ -15,11 +15,6 @@
 
 		<dependency>
 			<groupId>com.teles.chanchan</groupId>
-			<artifactId>chanchan-config</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.teles.chanchan</groupId>
 			<artifactId>chanchan-domain</artifactId>
 		</dependency>
 		

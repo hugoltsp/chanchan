@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.teles.chanchan.config.settings.IoSettings;
+import com.teles.chanchan.domain.settings.IoSettings;
 
 @Service
 public class DownloaderService {
@@ -35,8 +35,8 @@ public class DownloaderService {
 			logger.info("Downloading image at: {}", contentUrl);
 
 			URL url = new URL(contentUrl);
-			try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(createFile(url.getPath())),
-					BUFFER_SIZE); InputStream inputStream = url.openStream()) {
+			try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(createFile(url.getPath())), BUFFER_SIZE);
+					InputStream inputStream = url.openStream()) {
 				write(outputStream, inputStream);
 			}
 

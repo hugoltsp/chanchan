@@ -14,7 +14,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.teles.chanchan.config.settings.AsyncSettings;
+import com.teles.chanchan.domain.settings.AsyncSettings;
 import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
 import com.teles.chanchan.scraper.service.DownloaderService;
@@ -42,12 +42,13 @@ public class ScraperApp implements CommandLineRunner {
 	}
 
 	public void run(String... args) throws Exception {
-		if (args == null || args.length < 1) {
+
+		if (!isArgsValid(args)) {
 			throw new IllegalArgumentException("At least one catalog must be specified");
 		}
 
 		logger.info("Chanchan started");
-		List<String> boards = this.parseBoards(args);
+		List<String> boards = parseBoards(args);
 
 		logger.info("Boards:: {}", boards);
 
@@ -90,6 +91,10 @@ public class ScraperApp implements CommandLineRunner {
 
 	private String trimAndLowerCase(String str) {
 		return str.trim().toLowerCase();
+	}
+
+	private static boolean isArgsValid(String... args) {
+		return args != null && args.length == 2;
 	}
 
 }

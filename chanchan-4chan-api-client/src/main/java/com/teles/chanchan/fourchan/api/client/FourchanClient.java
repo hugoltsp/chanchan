@@ -2,12 +2,14 @@ package com.teles.chanchan.fourchan.api.client;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.teles.chanchan.config.settings.Client4ChanSettings;
+import com.teles.chanchan.domain.settings.Client4ChanSettings;
+import com.teles.chanchan.fourchan.api.client.FourchanResource.CatalogResponse;
 import com.teles.chanchan.fourchan.api.client.FourchanResource.ThreadsResponse;
 import com.teles.chanchan.fourchan.api.client.content.ContentUrlResolver;
 import com.teles.chanchan.fourchan.api.client.dto.response.BoardResponse;
@@ -55,7 +57,7 @@ public class FourchanClient {
 
 		try {
 
-			this.resource.getCatalog(board).stream().flatMap(c -> c.getThreads().stream()).forEach(t -> {
+			this.resource.getCatalog(board).stream().flatMap(this::catalogResponseToThreadResponseStream).forEach(t -> {
 				t.setBoard(board);
 				threads.add(t);
 			});
@@ -90,7 +92,7 @@ public class FourchanClient {
 		}
 
 		logger.debug("{} posts found on thread {}", posts.size(), threadNumber);
-		
+
 		return posts;
 	}
 
@@ -106,10 +108,14 @@ public class FourchanClient {
 		} catch (FeignException e) {
 			logger.error("Unable to request resource", e);
 		}
-		
+
 		logger.debug("{} threads found on board {}.", simpleThreadResponse.size(), board);
 
 		return simpleThreadResponse;
+	}
+
+	private Stream<ThreadResponse> catalogResponseToThreadResponseStream(CatalogResponse catalog) {
+		return catalog.getThreads().stream();
 	}
 
 	private static FourchanResource createResource(String apiUrl) {

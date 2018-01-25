@@ -33,11 +33,10 @@ public class ThreadAsyncHandler {
 	@Async
 	public void updateThreadsByBoard(String board) {
 		logger.debug("Updating threads of board '{}'", board);
-		
+
 		List<ThreadResponse> threadsFromBoard = this.fourchanClient.getThreadsFromBoard(board);
 
-		threadsFromBoard.forEach(threadResponse -> {
-			ChanThread chanThread = buildThread(threadResponse);
+		threadsFromBoard.stream().map(this::buildThread).forEach(chanThread -> {
 			chanThread.setPosts(getPosts(chanThread));
 			this.threadService.saveOrUpdate(chanThread);
 		});

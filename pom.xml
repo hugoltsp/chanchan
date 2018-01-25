@@ -16,7 +16,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.8.RELEASE</version>
+		<version>1.5.9.RELEASE</version>
 	</parent>
 
 	<dependencyManagement>
@@ -32,12 +32,6 @@
 			<dependency>
 				<groupId>com.teles.chanchan</groupId>
 				<artifactId>chanchan-4chan-api-client</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.teles.chanchan</groupId>
-				<artifactId>chanchan-data</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -89,7 +83,6 @@
 	<modules>
 		<module>chanchan-scraper</module>
 		<module>chanchan-4chan-api-client</module>
-		<module>chanchan-data</module>
 		<module>chanchan-domain</module>
 		<module>chanchan-web-app</module>
 	</modules>

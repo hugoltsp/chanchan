@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.teles.chanchan.data.repository.BoardRepository;
 import com.teles.chanchan.domain.document.ChanBoard;
+import com.teles.chanchan.web.app.repository.BoardRepository;
 
 @Service
 public class BoardService {
@@ -27,15 +27,18 @@ public class BoardService {
 	}
 
 	public void saveOrUpdate(ChanBoard board) {
-		findByBoard(board.getBoard()).ifPresent(b->board.setId(b.getId()));
+		findByBoard(board.getBoard()).ifPresent(b -> board.setId(b.getId()));
 		save(board);
 	}
 
 	public List<ChanBoard> findAll() {
-		return this.boardRepository.findAll();
+		List<ChanBoard> allBoards = this.boardRepository.findAll();
+		logger.debug("{} boards.", allBoards.size());
+		return allBoards;
 	}
 
 	public Optional<ChanBoard> findByBoard(String board) {
+		logger.debug("Looking for board '{}'", board);
 		return this.boardRepository.findByBoard(board);
 	}
 

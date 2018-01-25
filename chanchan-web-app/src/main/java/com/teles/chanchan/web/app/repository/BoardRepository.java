@@ -1,4 +1,4 @@
-package com.teles.chanchan.data.repository;
+package com.teles.chanchan.web.app.repository;
 
 import java.util.Optional;
 

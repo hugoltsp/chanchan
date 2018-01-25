@@ -28,7 +28,10 @@ public class ThreadScheduler {
 	public void updateThreads() {
 		logger.info("Updating Threads.");
 
-		this.boardService.findAll().stream().map(ChanBoard::getBoard).forEach(this.asyncHandler::updateThreadsByBoard);
+		for (ChanBoard chanBoard : this.boardService.findAll()) {
+			this.asyncHandler.updateThreadsByBoard(chanBoard.getBoard());
+		}
+		
 	}
 
 }

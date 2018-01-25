@@ -34,7 +34,7 @@ public class AsyncConfig implements AsyncConfigurer {
 		executor.setCorePoolSize(settings.getThreadPoolSize());
 		executor.setThreadNamePrefix(settings.getThreadNamePrefix());
 		executor.setDaemon(true);
-		
+
 		return executor;
 	}
 

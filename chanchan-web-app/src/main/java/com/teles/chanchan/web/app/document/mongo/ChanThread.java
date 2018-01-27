@@ -1,4 +1,4 @@
-package com.teles.chanchan.domain.document;
+package com.teles.chanchan.web.app.document.mongo;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -17,11 +17,6 @@
 			<artifactId>chanchan-4chan-api-client</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>com.teles.chanchan</groupId>
-			<artifactId>chanchan-domain</artifactId>
-		</dependency>
-
 	</dependencies>
 
 	<build>

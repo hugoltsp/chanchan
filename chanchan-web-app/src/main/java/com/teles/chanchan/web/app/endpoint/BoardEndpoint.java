@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.teles.chanchan.domain.document.ChanBoard;
+import com.teles.chanchan.web.app.document.mongo.ChanBoard;
 import com.teles.chanchan.web.app.dto.BoardResponse;
 import com.teles.chanchan.web.app.service.BoardService;
 

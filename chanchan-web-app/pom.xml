@@ -7,14 +7,9 @@
 		<version>0.0.1</version>
 	</parent>
 	<artifactId>chanchan-web-app</artifactId>
-	<name>Webapp</name>
+	<name>App</name>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>com.teles.chanchan</groupId>
-			<artifactId>chanchan-domain</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>com.teles.chanchan</groupId>

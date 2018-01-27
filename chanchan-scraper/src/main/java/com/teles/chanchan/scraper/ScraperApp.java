@@ -14,7 +14,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.teles.chanchan.domain.settings.AsyncSettings;
 import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
 import com.teles.chanchan.scraper.service.DownloaderService;
@@ -30,27 +29,25 @@ public class ScraperApp implements CommandLineRunner {
 	private final ScrapperService crawlerService;
 	private final DownloaderService downloaderService;
 
-	public ScraperApp(ScrapperService crawlerService, AsyncSettings asyncSettings,
-			DownloaderService downloaderService) {
+	public ScraperApp(ScrapperService crawlerService, DownloaderService downloaderService) {
 		this.crawlerService = crawlerService;
 		this.downloaderService = downloaderService;
-		this.executor = Executors.newFixedThreadPool(asyncSettings.getThreadPoolSize());
+		this.executor = Executors.newFixedThreadPool(20);
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(ScraperApp.class, args);
-	}
-
-	public void run(String... args) throws Exception {
 
 		if (!isArgsValid(args)) {
 			throw new IllegalArgumentException("At least one catalog must be specified");
 		}
 
+		SpringApplication.run(ScraperApp.class, args);
+	}
+
+	public void run(String... args) throws Exception {
+
 		logger.info("Chanchan started");
 		List<String> boards = parseBoards(args);
-
-		logger.info("Boards:: {}", boards);
 
 		List<ThreadResponse> threads = this.crawlerService.crawlThreads(boards);
 
@@ -88,7 +85,7 @@ public class ScraperApp implements CommandLineRunner {
 	}
 
 	private static boolean isArgsValid(String... args) {
-		return args != null && args.length == 2;
+		return args != null && args.length >= 1;
 	}
 
 }

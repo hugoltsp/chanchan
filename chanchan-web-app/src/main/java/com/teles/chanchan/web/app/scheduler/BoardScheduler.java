@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.teles.chanchan.domain.document.ChanBoard;
 import com.teles.chanchan.fourchan.api.client.FourchanClient;
 import com.teles.chanchan.fourchan.api.client.dto.response.BoardResponse;
+import com.teles.chanchan.web.app.document.mongo.ChanBoard;
 import com.teles.chanchan.web.app.service.BoardService;
 
 @Component

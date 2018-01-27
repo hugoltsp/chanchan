@@ -3,9 +3,7 @@ logging:
     com.teles.chanchan: DEBUG
 chanchan:
   io:
-    output-path: null
-  async:
-    thread-pool-size: 20
+    output-path: ${HOME}/chanchan
   client-four-chan:
     api-url: http://api.4chan.org
     cdn-url: http://i.4cdn.org

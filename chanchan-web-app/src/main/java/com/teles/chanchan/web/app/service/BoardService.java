@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.teles.chanchan.domain.document.ChanBoard;
+import com.teles.chanchan.web.app.document.mongo.ChanBoard;
 import com.teles.chanchan.web.app.repository.BoardRepository;
 
 @Service

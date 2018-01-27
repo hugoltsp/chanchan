@@ -13,11 +13,9 @@ management:
   context-path: /actuator
 
 chanchan:
-  io:
-    output-path: null
   async:
     thread-pool-size: 20
-    thread-name-prefix: ChanChan-Executor-
+    thread-name-prefix: ChanchanTask-
   client-four-chan:
     api-url: http://api.4chan.org
     cdn-url: http://i.4cdn.org

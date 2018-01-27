@@ -1,4 +1,4 @@
-package com.teles.chanchan.domain.settings;
+package com.teles.chanchan.web.app.settings;
 
 import javax.annotation.PostConstruct;
 

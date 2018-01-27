@@ -1,6 +1,6 @@
 package com.teles.chanchan.web.app.dto;
 
-import com.teles.chanchan.domain.document.ChanBoard;
+import com.teles.chanchan.web.app.document.mongo.ChanBoard;
 
 public class BoardResponse {
 

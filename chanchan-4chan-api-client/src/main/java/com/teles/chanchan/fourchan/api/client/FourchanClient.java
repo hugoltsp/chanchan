@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.teles.chanchan.domain.settings.Client4ChanSettings;
 import com.teles.chanchan.fourchan.api.client.FourchanResource.CatalogResponse;
 import com.teles.chanchan.fourchan.api.client.FourchanResource.ThreadsResponse;
 import com.teles.chanchan.fourchan.api.client.content.ContentUrlResolver;
@@ -16,6 +15,7 @@ import com.teles.chanchan.fourchan.api.client.dto.response.BoardResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.SimpleThreadResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
+import com.teles.chanchan.fourchan.api.client.settings.Client4ChanSettings;
 
 import feign.Feign;
 import feign.FeignException;

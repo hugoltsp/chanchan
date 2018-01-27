@@ -2,8 +2,8 @@ package com.teles.chanchan.fourchan.api.client.content;
 
 import org.springframework.stereotype.Component;
 
-import com.teles.chanchan.domain.settings.Client4ChanSettings;
 import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
+import com.teles.chanchan.fourchan.api.client.settings.Client4ChanSettings;
 
 @Component
 public class ContentUrlResolver {

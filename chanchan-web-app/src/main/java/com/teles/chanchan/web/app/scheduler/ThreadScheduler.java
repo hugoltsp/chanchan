@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.teles.chanchan.domain.document.ChanBoard;
+import com.teles.chanchan.web.app.document.mongo.ChanBoard;
 import com.teles.chanchan.web.app.scheduler.handler.ThreadAsyncHandler;
 import com.teles.chanchan.web.app.service.BoardService;
 

@@ -1,7 +1,8 @@
-package com.teles.chanchan.domain.settings;
+package com.teles.chanchan.scraper.settings;
 
 import javax.annotation.PostConstruct;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -12,7 +13,8 @@ import org.springframework.context.annotation.Configuration;
 public class IoSettings {
 
 	private static final Logger logger = LoggerFactory.getLogger(IoSettings.class);
-
+	
+	@NotBlank
 	private String outputPath;
 
 	@PostConstruct

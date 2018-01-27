@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import com.teles.chanchan.domain.document.ChanPost;
-import com.teles.chanchan.domain.document.ChanPostContent;
-import com.teles.chanchan.domain.document.ChanThread;
 import com.teles.chanchan.fourchan.api.client.FourchanClient;
 import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
 import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
+import com.teles.chanchan.web.app.document.mongo.ChanPost;
+import com.teles.chanchan.web.app.document.mongo.ChanPostContent;
+import com.teles.chanchan.web.app.document.mongo.ChanThread;
 import com.teles.chanchan.web.app.service.ThreadService;
 
 @Component

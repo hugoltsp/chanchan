@@ -13,7 +13,7 @@ public class ChanPost {
 
 	private String comentary;
 
-	private ChanPostContent postContent;
+	private ChanPostContent content;
 
 	public Integer getNumber() {
 		return number;
@@ -39,12 +39,12 @@ public class ChanPost {
 		this.comentary = comentary;
 	}
 
-	public ChanPostContent getPostContent() {
-		return postContent;
+	public ChanPostContent getContent() {
+		return content;
 	}
 
-	public void setPostContent(ChanPostContent postContent) {
-		this.postContent = postContent;
+	public void setContent(ChanPostContent postContent) {
+		this.content = postContent;
 	}
 
 	@Override

@@ -23,6 +23,10 @@ public class SimpleThreadResponse {
 	public long getLastModified() {
 		return lastModified;
 	}
+	
+	public long getLastModifiedMillis() {
+		return lastModified * 1000L;
+	}
 
 	public void setLastModified(long lastModified) {
 		this.lastModified = lastModified;

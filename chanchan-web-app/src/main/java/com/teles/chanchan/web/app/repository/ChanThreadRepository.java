@@ -1,5 +1,6 @@
 package com.teles.chanchan.web.app.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -12,4 +13,6 @@ public interface ChanThreadRepository extends MongoRepository<ChanThread, String
 
 	Optional<ChanThread> findByNumberAndBoard(int number, String board);
 
+	List<ChanThread> findByBoard(String board);
+	
 }

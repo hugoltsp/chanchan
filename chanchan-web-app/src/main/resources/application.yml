@@ -14,7 +14,7 @@ management:
 
 chanchan:
   async:
-    thread-pool-size: 20
+    thread-pool-size: 10
     thread-name-prefix: ChanchanTask-
   client-four-chan:
     api-url: http://api.4chan.org

@@ -51,7 +51,7 @@ public class ThreadAsyncHandler {
 	private ChanThread buildThread(ThreadResponse threadResponse) {
 		ChanThread thread = new ChanThread();
 		thread.setDescription(threadResponse.getDescription());
-		thread.setLastModified(new Date(threadResponse.getLastModified()));
+		thread.setLastModified(new Date(threadResponse.getLastModifiedMillis()));
 		thread.setCreationDate(new Date());
 		thread.setName(threadResponse.getName());
 		thread.setNumber(threadResponse.getNumber());
@@ -71,7 +71,9 @@ public class ThreadAsyncHandler {
 			post.setTimeStamp(new Date(response.getTimeStamp()));
 		}
 
-		post.setPostContent(buildPostContent(response));
+		if (response.hasMedia()) {
+			post.setContent(buildPostContent(response));
+		}
 
 		return post;
 	}

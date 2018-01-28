@@ -1,5 +1,6 @@
 package com.teles.chanchan.web.app.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -31,8 +32,18 @@ public class ThreadService {
 	}
 
 	public Optional<ChanThread> findByNumberAndBoard(int number, String board) {
-		logger.info("Searching for thread {} found on board {}.", number, board);
+		logger.debug("Searching for thread number '{}' on board '{}'.", number, board);
 		return this.repository.findByNumberAndBoard(number, board);
 	}
 
+	public List<ChanThread> findByBoard(String board) {
+		logger.debug("Searching for threads on board '{}'.", board);
+		return this.repository.findByBoard(board);
+	}
+
+	public List<ChanThread> findAll() {
+		List<ChanThread> allChanThreads = this.repository.findAll();
+		logger.debug("Found {} ChanThreads", allChanThreads.size());
+		return allChanThreads;
+	}
 }

@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.teles.chanchan.web.app.document.mongo.ChanBoard;
+import com.teles.chanchan.web.app.document.mongo.ChanThread;
 import com.teles.chanchan.web.app.dto.BoardResponse;
+import com.teles.chanchan.web.app.dto.ThreadResponse;
 import com.teles.chanchan.web.app.service.BoardService;
+import com.teles.chanchan.web.app.service.ThreadService;
 
 import io.swagger.annotations.Api;
 
@@ -22,9 +25,11 @@ import io.swagger.annotations.Api;
 public class BoardEndpoint {
 
 	private final BoardService boardService;
+	private final ThreadService threadService;
 
-	public BoardEndpoint(BoardService boardService) {
+	public BoardEndpoint(BoardService boardService, ThreadService threadService) {
 		this.boardService = boardService;
+		this.threadService = threadService;
 	}
 
 	@GetMapping
@@ -46,7 +51,7 @@ public class BoardEndpoint {
 	@GetMapping("/{board}")
 	public ResponseEntity<?> getBoard(@PathVariable String board) {
 
-		ResponseEntity<BoardResponse> responseEntity = null;
+		ResponseEntity<?> responseEntity = null;
 
 		Optional<ChanBoard> boardOptional = this.boardService.findByBoard(board.toLowerCase());
 
@@ -56,7 +61,23 @@ public class BoardEndpoint {
 			responseEntity = ResponseEntity.noContent().build();
 		}
 
-		return responseEntity;	
+		return responseEntity;
+	}
+
+	@GetMapping("/{board}/thread")
+	public ResponseEntity<?> getThreadsFromBoard(@PathVariable String board) {
+
+		ResponseEntity<?> responseEntity = null;
+
+		List<ChanThread> threads = this.threadService.findByBoard(board.toLowerCase());
+
+		if (threads.isEmpty()) {
+			responseEntity = ResponseEntity.noContent().build();
+		} else {
+			responseEntity = ResponseEntity.ok(threads.stream().map(ThreadResponse::new).collect(Collectors.toList()));
+		}
+
+		return responseEntity;
 	}
 
 }

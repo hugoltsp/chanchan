@@ -18,8 +18,6 @@ public class ChanPostContent {
 
 	private Integer imageHeight;
 
-	private byte[] file;
-
 	public Long getFileSize() {
 		return fileSize;
 	}
@@ -82,14 +80,6 @@ public class ChanPostContent {
 
 	public void setImageHeight(Integer imageHeight) {
 		this.imageHeight = imageHeight;
-	}
-
-	public byte[] getFile() {
-		return file;
-	}
-
-	public void setFile(byte[] file) {
-		this.file = file;
 	}
 
 	@Override

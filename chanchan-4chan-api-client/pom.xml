@@ -8,15 +8,10 @@
 	<parent>
 		<groupId>com.teles.chanchan</groupId>
 		<artifactId>chanchan</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1</version>
 	</parent>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>com.teles.chanchan</groupId>
-			<artifactId>chanchan-domain</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>com.netflix.feign</groupId>
@@ -40,6 +35,12 @@
 			<groupId>com.netflix.feign</groupId>
 			<artifactId>feign-jackson</artifactId>
 			<version>${feign.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
 		</dependency>
 
 	</dependencies>

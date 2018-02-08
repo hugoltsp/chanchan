@@ -5,3 +5,6 @@
 .classpath
 .settings/
 .settings
+.factorypath
+.springBeans
+*.iml

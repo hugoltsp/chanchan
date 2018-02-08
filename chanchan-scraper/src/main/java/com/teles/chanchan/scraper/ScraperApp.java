@@ -13,50 +13,46 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
 
-import com.teles.chanchan.domain.FourchanPost;
-import com.teles.chanchan.domain.FourchanThread;
-import com.teles.chanchan.domain.settings.ChanchanSettings;
-import com.teles.chanchan.service.CrawlerService;
-import com.teles.chanchan.service.io.DownloaderService;
+import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
+import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
+import com.teles.chanchan.scraper.service.DownloaderService;
+import com.teles.chanchan.scraper.service.ScrapperService;
 
-@ComponentScan({ "com.teles.chanchan.service", "com.teles.chanchan.fourchan" })
-@Import(value = { ChanchanSettings.class })
+@ComponentScan("com.teles.chanchan")
 @SpringBootApplication
 public class ScraperApp implements CommandLineRunner {
 
 	private static final Logger logger = LoggerFactory.getLogger(ScraperApp.class);
 
 	private final ExecutorService executor;
-	private final CrawlerService crawlerService;
+	private final ScrapperService crawlerService;
 	private final DownloaderService downloaderService;
-	private final String outputPath;
 
-	public ScraperApp(CrawlerService crawlerService, ChanchanSettings settings, DownloaderService downloaderService) {
+	public ScraperApp(ScrapperService crawlerService, DownloaderService downloaderService) {
 		this.crawlerService = crawlerService;
-		this.outputPath = settings.getIo().getOutputPath();
 		this.downloaderService = downloaderService;
-		this.executor = Executors.newFixedThreadPool(settings.getAsync().getThreadPoolSize());
+		this.executor = Executors.newFixedThreadPool(20);
 	}
 
 	public static void main(String[] args) {
+
+		if (!isArgsValid(args)) {
+			throw new IllegalArgumentException("At least one catalog must be specified");
+		}
+
 		SpringApplication.run(ScraperApp.class, args);
 	}
 
 	public void run(String... args) throws Exception {
-		if (args == null || args.length < 1) {
-			throw new IllegalArgumentException("At least one catalog must be specified");
-		}
 
 		logger.info("Chanchan started");
-		List<String> boards = this.parseBoards(args);
+		List<String> boards = parseBoards(args);
 
-		logger.info("Boards:: {}", boards);
-		logger.info("Ouput path:: {}", this.outputPath);
+		List<ThreadResponse> threads = this.crawlerService.crawlThreads(boards);
 
-		List<FourchanThread> threads = this.crawlerService.crawlBoards(boards);
-		List<String> urls = this.extractDownloadUrls(threads);
+		List<String> urls = threads.parallelStream().flatMap(t -> this.crawlerService.crawlPosts(t).stream())
+				.map(PostResponse::getContentUrl).filter(Objects::nonNull).collect(Collectors.toList());
 
 		logger.info("{} files to download..", urls.size());
 		urls.stream().map(this::createRunnable).forEach(this.executor::execute);
@@ -66,11 +62,6 @@ public class ScraperApp implements CommandLineRunner {
 		while (!this.executor.isTerminated()) {
 			Thread.sleep(1000);
 		}
-	}
-
-	private List<String> extractDownloadUrls(List<FourchanThread> threads) {
-		return threads.stream().flatMap(t -> t.getPosts().stream()).map(FourchanPost::getContentUrl)
-				.filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
 	private Runnable createRunnable(String url) {
@@ -91,6 +82,10 @@ public class ScraperApp implements CommandLineRunner {
 
 	private String trimAndLowerCase(String str) {
 		return str.trim().toLowerCase();
+	}
+
+	private static boolean isArgsValid(String... args) {
+		return args != null && args.length >= 1;
 	}
 
 }

@@ -3,21 +3,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.teles.chanchan</groupId>
 	<artifactId>chanchan</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>pom</packaging>
 	<name>Root</name>
 
 	<properties>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<commons.io.version>2.5</commons.io.version>
 		<feign.version>8.18.0</feign.version>
 	</properties>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.3.RELEASE</version>
+		<version>1.5.9.RELEASE</version>
 	</parent>
 
 	<dependencyManagement>
@@ -26,31 +25,7 @@
 
 			<dependency>
 				<groupId>com.teles.chanchan</groupId>
-				<artifactId>chanchan-config</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.teles.chanchan</groupId>
-				<artifactId>chanchan-domain</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.teles.chanchan</groupId>
 				<artifactId>chanchan-4chan-api-client</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.teles.chanchan</groupId>
-				<artifactId>chanchan-data</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.teles.chanchan</groupId>
-				<artifactId>chanchan-service</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -76,12 +51,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>${commons.io.version}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
@@ -92,16 +61,23 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<modules>
 		<module>chanchan-scraper</module>
 		<module>chanchan-4chan-api-client</module>
-		<module>chanchan-data</module>
-		<module>chanchan-domain</module>
-		<module>chanchan-service</module>
-		<module>chanchan-config</module>
-		<module>chanchan-webapp</module>
+		<module>chanchan-web-app</module>
 	</modules>
 
 	<build>

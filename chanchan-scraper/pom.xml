@@ -7,20 +7,14 @@
 	<parent>
 		<groupId>com.teles.chanchan</groupId>
 		<artifactId>chanchan</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1</version>
 	</parent>
 
 	<dependencies>
 
 		<dependency>
 			<groupId>com.teles.chanchan</groupId>
-			<artifactId>chanchan-service</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>com.teles.chanchan</groupId>
-					<artifactId>chanchan-data</artifactId>
-				</exclusion>
-			</exclusions>
+			<artifactId>chanchan-4chan-api-client</artifactId>
 		</dependency>
 
 	</dependencies>

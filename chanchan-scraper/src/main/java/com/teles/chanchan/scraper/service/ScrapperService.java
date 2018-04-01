@@ -2,6 +2,7 @@ package com.teles.chanchan.scraper.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,18 +24,23 @@ public class ScrapperService {
 		this.chanClient = chanClient;
 	}
 
-	public List<ThreadResponse> crawlThreads(List<String> boards) {
+	public List<PostResponse> crawlBoards(List<String> boards) {
 		logger.info("Crawling through boards: {}", boards);
 		List<ThreadResponse> threadsFromBoards = getThreadsFromBoards(boards);
 		logger.info("Total of {} threads found.", threadsFromBoards.size());
-		return threadsFromBoards;
+		return threadsFromBoards.parallelStream().flatMap(t -> this.crawlPosts(t).stream())
+				.collect(Collectors.toList());
 	}
 
-	public List<PostResponse> crawlPosts(SimpleThreadResponse threadResponse) {
-		logger.info("searching for posts on thread {} of {}", threadResponse.getNumber(), threadResponse.getBoard());
+	private List<PostResponse> crawlPosts(SimpleThreadResponse threadResponse) {
 
-		return this.chanClient.getPostsFromBoardAndThreadNumber(threadResponse.getBoard(),
-				threadResponse.getNumber());
+		return crawlPosts(threadResponse.getBoard(), threadResponse.getNumber());
+	}
+
+	public List<PostResponse> crawlPosts(String board, int number) {
+		logger.info("searching for posts on thread {} of {}", number, board);
+
+		return filterPostResponse(chanClient.getPostsFromBoardAndThreadNumber(board, number));
 	}
 
 	private List<ThreadResponse> getThreadsFromBoards(List<String> boards) {
@@ -47,4 +53,7 @@ public class ScrapperService {
 		return threads;
 	}
 
+	private static List<PostResponse> filterPostResponse(List<PostResponse> posts) {
+		return posts.stream().filter(PostResponse::hasMedia).collect(Collectors.toList());
+	}
 }

@@ -32,6 +32,8 @@ public class PostResponse {
 
 	private String board;
 
+	private Integer thread;
+
 	private String thumbUrl;
 
 	private String contentUrl;
@@ -102,6 +104,14 @@ public class PostResponse {
 		this.comentary = unescapeHtml4(comentary);
 	}
 
+	public Integer getThread() {
+		return thread;
+	}
+
+	public void setThread(Integer thread) {
+		this.thread = thread;
+	}
+
 	public String getBoard() {
 		return board;
 	}
@@ -142,8 +152,8 @@ public class PostResponse {
 	public String toString() {
 		return "PostResponse [number=" + number + ", originalFileName=" + originalFileName + ", fileExtension="
 				+ fileExtension + ", imageWidth=" + imageWidth + ", imageHeight=" + imageHeight + ", timeStamp="
-				+ timeStamp + ", fileSize=" + fileSize + ", comentary=" + comentary + ", board=" + board + ", thumbUrl="
-				+ thumbUrl + ", contentUrl=" + contentUrl + ", md5=" + md5 + "]";
+				+ timeStamp + ", fileSize=" + fileSize + ", comentary=" + comentary + ", board=" + board + ", thread="
+				+ thread + ", thumbUrl=" + thumbUrl + ", contentUrl=" + contentUrl + ", md5=" + md5 + "]";
 	}
 
 }

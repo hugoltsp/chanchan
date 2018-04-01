@@ -78,7 +78,8 @@ public class FourchanClient {
 
 			for (PostResponse post : this.resource.getPosts(board, threadNumber).getPosts()) {
 				post.setBoard(board);
-
+				post.setThread(threadNumber);
+				
 				if (post.hasMedia()) {
 					post.setThumbUrl(this.imageUrlResolver.buildThumbNailUrl(post));
 					post.setContentUrl(this.imageUrlResolver.buildMediaUrl(post));

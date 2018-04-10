@@ -61,7 +61,7 @@ public class ScraperApp implements CommandLineRunner {
 
 		try {
 
-			CommandLine commandLine = new DefaultParser().parse(OPTIONS, args);
+			CommandLine commandLine = new DefaultParser().parse(OPTIONS, args, true);
 
 			if (!isCommandLineValid(commandLine)) {
 				throw new IllegalArgumentException(
@@ -73,7 +73,7 @@ public class ScraperApp implements CommandLineRunner {
 
 			if (commandLine.hasOption(BOARDS_MODE_ARG)) {
 
-				posts.addAll(this.crawlerService.crawlBoards(parseBoards(commandLine.getOptionValue(BOARDS_ARG))));
+				posts.addAll(crawlerService.crawlBoards(parseBoards(commandLine.getOptionValue(BOARDS_ARG))));
 
 			} else {
 
@@ -95,6 +95,7 @@ public class ScraperApp implements CommandLineRunner {
 		} catch (Exception e) {
 			logger.error("Error", e);
 		}
+
 	}
 
 	private Runnable createRunnable(PostResponse post) {

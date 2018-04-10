@@ -8,7 +8,7 @@ public class SimpleThreadResponse {
 	private Integer number;
 
 	@JsonProperty("last_modified")
-	private long lastModified;
+	private Long lastModified;
 
 	private String board;
 
@@ -20,15 +20,15 @@ public class SimpleThreadResponse {
 		this.number = number;
 	}
 
-	public long getLastModified() {
+	public Long getLastModified() {
 		return lastModified;
 	}
 	
-	public long getLastModifiedMillis() {
+	public Long getLastModifiedMillis() {
 		return lastModified * 1000L;
 	}
 
-	public void setLastModified(long lastModified) {
+	public void setLastModified(Long lastModified) {
 		this.lastModified = lastModified;
 	}
 

@@ -8,10 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.teles.chanchan.fourchan.api.client.FourchanClient;
-import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
-import com.teles.chanchan.fourchan.api.client.dto.response.SimpleThreadResponse;
-import com.teles.chanchan.fourchan.api.client.dto.response.ThreadResponse;
+import com.teles.chanchan.scraper.api.client.FourchanClient;
+import com.teles.chanchan.scraper.api.client.response.PostResponse;
+import com.teles.chanchan.scraper.api.client.response.SimpleThreadResponse;
+import com.teles.chanchan.scraper.api.client.response.ThreadResponse;
 
 @Service
 public class ScrapperService {

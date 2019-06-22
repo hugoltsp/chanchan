@@ -1,1 +1,0 @@
-docker build -t hltspires/chanchan --build-arg VERSION="$1" .

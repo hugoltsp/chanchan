@@ -22,7 +22,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.teles.chanchan.fourchan.api.client.dto.response.PostResponse;
+import com.teles.chanchan.scraper.api.client.response.PostResponse;
 import com.teles.chanchan.scraper.service.DownloaderService;
 import com.teles.chanchan.scraper.service.ScrapperService;
 
